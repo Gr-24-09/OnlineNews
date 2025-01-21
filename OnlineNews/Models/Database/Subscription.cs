@@ -15,10 +15,7 @@ namespace OnlineNews.Models.Database
 
         //[Required(ErrorMessage = "Last Date of the Subscription is required.")]
         //public DateTime ExpiredAt { get; set; }
-        public Boolean PaymentComplete { get; set; }//Here i need to write paid/Not paid later in the project to appear on users screen
-
-        public virtual ICollection<User> Users { get; set; } = new List<User>();
-        public virtual ICollection<SubscriptionType> SubscriptionTypes { get; set; } = new List<SubscriptionType>();
+        public bool PaymentComplete { get; set; }//Here i need to write paid/Not paid later in the project to appear on users screen
 
     }
 }
