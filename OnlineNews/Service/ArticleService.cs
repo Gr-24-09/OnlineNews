@@ -31,14 +31,14 @@ namespace OnlineNews.Services
             _db.Articles.Remove(Article);
             _db.SaveChanges();
         }
-        //public List<Article> GetAllArticles()
-        //{
-        //    var Article = _db.Articles.ToList();
+        public List<Article> GetAllArticles()
+        {
+            var Article = _db.Articles.ToList();
 
-        //    var qSyntax = from m in _db.Articles select m;
-        //    var AllArticlesQuey = _db.Articles.FromSqlRaw("select  * from Articles").ToList();
-        //    return article;
-        //}
+            var qSyntax = from m in _db.Articles select m;
+            var AllArticlesQuey = _db.Articles.FromSqlRaw("select  * from Articles").ToList();
+            return Article;
+        }
         public Article GetDetails(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
