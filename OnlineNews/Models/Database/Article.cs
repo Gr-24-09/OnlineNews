@@ -26,7 +26,7 @@ namespace OnlineNews.Models.Database
 
         [Required(ErrorMessage = "Publishing Date of Article is required.")]
         [Display(Name = "Publishing Date")]
-        public DateTime DateStamp { get; set; }
+        public DateTime PublishedDate { get; set; }
 
         [Required(ErrorMessage = "Name of the Writer is required.")]
         [Display(Name = "Writer Name")]
