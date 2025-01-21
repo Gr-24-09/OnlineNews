@@ -86,6 +86,11 @@ namespace OnlineNews.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -137,6 +142,10 @@ namespace OnlineNews.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator().HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -237,6 +246,9 @@ namespace OnlineNews.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -244,9 +256,6 @@ namespace OnlineNews.Data.Migrations
                     b.Property<string>("ContentSummary")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateStamp")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Headline")
                         .IsRequired()
@@ -262,6 +271,9 @@ namespace OnlineNews.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<DateTime>("PublishedDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Writer")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -269,16 +281,107 @@ namespace OnlineNews.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("OnlineNews.Models.Database.User", b =>
+            modelBuilder.Entity("OnlineNews.Models.Database.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("OnlineNews.Models.Database.Subscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("PaymentComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subscriptions");
+                });
+
+            modelBuilder.Entity("OnlineNews.Models.Database.SubscriptionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("TypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SubscriptionTypes");
+                });
+
+            modelBuilder.Entity("SubscriptionSubscriptionType", b =>
+                {
+                    b.Property<int>("SubscriptionTypesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubscriptionsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SubscriptionTypesId", "SubscriptionsId");
+
+                    b.HasIndex("SubscriptionsId");
+
+                    b.ToTable("SubscriptionSubscriptionType");
+                });
+
+            modelBuilder.Entity("SubscriptionUser", b =>
+                {
+                    b.Property<int>("SubscriptionsId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SubscriptionsId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("SubscriptionUser");
+                });
+
+            modelBuilder.Entity("OnlineNews.Models.Database.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
                     b.Property<DateTime>("DateofBirth")
                         .HasColumnType("datetime2");
@@ -293,9 +396,7 @@ namespace OnlineNews.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("Id");
-
-                    b.ToTable("Users");
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -347,6 +448,48 @@ namespace OnlineNews.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("OnlineNews.Models.Database.Article", b =>
+                {
+                    b.HasOne("OnlineNews.Models.Database.Category", null)
+                        .WithMany("Articles")
+                        .HasForeignKey("CategoryId");
+                });
+
+            modelBuilder.Entity("SubscriptionSubscriptionType", b =>
+                {
+                    b.HasOne("OnlineNews.Models.Database.SubscriptionType", null)
+                        .WithMany()
+                        .HasForeignKey("SubscriptionTypesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineNews.Models.Database.Subscription", null)
+                        .WithMany()
+                        .HasForeignKey("SubscriptionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SubscriptionUser", b =>
+                {
+                    b.HasOne("OnlineNews.Models.Database.Subscription", null)
+                        .WithMany()
+                        .HasForeignKey("SubscriptionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineNews.Models.Database.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OnlineNews.Models.Database.Category", b =>
+                {
+                    b.Navigation("Articles");
                 });
 #pragma warning restore 612, 618
         }

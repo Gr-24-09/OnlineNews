@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineNews.Models.Database
 {
-    public class User
+    public class User:IdentityUser
     {
         public int Id { get; set; }
 
@@ -16,11 +17,9 @@ namespace OnlineNews.Models.Database
         [StringLength(50)]
         public string LastName { get; set; }
 
-
         [Required(ErrorMessage = "LastName of Employee is required.")]
         public DateTime DateofBirth { get; set; }
-       
-        
+        public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 
     }
 }
