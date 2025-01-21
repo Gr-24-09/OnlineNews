@@ -11,6 +11,6 @@ namespace OnlineNews.Interfaces
         void Delete(int id);
         bool Edit(int id, Article updateArticle);
         Article GetDetails(int id);
-        //List<Article> GetAllArticles()
+        List<Article> GetAllArticles();
     }
 }
