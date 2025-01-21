@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
+using OnlineNews.Interfaces;
+using OnlineNews.Services;
 
 namespace OnlineNews
 {
@@ -19,7 +21,8 @@ namespace OnlineNews
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddScoped<IArticleService, ArticleService>();
+         
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
