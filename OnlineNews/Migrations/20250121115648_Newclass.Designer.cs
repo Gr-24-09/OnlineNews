@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineNews.Data;
 
 #nullable disable
 
-namespace OnlineNews.Data.Migrations
+namespace OnlineNews.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250121115648_Newclass")]
+    partial class Newclass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -266,6 +269,9 @@ namespace OnlineNews.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsArchived")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -320,7 +326,17 @@ namespace OnlineNews.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int?>("SubscriptionTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SubscriptionTypeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Subscriptions");
                 });
@@ -347,36 +363,6 @@ namespace OnlineNews.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SubscriptionTypes");
-                });
-
-            modelBuilder.Entity("SubscriptionSubscriptionType", b =>
-                {
-                    b.Property<int>("SubscriptionTypesId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SubscriptionsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("SubscriptionTypesId", "SubscriptionsId");
-
-                    b.HasIndex("SubscriptionsId");
-
-                    b.ToTable("SubscriptionSubscriptionType");
-                });
-
-            modelBuilder.Entity("SubscriptionUser", b =>
-                {
-                    b.Property<int>("SubscriptionsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("SubscriptionsId", "UsersId");
-
-                    b.HasIndex("UsersId");
-
-                    b.ToTable("SubscriptionUser");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.User", b =>
@@ -457,39 +443,30 @@ namespace OnlineNews.Data.Migrations
                         .HasForeignKey("CategoryId");
                 });
 
-            modelBuilder.Entity("SubscriptionSubscriptionType", b =>
+            modelBuilder.Entity("OnlineNews.Models.Database.Subscription", b =>
                 {
                     b.HasOne("OnlineNews.Models.Database.SubscriptionType", null)
-                        .WithMany()
-                        .HasForeignKey("SubscriptionTypesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OnlineNews.Models.Database.Subscription", null)
-                        .WithMany()
-                        .HasForeignKey("SubscriptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SubscriptionUser", b =>
-                {
-                    b.HasOne("OnlineNews.Models.Database.Subscription", null)
-                        .WithMany()
-                        .HasForeignKey("SubscriptionsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("SubscriptionTypeId");
 
                     b.HasOne("OnlineNews.Models.Database.User", null)
-                        .WithMany()
-                        .HasForeignKey("UsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Category", b =>
                 {
                     b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("OnlineNews.Models.Database.SubscriptionType", b =>
+                {
+                    b.Navigation("Subscriptions");
+                });
+
+            modelBuilder.Entity("OnlineNews.Models.Database.User", b =>
+                {
+                    b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
         }

@@ -23,7 +23,6 @@ namespace OnlineNews.Models.Database
         [Display(Name = "Category")]
         [StringLength(50)]
         public string Category { get; set; }
-
         [Required(ErrorMessage = "Publishing Date of Article is required.")]
         [Display(Name = "Publishing Date")]
         public DateTime PublishedDate { get; set; }
@@ -38,6 +37,7 @@ namespace OnlineNews.Models.Database
         [StringLength(50)]
         public string Location { get; set; }
         public string ImageLink { get; set; } = string.Empty;
+        public bool IsArchived { get; set; } 
 
     }
 }
