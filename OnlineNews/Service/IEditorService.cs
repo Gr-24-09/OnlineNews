@@ -1,6 +1,6 @@
 ﻿namespace OnlineNews.Service
 {
-    public interface IEditerService
+    public interface IEditorService
     {
     }
 }
