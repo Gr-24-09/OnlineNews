@@ -1,6 +1,6 @@
 ﻿namespace OnlineNews.Service
 {
-    public class EditorService
+    public class EditorService: IEditorService
     {
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace OnlineNews.Service
 {
-    public class WriterService: IWriterService
+    public interface IWriterService
     {
     }
 }
