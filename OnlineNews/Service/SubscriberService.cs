@@ -1,6 +1,6 @@
 ﻿namespace OnlineNews.Service
 {
-    public class SubscriberService
+    public class SubscriberService: ISubscriberService
     {
     }
 }
