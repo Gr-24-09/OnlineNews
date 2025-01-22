@@ -12,14 +12,12 @@ namespace OnlineNews.Services
         private readonly ApplicationDbContext _db;
 
         private readonly IArticleService _articleService;
-        public ArticleService(ApplicationDbContext context, IArticleService article)
+        public ArticleService(ApplicationDbContext db)
         {
-            _db = context;
-            _articleService = article;
+            _db = db;
         }
 
-
-        public void Add(Article article)
+        public void CreateArticle(Article article)
         {
             _db.Articles.Add(article);
             _db.SaveChanges();
@@ -27,17 +25,15 @@ namespace OnlineNews.Services
         public void Delete(int id)
         {
             var Article = _db.Articles.FirstOrDefault(a => a.Id == id);
-
             _db.Articles.Remove(Article);
             _db.SaveChanges();
         }
         public List<Article> GetAllArticles()
         {
-            var Article = _db.Articles.ToList();
-
-            var qSyntax = from m in _db.Articles select m;
-            var AllArticlesQuey = _db.Articles.FromSqlRaw("select  * from Articles").ToList();
-            return Article;
+            var articles = _db.Articles.ToList();
+            //var qSyntax = from m in _db.Articles select m;
+            //var AllArticlesQuey = _db.Articles.FromSqlRaw("select  * from Articles").ToList();
+            return articles;
         }
         public Article GetDetails(int id)
         {
@@ -54,8 +50,6 @@ namespace OnlineNews.Services
             {
                 return false;
             }
-
-
             article.Headline = updateArticle.Headline;
             article.Writer = updateArticle.Writer;
             article.Location = updateArticle.Location;
@@ -65,10 +59,7 @@ namespace OnlineNews.Services
             article.Content = updateArticle.Content;
             article.ContentSummary = updateArticle.ContentSummary;
             article.IsArchived = updateArticle.IsArchived;
-
-
             _db.SaveChanges();
-
             return true;
         }
     }
