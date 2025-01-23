@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
 using OnlineNews.Models.Database;
 using OnlineNews.Service;
+using OnlineNews.Interfaces;
+using OnlineNews.Services;
+
 
 namespace OnlineNews
 {
@@ -14,16 +17,17 @@ namespace OnlineNews
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddScoped<IArticleService, ArticleService>();
+         
             var app = builder.Build();
+            //builder.Services.AddRazorPages();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

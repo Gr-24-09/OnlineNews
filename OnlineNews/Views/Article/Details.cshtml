@@ -1,0 +1,42 @@
+﻿@model OnlineNews.Models.Database.Article
+
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="col-md-10 bg-primary-subtle text-light">
+    <br />
+    <br />
+    <br />
+    <div class="row">
+        <h2>
+            @Model.Headline
+        </h2>
+        <div class="col-2">
+            <em>@Model.PublishedDate</em>
+        </div>
+    </div>
+    
+    <div>
+        <b>@Model.Writer</b>
+        <em>@Model.Category reporter</em>
+    </div>
+    <div>
+        <div class="tbMargin"><img src="@Model.ImageLink" alt="News Poster" width="400" height="350" /></div>
+    </div>
+    <div class="offset-md-9">
+        <strong>Price: @Model.Content</strong>
+        <hr />
+    </div>
+</div>
+
+
+
+
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Back to Home Page</a>
+</div>
+
+
