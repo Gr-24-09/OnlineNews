@@ -53,12 +53,12 @@ namespace OnlineNews.Services
             article.Headline = updateArticle.Headline;
             article.Writer = updateArticle.Writer;
             article.Location = updateArticle.Location;
-            article.Category = updateArticle.Category;
+            //article.Category = updateArticle.Category;
             article.PublishedDate = updateArticle.PublishedDate;
             article.ImageLink = updateArticle.ImageLink;
             article.Content = updateArticle.Content;
             article.ContentSummary = updateArticle.ContentSummary;
-            article.IsArchived = updateArticle.IsArchived;
+           
             _db.SaveChanges();
             return true;
         }

@@ -19,10 +19,10 @@ namespace OnlineNews.Models.Database
         [Display(Name = "ContentSummary of Article")]
         public string ContentSummary { get; set; }
 
-        [Required(ErrorMessage = "Category of Article is required.")]
-        [Display(Name = "Category")]
-        [StringLength(50)]
-        public Category Category { get; set; }
+        //[Required(ErrorMessage = "Category of Article is required.")]
+        //[Display(Name = "Category")]
+        //[StringLength(50)]
+        //public Category Category { get; set; }
 
         [Required(ErrorMessage = "Publishing Date of Article is required.")]
         [Display(Name = "Publishing Date")]
@@ -38,8 +38,8 @@ namespace OnlineNews.Models.Database
         [StringLength(50)]
         public string Location { get; set; }
         public string ImageLink { get; set; } = string.Empty;
-        public bool IsArchived { get; set; } 
 
+        public virtual ICollection<Category> Categories { get; set; } = new List<Category>();
 
     }
 }

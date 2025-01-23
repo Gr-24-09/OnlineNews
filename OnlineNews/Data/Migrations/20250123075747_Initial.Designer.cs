@@ -12,15 +12,15 @@ using OnlineNews.Data;
 namespace OnlineNews.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250121115648_Newclass")]
-    partial class Newclass
+    [Migration("20250123075747_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("ProductVersion", "8.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -244,12 +244,7 @@ namespace OnlineNews.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -268,9 +263,6 @@ namespace OnlineNews.Migrations
                     b.Property<string>("ImageLink")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsArchived")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Location")
                         .IsRequired()
@@ -326,17 +318,17 @@ namespace OnlineNews.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("SubscriptionTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
+                    b.Property<string>("SubscriberId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("SubscriptionTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionTypeId");
+                    b.HasIndex("SubscriberId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SubscriptionTypeId");
 
                     b.ToTable("Subscriptions");
                 });
@@ -438,25 +430,30 @@ namespace OnlineNews.Migrations
 
             modelBuilder.Entity("OnlineNews.Models.Database.Article", b =>
                 {
-                    b.HasOne("OnlineNews.Models.Database.Category", null)
-                        .WithMany("Articles")
-                        .HasForeignKey("CategoryId");
+                    b.HasOne("OnlineNews.Models.Database.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Subscription", b =>
                 {
-                    b.HasOne("OnlineNews.Models.Database.SubscriptionType", null)
+                    b.HasOne("OnlineNews.Models.Database.User", "Subscriber")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("SubscriptionTypeId");
+                        .HasForeignKey("SubscriberId");
 
-                    b.HasOne("OnlineNews.Models.Database.User", null)
+                    b.HasOne("OnlineNews.Models.Database.SubscriptionType", "SubscriptionType")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("UserId");
-                });
+                        .HasForeignKey("SubscriptionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("OnlineNews.Models.Database.Category", b =>
-                {
-                    b.Navigation("Articles");
+                    b.Navigation("Subscriber");
+
+                    b.Navigation("SubscriptionType");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.SubscriptionType", b =>
