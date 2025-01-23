@@ -10,12 +10,9 @@ namespace OnlineNews.Services
     public class ArticleService : IArticleService
     {
         private readonly ApplicationDbContext _db;
-
-        private readonly IArticleService _articleService;
-        public ArticleService(ApplicationDbContext context, IArticleService article)
+        public ArticleService(ApplicationDbContext context)
         {
             _db = context;
-            _articleService = article;
         }
 
 
