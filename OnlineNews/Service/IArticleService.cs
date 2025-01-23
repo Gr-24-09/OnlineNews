@@ -7,7 +7,7 @@ namespace OnlineNews.Interfaces
 {
     public interface IArticleService
     {
-        void Add(Article article);
+        void CreateArticle(Article article);
         void Delete(int id);
         bool Edit(int id, Article updateArticle);
         Article GetDetails(int id);

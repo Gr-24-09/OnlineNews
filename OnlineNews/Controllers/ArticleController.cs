@@ -8,17 +8,16 @@ namespace OnlineNews.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
-        private readonly ApplicationDbContext _db;
+  
 
-        public ArticleController(IArticleService articleService, ApplicationDbContext db)
+        public ArticleController(IArticleService articleService)
         {
-            _db = db;
             _articleService = articleService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(_articleService.GetAllArticles());
         }
         
         [HttpGet]
@@ -32,7 +31,7 @@ namespace OnlineNews.Controllers
         {
             if (ModelState.IsValid)
             {
-                _articleService.Add(article);
+                _articleService.CreateArticle(article);
                 return RedirectToAction("ArticleSuccess");
             }
             return View(article);
@@ -42,18 +41,16 @@ namespace OnlineNews.Controllers
         {
             return View();
         }
+        public IActionResult RemovedArticle()
+        {
+            return View();
+        }
 
-      
-        [HttpPost]
+        
         public IActionResult DeleteArticle(int id)
         {
             _articleService.Delete(id);
             return RedirectToAction("GetAllArticles");
-        }
-
-        public IActionResult GetAllArticles()
-        {
-            return View(_articleService.GetAllArticles());
         }
 
         [HttpGet]
@@ -87,7 +84,7 @@ namespace OnlineNews.Controllers
             return View(article);
         }
 
-        [HttpGet]
+       
         public IActionResult Details(int id)
         {
             var articleDetails = _articleService.GetDetails(id);

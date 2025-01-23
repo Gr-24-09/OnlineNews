@@ -4,7 +4,7 @@ using OnlineNews.Models.Database;
 
 namespace OnlineNews.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<Subscription> Subscriptions  { get; set; }
@@ -14,7 +14,7 @@ namespace OnlineNews.Data
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
-
+            
 
         }
     }
