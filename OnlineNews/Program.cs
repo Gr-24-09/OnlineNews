@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
+using OnlineNews.Models.Database;
+using OnlineNews.Service;
 using OnlineNews.Interfaces;
+using OnlineNews.Service;
 using OnlineNews.Services;
+
 
 namespace OnlineNews
 {
@@ -17,11 +21,14 @@ namespace OnlineNews
             builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+            builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IArticleService, ArticleService>();
-         
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+
             var app = builder.Build();
             //builder.Services.AddRazorPages();
 

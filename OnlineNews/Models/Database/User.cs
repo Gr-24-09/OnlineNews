@@ -10,12 +10,12 @@ namespace OnlineNews.Models.Database
         [Required(ErrorMessage = "Name of Employee is required.")]
         [Display(Name = "Name of Employee")]
         [StringLength(50)]
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "LastName of Employee is required.")]
         [Display(Name = "LastName of Employee")]
         [StringLength(50)]
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "LastName of Employee is required.")]
         public DateTime DateofBirth { get; set; }
