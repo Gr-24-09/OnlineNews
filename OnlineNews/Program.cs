@@ -4,6 +4,7 @@ using OnlineNews.Data;
 using OnlineNews.Models.Database;
 using OnlineNews.Service;
 using OnlineNews.Interfaces;
+using OnlineNews.Service;
 using OnlineNews.Services;
 
 
@@ -25,7 +26,9 @@ namespace OnlineNews
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IArticleService, ArticleService>();
-         
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+
             var app = builder.Build();
             //builder.Services.AddRazorPages();
 

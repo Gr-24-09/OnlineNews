@@ -1,0 +1,26 @@
+﻿@model IEnumerable<OnlineNews.Models.Database.Category>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="col-md-10">
+    <br />
+
+    <div class="row">
+        <h2>Categories</h2>
+    </div>
+    @foreach (var category in Model)
+    {
+        <div class="row">
+       @*      <h3>@category.Id</h3> *@
+            <div class="col-2">
+                <em>@category.Name</em>
+            </div>
+        </div>
+    }
+</div>
+
+<div>
+    <a asp-controller="Home" asp-action="Index"> Home Page</a>
+</div>
