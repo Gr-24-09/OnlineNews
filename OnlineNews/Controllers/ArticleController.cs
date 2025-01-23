@@ -8,12 +8,11 @@ namespace OnlineNews.Controllers
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
-        private readonly ApplicationDbContext _db;
+  
 
-        public ArticleController(IArticleService articleService, ApplicationDbContext db)
+        public ArticleController(IArticleService articleService)
         {
             _articleService = articleService;
-            _db = db;
         }
 
         public IActionResult Index()

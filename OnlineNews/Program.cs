@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
 using OnlineNews.Interfaces;
+using OnlineNews.Service;
 using OnlineNews.Services;
 
 namespace OnlineNews
@@ -21,7 +22,9 @@ namespace OnlineNews
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IArticleService, ArticleService>();
-         
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+
             var app = builder.Build();
             //builder.Services.AddRazorPages();
 
