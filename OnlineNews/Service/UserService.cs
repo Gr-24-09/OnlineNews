@@ -1,6 +1,7 @@
 ﻿using OnlineNews.Data;
 using Microsoft.AspNetCore.Identity;
 using OnlineNews.Models.Database;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace OnlineNews.Service
 {
@@ -31,11 +32,11 @@ namespace OnlineNews.Service
         }
         public void AddRoleToEmployee(string userId)
         {
-
+            return;
         }
         public void CreateRole()
         {
-
+            return;
         }
 
         
