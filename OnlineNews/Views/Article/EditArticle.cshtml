@@ -4,9 +4,7 @@
     ViewData["Title"] = "EditArticle";
 }
 
-<h1>EditArticle</h1>
 
-<h4>Article</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -42,6 +40,11 @@
                 <label asp-for="ImageLink" class="control-label"></label>
                 <input asp-for="ImageLink" class="form-control" />
                 <span asp-validation-for="ImageLink" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ChosenCategory" class="control-label"></label>
+                <input asp-for="ChosenCategory" class="form-control" />
+                <span asp-validation-for="ChosenCategory" class="text-danger"></span>
             </div>
             
             <div class="form-group">
