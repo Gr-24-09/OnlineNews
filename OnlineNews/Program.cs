@@ -2,10 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
 using OnlineNews.Models.Database;
-using OnlineNews.Service;
 using OnlineNews.Interfaces;
-using OnlineNews.Service;
 using OnlineNews.Services;
+using OnlineNews.Service;
 
 
 namespace OnlineNews

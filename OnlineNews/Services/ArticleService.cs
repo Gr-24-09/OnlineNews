@@ -51,14 +51,12 @@ namespace OnlineNews.Services
                 return false;
             }
             article.Headline = updateArticle.Headline;
-            article.Writer = updateArticle.Writer;
-            article.Location = updateArticle.Location;
-            //article.Category = updateArticle.Category;
+            article.Author = updateArticle.Author;
+            article.Category = updateArticle.Category;
             article.PublishedDate = updateArticle.PublishedDate;
             article.ImageLink = updateArticle.ImageLink;
             article.Content = updateArticle.Content;
             article.ContentSummary = updateArticle.ContentSummary;
-           
             _db.SaveChanges();
             return true;
         }
