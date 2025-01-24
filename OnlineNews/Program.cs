@@ -76,14 +76,14 @@ namespace OnlineNews
 
             using (var scope = app.Services.CreateScope())
             {
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
                 string email = "admin@admin.com";
                 string password = "Admin_password_1";
 
                 if (await userManager.FindByEmailAsync(email) == null)
                 {
-                    var user = new IdentityUser();
+                    var user = new User();
                     user.UserName = email;
                     user.Email = email;
 
