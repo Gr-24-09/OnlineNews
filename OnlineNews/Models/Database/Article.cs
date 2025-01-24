@@ -31,7 +31,7 @@ namespace OnlineNews.Models.Database
 
         public Category Category { get; set; } = new Category();
 
-        [NotMapped]
+        
         public string ChosenCategory { get; set; } = string.Empty;
 
         [NotMapped]
