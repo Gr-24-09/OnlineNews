@@ -46,6 +46,7 @@ namespace OnlineNews.Service
             return  _db.Categories.FirstOrDefault(c => c.Id == id);
             
         }
+
         public bool Edit (int id,  Category Updatecategory)
         {
             var category = _db.Categories.FirstOrDefault(category => category.Id == id);

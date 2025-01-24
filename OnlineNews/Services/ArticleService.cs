@@ -11,7 +11,6 @@ namespace OnlineNews.Services
     {
         private readonly ApplicationDbContext _db;
 
-        private readonly IArticleService _articleService;
         public ArticleService(ApplicationDbContext db)
         {
             _db = db;

@@ -31,11 +31,11 @@ namespace OnlineNews.Service
         }
         public void AddRoleToEmployee(string userId)
         {
-
+            return;
         }
         public void CreateRole()
         {
-
+            return;
         }
 
         
