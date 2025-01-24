@@ -1,7 +1,6 @@
 ﻿using OnlineNews.Data;
 using Microsoft.AspNetCore.Identity;
 using OnlineNews.Models.Database;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace OnlineNews.Service
 {

@@ -11,10 +11,9 @@ namespace OnlineNews.Services
     {
         private readonly ApplicationDbContext _db;
 
-        public ArticleService(ApplicationDbContext context)
+        public ArticleService(ApplicationDbContext db)
         {
-            _db = context;
-
+            _db = db;
         }
 
         public void CreateArticle(Article article)
@@ -51,14 +50,12 @@ namespace OnlineNews.Services
                 return false;
             }
             article.Headline = updateArticle.Headline;
-            article.Writer = updateArticle.Writer;
-            article.Location = updateArticle.Location;
-            //article.Category = updateArticle.Category;
+            article.Author = updateArticle.Author;
+            article.Category = updateArticle.Category;
             article.PublishedDate = updateArticle.PublishedDate;
             article.ImageLink = updateArticle.ImageLink;
             article.Content = updateArticle.Content;
             article.ContentSummary = updateArticle.ContentSummary;
-           
             _db.SaveChanges();
             return true;
         }
