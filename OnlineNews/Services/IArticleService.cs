@@ -7,10 +7,10 @@ namespace OnlineNews.Interfaces
 {
     public interface IArticleService
     {
-        void CreateArticle(Article article);
+        void AddArticle(Article article, string authorId);
         void Delete(int id);
-        bool Edit(int id, Article updateArticle);
         Article GetDetails(int id);
         List<Article> GetAllArticles();
+        void EditArticle(Article article);
     }
 }

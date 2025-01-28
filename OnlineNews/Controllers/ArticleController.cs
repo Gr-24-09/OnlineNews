@@ -2,17 +2,25 @@
 using OnlineNews.Interfaces;
 using OnlineNews.Models.Database;
 using OnlineNews.Data;
+using AspNetCoreGeneratedDocument;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using OnlineNews.Service;
+using Microsoft.AspNetCore.Identity;
 
 namespace OnlineNews.Controllers
 {
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
-  
+        private readonly ICategoryService _categoryService;
+        private readonly UserManager<User> _userManager;
 
-        public ArticleController(IArticleService articleService)
+
+        public ArticleController(IArticleService articleService, ICategoryService categoryService, UserManager<User> userManager)
         {
             _articleService = articleService;
+            _categoryService = categoryService;
+            _userManager = userManager;
         }
 
         public IActionResult Index()
@@ -20,22 +28,38 @@ namespace OnlineNews.Controllers
             return View(_articleService.GetAllArticles());
         }
         
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
-        
-        [HttpPost]
-        public IActionResult Create(Article article)
-        {
-            if (ModelState.IsValid)
-            {
-                _articleService.CreateArticle(article);
-                return RedirectToAction("ArticleSuccess");
-            }
-            return View(article);
-        }
+        //[HttpGet]
+        //public ViewResult AddArticle()
+        //{
+        //    Article addArticle = new Article();
+        //    var categoryList = _articleService.GetAllCategory();
+        //    foreach (var item in categoryList)
+        //    {
+        //        addArticle.Categories.Add(
+        //            new SelectListItem { Value = item, Text = item }
+        //            );
+        //    }
+        //    return View(addArticle);
+        //}
+        //[HttpPost]
+        //public IActionResult AddArticle(Article newArticle)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        newArticle.Category.Name = newArticle.ChosenCategory;
+        //        var userId = _userManager.GetUserId(User)!;
+        //        _articleService.AddArticle(newArticle, userId);
+        //        return RedirectToAction("Index", "Home");
+        //    }
+        //    var categoryList = _articleService.GetCategories();
+        //    foreach (var item in categoryList)
+        //    {
+        //        newArticle.Categories.Add(
+        //            new SelectListItem { Value = item, Text = item }
+        //            );
+        //    }
+        //    return View(newArticle);
+        //}
 
         public IActionResult ArticleSuccess()
         {
@@ -53,38 +77,33 @@ namespace OnlineNews.Controllers
             return RedirectToAction("GetAllArticles");
         }
 
-        [HttpGet]
-        public IActionResult EditArticle(int id)
+        public IActionResult Edit(int id)
         {
-            var article = _articleService.GetDetails(id);
+            //var data = _db.Articles.FirstOrDefault(x => x.Id == id);
+            return View();
 
-            if (article == null)
-            {
-                return NotFound();
-            }
-
-            return View(article);
         }
-
         [HttpPost]
-        public IActionResult EditArticle(int id, Article article)
+        public IActionResult Edit(Article article)
         {
-            if (ModelState.IsValid)
-            {
-                var updateSuccessful = _articleService.Edit(id, article);
+            //var data = _db.Articles.FirstOrDefault(x => x.Id == article.Id);
+            //if (data != null)
+            //{
+            //    data.Author = article.Author;
+            //    data.PublishedDate = article.PublishedDate;
+            //    data.ChosenCategory = article.ChosenCategory;
+            //    data.Content = article.Content;
+            //    data.ContentSummary = article.ContentSummary;
+            //    data.ImageLink = article.ImageLink;
+            //    data.Headline = article.Headline;
+            //    _db.SaveChanges();
+            //}
 
-                if (!updateSuccessful)
-                {
-                    return NotFound();
-                }
-
-                return RedirectToAction("GetAllArticles");
-            }
-
-            return View(article);
+            _articleService.EditArticle(article);
+            return RedirectToAction("Index", "Home");
         }
 
-       
+
         public IActionResult Details(int id)
         {
             var articleDetails = _articleService.GetDetails(id);
