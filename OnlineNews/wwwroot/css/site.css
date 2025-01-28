@@ -27,7 +27,11 @@ body {
     margin-left: 30%;
 }
 .tbn {
-
-    background-color:gray;
+   
+    margin-top: 5%;
+    margin-bottom: 10%;
+    margin-right: 10%;
+    margin-left: 10%;
+    color:blue;
 }
 

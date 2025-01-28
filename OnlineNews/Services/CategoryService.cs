@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
-using OnlineNews.Migrations;
+//using OnlineNews.Migrations;
 using OnlineNews.Models.Database;
 
 using OnlineNews.Interfaces;

@@ -2,6 +2,7 @@
 using OnlineNews.Data;
 using OnlineNews.Interfaces;
 using OnlineNews.Models.Database;
+using OnlineNews.Service;
 
 
 namespace OnlineNews.Services
@@ -10,15 +11,26 @@ namespace OnlineNews.Services
     public class ArticleService : IArticleService
     {
         private readonly ApplicationDbContext _db;
+        //private readonly ICategoryService _categoryService;
 
-        public ArticleService(ApplicationDbContext db)
+        public ArticleService(ApplicationDbContext db /*,/*ICategoryService categoryService*//*/*/)
         {
             _db = db;
+            //_categoryService = categoryService;
         }
 
-        public void CreateArticle(Article article)
+        public void AddArticle(Article newarticle,string authorId)
         {
-            _db.Articles.Add(article);
+
+            newarticle.PublishedDate = DateTime.Now;
+            newarticle.Author = _db.Users.Find(authorId);
+            newarticle.Category = (Category)_db.Categories.Where(c => c.Name == newarticle.Category.Name);
+            _db.Articles.Add(newarticle);
+            _db.SaveChanges();
+        }
+        public void EditArticle(Article article)
+        {
+            _db.Articles.Update(article);
             _db.SaveChanges();
         }
         public void Delete(int id)
@@ -30,8 +42,6 @@ namespace OnlineNews.Services
         public List<Article> GetAllArticles()
         {
             var articles = _db.Articles.ToList();
-            //var qSyntax = from m in _db.Articles select m;
-            //var AllArticlesQuey = _db.Articles.FromSqlRaw("select  * from Articles").ToList();
             return articles;
         }
         public Article GetDetails(int id)
@@ -41,23 +51,6 @@ namespace OnlineNews.Services
             return article;
         }
 
-        public bool Edit(int id, Article updateArticle)
-        {
-            var article = _db.Articles.FirstOrDefault(c => c.Id == id);
-
-            if (article == null)
-            {
-                return false;
-            }
-            article.Headline = updateArticle.Headline;
-            article.Author = updateArticle.Author;
-            article.Category = updateArticle.Category;
-            article.PublishedDate = updateArticle.PublishedDate;
-            article.ImageLink = updateArticle.ImageLink;
-            article.Content = updateArticle.Content;
-            article.ContentSummary = updateArticle.ContentSummary;
-            _db.SaveChanges();
-            return true;
-        }
     }
+        
 }
