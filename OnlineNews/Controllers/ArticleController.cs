@@ -7,36 +7,49 @@ namespace OnlineNews.Controllers
 {
     public class ArticleController : Controller
     {
-        private readonly IArticleService _articleService;
-  
+       private readonly IArticleService _articleService;
+       private readonly ICategoryService _categoryService;
+       private readonly UserManager<User> _userManager;
 
-        public ArticleController(IArticleService articleService)
-        {
-            _articleService = articleService;
-        }
 
-        public IActionResult Index()
-        {
-            return View(_articleService.GetAllArticles());
-        }
-        
-        [HttpGet]
-        public IActionResult Create()
-        {
-            return View();
-        }
-        
-        [HttpPost]
-        public IActionResult Create(Article article)
-        {
-            if (ModelState.IsValid)
-            {
-                _articleService.CreateArticle(article);
-                return RedirectToAction("ArticleSuccess");
-            }
-            return View(article);
-        }
-
+     public ArticleController(IArticleService articleService, ICategoryService categoryService, UserManager<User> userManager)
+    {
+      _articleService = articleService;
+      _categoryService = categoryService;
+      _userManager = userManager;
+    }
+        //[HttpGet]
+//public ViewResult AddArticle()
+//{
+//    Article addArticle = new Article();
+//    var categoryList = _articleService.GetAllCategory();
+//    foreach (var item in categoryList)
+//    {
+//        addArticle.Categories.Add(
+//            new SelectListItem { Value = item, Text = item }
+//            );
+//    }
+//    return View(addArticle);
+//}
+//[HttpPost]
+//public IActionResult AddArticle(Article newArticle)
+//{
+//    if (ModelState.IsValid)
+//    {
+//        newArticle.Category.Name = newArticle.ChosenCategory;
+//        var userId = _userManager.GetUserId(User)!;
+//        _articleService.AddArticle(newArticle, userId);
+//        return RedirectToAction("Index", "Home");
+//    }
+//    var categoryList = _articleService.GetCategories();
+//    foreach (var item in categoryList)
+//    {
+//        newArticle.Categories.Add(
+//            new SelectListItem { Value = item, Text = item }
+//            );
+//    }
+//    return View(newArticle);
+//}
         public IActionResult ArticleSuccess()
         {
             return View();
