@@ -216,7 +216,7 @@ namespace OnlineNews.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Category", b =>
@@ -233,7 +233,7 @@ namespace OnlineNews.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Subscription", b =>
@@ -266,7 +266,7 @@ namespace OnlineNews.Migrations
 
                     b.HasIndex("SubscriptionTypeId");
 
-                    b.ToTable("Subscriptions");
+                    b.ToTable("Subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.SubscriptionType", b =>
@@ -290,7 +290,7 @@ namespace OnlineNews.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionTypes");
+                    b.ToTable("SubscriptionTypes", (string)null);
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.User", b =>

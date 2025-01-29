@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -18,21 +19,24 @@ namespace OnlineNews.Models.Database
         [Required(ErrorMessage = "Headline of Article is required.")]
         [Display(Name = "Headline of Article")]
         [StringLength(100)]
-        public required string Headline { get; set; }
+        public string Headline { get; set; }
 
         [Required(ErrorMessage = "ContentSummary of Article is required.")]
         [Display(Name = "ContentSummary of Article")]
-        public required string ContentSummary { get; set; }
+        public string ContentSummary { get; set; }
 
         [Required(ErrorMessage = "Content of Article is required.")]
         [Display(Name = "Content of Article")]
-        public required string Content { get; set; }
+        public string Content { get; set; }
         public bool IsArchieved { get; set; }
 
         public int Views { get; set; } = 0;
         public int Likes { get; set; } = 0;
         public string ImageLink { get; set; } = string.Empty;
-        public Category Category { get; set; } = new Category();
+
+
+        [ValidateNever]
+        public Category? Category { get; set; } = new Category();
 
         [NotMapped]
         public string ChosenCategory { get; set; } = string.Empty;
@@ -40,7 +44,7 @@ namespace OnlineNews.Models.Database
         [NotMapped]
         public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
 
-        public User Author { get; set; } = new User();
+        public User? Author { get; set; }
         public bool EditorsChoice { get; set; }
        
     }
