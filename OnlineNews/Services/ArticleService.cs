@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
 using OnlineNews.Interfaces;
 using OnlineNews.Models.Database;
 using OnlineNews.Service;
+using System.Linq;
 
 
 namespace OnlineNews.Services
@@ -11,20 +13,16 @@ namespace OnlineNews.Services
     public class ArticleService : IArticleService
     {
         private readonly ApplicationDbContext _db;
-        //private readonly ICategoryService _categoryService;
-
-        public ArticleService(ApplicationDbContext db /*,/*ICategoryService categoryService*//*/*/)
+        public ArticleService(ApplicationDbContext db)
         {
             _db = db;
-            //_categoryService = categoryService;
+            
         }
-
         public void AddArticle(Article newarticle,string authorId)
         {
-
             newarticle.PublishedDate = DateTime.Now;
             newarticle.Author = _db.Users.Find(authorId);
-            newarticle.Category = (Category)_db.Categories.Where(c => c.Name == newarticle.Category.Name);
+            newarticle.Category = _db.Categories.Where(c => c.Name == newarticle.Category.Name).First();
             _db.Articles.Add(newarticle);
             _db.SaveChanges();
         }
@@ -44,13 +42,64 @@ namespace OnlineNews.Services
             var articles = _db.Articles.ToList();
             return articles;
         }
+        public List<string> GetAllCategories()
+        {
+            List<string> categoryList = new List<string>();
+            categoryList = _db.Categories.Select(c=>c.Name).ToList();
+            return categoryList;
+        }
         public Article GetDetails(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
 
             return article;
         }
-
+        public List<Article> Mostpopular()
+        {
+            var articles = _db.Articles.OrderByDescending(x => x.Views).Take(5).ToList();
+            return articles;
+        }
+        public List<Article> EditorsChoiced()
+        {
+          var articles = _db.Articles.Where(x => x.EditorsChoice).ToList();
+          return articles;
+        }
+       public  List<Article> LatestNews() 
+       {
+            var articles = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(5).ToList();
+            return articles;
+       }
+        public List<Article> Sweden()
+        {
+            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Sweden").ToList();
+            return articles;
+        }
+        public List<Article> World()
+        {
+            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="World").ToList();
+            return articles;
+        }
+        public List<Article> Travel()
+        {
+            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Travel").ToList();
+            return articles;
+        }
+        public List<Article> Sport()
+        {
+            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Sport").ToList();
+            return articles;
+        }
+        public List<Article> Culture()
+        {
+            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Culture").ToList();
+            return articles;
+        }
+        public List<Article> Business()
+        {
+            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Business").ToList();
+            return articles;
+        }
+        
     }
         
 }

@@ -6,60 +6,61 @@ using AspNetCoreGeneratedDocument;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OnlineNews.Controllers
 {
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
-        private readonly ICategoryService _categoryService;
         private readonly UserManager<User> _userManager;
+        private readonly ApplicationDbContext _db;
 
-
-        public ArticleController(IArticleService articleService, ICategoryService categoryService, UserManager<User> userManager)
+        public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db)
         {
             _articleService = articleService;
-            _categoryService = categoryService;
             _userManager = userManager;
+            _db = db;
         }
 
         public IActionResult Index()
         {
             return View(_articleService.GetAllArticles());
         }
-        
-        //[HttpGet]
-        //public ViewResult AddArticle()
-        //{
-        //    Article addArticle = new Article();
-        //    var categoryList = _articleService.GetAllCategory();
-        //    foreach (var item in categoryList)
-        //    {
-        //        addArticle.Categories.Add(
-        //            new SelectListItem { Value = item, Text = item }
-        //            );
-        //    }
-        //    return View(addArticle);
-        //}
-        //[HttpPost]
-        //public IActionResult AddArticle(Article newArticle)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        newArticle.Category.Name = newArticle.ChosenCategory;
-        //        var userId = _userManager.GetUserId(User)!;
-        //        _articleService.AddArticle(newArticle, userId);
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //    var categoryList = _articleService.GetCategories();
-        //    foreach (var item in categoryList)
-        //    {
-        //        newArticle.Categories.Add(
-        //            new SelectListItem { Value = item, Text = item }
-        //            );
-        //    }
-        //    return View(newArticle);
-        //}
+
+        [Authorize]
+        [HttpGet]
+        public ViewResult AddArticle()
+        {
+            Article addArticle = new Article();
+            var categoryList = _articleService.GetAllCategories();
+            foreach (var item in categoryList)
+            {
+                addArticle.Categories.Add(
+                    new SelectListItem { Value = item, Text = item }
+                );
+            }
+            return View(addArticle);
+        }
+        [HttpPost]
+        public IActionResult AddArticle(Article newArticle)
+        {
+            if (ModelState.IsValid)
+            {
+                newArticle.Category.Name = newArticle.ChosenCategory;
+                var userId = _userManager.GetUserId(User)!;
+                _articleService.AddArticle(newArticle, userId);
+                return RedirectToAction("Index", "Home");
+            }
+            var categoryList = _articleService.GetAllCategories();
+            foreach (var item in categoryList)
+            {
+                newArticle.Categories.Add(
+                    new SelectListItem { Value = item, Text = item }
+                );
+            }
+            return View(newArticle);
+        }
         public IActionResult ArticleSuccess()
         {
             return View();
@@ -113,6 +114,20 @@ namespace OnlineNews.Controllers
             }
 
             return View(articleDetails);
+        }
+        public IActionResult SearchResult(string byParameter)
+        {
+            if (string.IsNullOrEmpty(byParameter))
+            {
+                return View(new List<Article>());
+            }
+            var articleList = _db.Articles.AsQueryable();
+
+            articleList = articleList.Where(x =>
+                x.Id.ToString().Contains(byParameter)
+            );
+            var articles = articleList.ToList();
+            return View(articles);
         }
     }
 }

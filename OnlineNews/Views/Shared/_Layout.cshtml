@@ -10,30 +10,66 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ASAM News</a>
+                <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link bg-warning" style="font-size:35px" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                ☰
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark flex-column" style="font-size:15px;" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Sweden">Sweden</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="World">World</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Travel">Travel</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Business">Business</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Culture">Culture</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="Sport">Sport</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <a class="navbar-brand justify-content-end" style="font-family:fantasy;font-size:60px;color: blue;" asp-area="" asp-controller="Home" asp-action="Index">ASAM</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Article" asp-action="Create">Add Article</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Category" asp-action="Create">Add Category </a>
-                        </li>
-                    </ul>
+                <div class="navbar-collapse collapse" style="float:right;">
                     <partial name="_LoginPartial" />
                 </div>
+            </div>
+        </nav>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-primary  navbar-Primary" style="color:white;">
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="Sweden">Sweden</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="World">World</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="Travel">Travel</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="Business">Business</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="Culture">Culture</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="Sport">Sport</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " asp-area="" asp-controller="Article" asp-action="AddArticle">Add Article</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Create">Add Category </a>
+                    </li>
+                </ul>
             </div>
         </nav>
     </header>
