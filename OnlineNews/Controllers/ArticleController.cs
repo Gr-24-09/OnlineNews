@@ -79,30 +79,15 @@ namespace OnlineNews.Controllers
 
         public IActionResult Edit(int id)
         {
-            //var data = _db.Articles.FirstOrDefault(x => x.Id == id);
             return View();
 
         }
         [HttpPost]
         public IActionResult Edit(Article article)
         {
-            //var data = _db.Articles.FirstOrDefault(x => x.Id == article.Id);
-            //if (data != null)
-            //{
-            //    data.Author = article.Author;
-            //    data.PublishedDate = article.PublishedDate;
-            //    data.ChosenCategory = article.ChosenCategory;
-            //    data.Content = article.Content;
-            //    data.ContentSummary = article.ContentSummary;
-            //    data.ImageLink = article.ImageLink;
-            //    data.Headline = article.Headline;
-            //    _db.SaveChanges();
-            //}
-
             _articleService.EditArticle(article);
             return RedirectToAction("Index", "Home");
         }
-
 
         public IActionResult Details(int id)
         {
