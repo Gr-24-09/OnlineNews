@@ -100,19 +100,51 @@ namespace OnlineNews.Controllers
 
             return View(articleDetails);
         }
-        public IActionResult SearchResult(string byParameter)
+        public IActionResult CategoryNews(int Id)
         {
-            if (string.IsNullOrEmpty(byParameter))
-            {
-                return View(new List<Article>());
-            }
-            var articleList = _db.Articles.AsQueryable();
-
-            articleList = articleList.Where(x =>
-                x.Id.ToString().Contains(byParameter)
-            );
-            var articles = articleList.ToList();
+            var articles = _articleService.GetAllArticlesByItsCategory(Id);
             return View(articles);
         }
+        //public IActionResult World()
+        //{
+        //    var articles1 = _articleService.GetAllArticlesByItsCategory(3);
+        //    return View(articles1);
+        //}
+        //public IActionResult Travel()
+        //{
+        //    var articles1 = _articleService.Travel();
+        //    return View(articles1); ;
+        //}
+        //public IActionResult Sport()
+        //{
+        //    var articles1 = _articleService.Sport();
+        //    return View(articles1);
+        //}
+        //public IActionResult Culture()
+        //{
+        //    var articles1 = _articleService.Culture();
+        //    return View(articles1);
+        //}
+        //public IActionResult Business()
+        //{
+        //    var articles1 = _articleService.Business();
+        //    return View(articles1);
+        //}
+
+
+        //public IActionResult SearchResult(string byParameter)
+        //{
+        //    if (string.IsNullOrEmpty(byParameter))
+        //    {
+        //        return View(new List<Article>());
+        //    }
+        //    var articleList = _db.Articles.AsQueryable();
+
+        //    articleList = articleList.Where(x =>
+        //        x.Id.ToString().Contains(byParameter)
+        //    );
+        //    var articles = articleList.ToList();
+        //    return View(articles);
+        //}
     }
 }

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OnlineNews.Interfaces;
 using OnlineNews.Models;
 using OnlineNews.Service;
 using OnlineNews.Services;
@@ -9,12 +10,14 @@ public class HomeController : Controller
     private readonly ILogger<HomeController> _logger;
     private readonly IUserService _userService;
     private readonly IRequestService _requestService;
+    private readonly IArticleService _articleService;
 
-    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService)
+    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService,IArticleService articleService)
     {
         _logger = logger;
         _userService = userService;
         _requestService = requestService;
+        _articleService = articleService;
     }
     public async Task<IActionResult> Weather()
     {
@@ -25,7 +28,8 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var result = await _userService.AddEmployee();
-        return View();
+        
+        return  View(_articleService.GetAllArticles());
     }
 
     public IActionResult Privacy()

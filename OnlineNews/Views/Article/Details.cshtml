@@ -5,32 +5,25 @@
     ViewData["Title"] = "Details";
 }
 
-<div class="col-md-10 bg-primary-subtle text-light">
-    <br />
-    <br />
-    <br />
-    <div class="row">
-        <h2>
+<div class="row">
+    
+    <div>
+        <h1 class="row justify-content-center">
             @Model.Headline
-        </h2>
-        <div class="col-2">
+        </h1>
+        <div>
             <em>@Model.PublishedDate</em>
         </div>
     </div>
     
-    <div>
-        <b>@Model.Author</b>
-        
-    </div>
-  
- 
- <div>
-        <div class="tbMargin"><img src="@Model.ImageLink" alt="News Poster" width="400" height="350" /></div>
-    </div>
-    <div class="offset-md-9">
-        <strong>Price: @Model.Content</strong>
-        <hr />
-    </div>
+   <div>
+       <div><img src="@Model.ImageLink"/></div>
+   </div>
+   <div class="offset-md-9">
+       <p>@Model.Content</p>
+       <hr />
+   </div>
+
 </div>
 
 
