@@ -5,33 +5,25 @@
     ViewData["Title"] = "Details";
 }
 
+
+
 <div class="row">
-    
-    <div>
-        <h1 class="row justify-content-center">
-            @Model.Headline
-        </h1>
-        <div>
-            <em>@Model.PublishedDate</em>
-        </div>
+    <div class="col-md-10">
+       
+            <h1 class="row">
+                @Model.Headline
+            </h1>
+            <div>
+                <div><img src="@Model.ImageLink" /></div>
+            </div>
+            <div class="offset-md-9">
+                <p>@Model.Content</p>
+                <hr />
+            </div>
     </div>
-    
-   <div>
-       <div><img src="@Model.ImageLink"/></div>
-   </div>
-   <div class="offset-md-9">
-       <p>@Model.Content</p>
-       <hr />
-   </div>
-
 </div>
 
 
 
-
-
-<div>
-    <a asp-controller="Home" asp-action="Index">Back to Home Page</a>
-</div>
 
 
