@@ -51,7 +51,6 @@ namespace OnlineNews.Services
         public Article GetDetails(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
-
             return article;
         }
         public List<Article> Mostpopular()
@@ -71,8 +70,7 @@ namespace OnlineNews.Services
        }
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 
         {
-            var articles = _db.Articles.Where(x => x.Category.Id == categoryId)
-                        .ToList();
+            var articles = _db.Articles.Where(x => x.Category.Id == categoryId).ToList();
             return articles;
         }
 

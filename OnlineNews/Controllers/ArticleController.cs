@@ -15,14 +15,12 @@ namespace OnlineNews.Controllers
         private readonly IArticleService _articleService;
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _db;
-
         public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db)
         {
             _articleService = articleService;
             _userManager = userManager;
             _db = db;
         }
-
         public IActionResult Index()
         {
             return View(_articleService.GetAllArticles());
@@ -69,8 +67,6 @@ namespace OnlineNews.Controllers
         {
             return View();
         }
-
-        
         public IActionResult DeleteArticle(int id)
         {
             _articleService.Delete(id);
@@ -92,12 +88,6 @@ namespace OnlineNews.Controllers
         public IActionResult Details(int id)
         {
             var articleDetails = _articleService.GetDetails(id);
-
-            if (articleDetails == null)
-            {
-                return NotFound();
-            }
-
             return View(articleDetails);
         }
         public IActionResult CategoryNews(int Id)
@@ -105,33 +95,7 @@ namespace OnlineNews.Controllers
             var articles = _articleService.GetAllArticlesByItsCategory(Id);
             return View(articles);
         }
-        //public IActionResult World()
-        //{
-        //    var articles1 = _articleService.GetAllArticlesByItsCategory(3);
-        //    return View(articles1);
-        //}
-        //public IActionResult Travel()
-        //{
-        //    var articles1 = _articleService.Travel();
-        //    return View(articles1); ;
-        //}
-        //public IActionResult Sport()
-        //{
-        //    var articles1 = _articleService.Sport();
-        //    return View(articles1);
-        //}
-        //public IActionResult Culture()
-        //{
-        //    var articles1 = _articleService.Culture();
-        //    return View(articles1);
-        //}
-        //public IActionResult Business()
-        //{
-        //    var articles1 = _articleService.Business();
-        //    return View(articles1);
-        //}
-
-
+        
         //public IActionResult SearchResult(string byParameter)
         //{
         //    if (string.IsNullOrEmpty(byParameter))
