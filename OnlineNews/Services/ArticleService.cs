@@ -59,7 +59,7 @@ namespace OnlineNews.Services
             var articles = _db.Articles.OrderByDescending(x => x.Views).Take(5).ToList();
             return articles;
         }
-        public List<Article> EditorsChoiced()
+        public List<Article> EditorsChoice()
         {
           var articles = _db.Articles.Where(x => x.EditorsChoice).ToList();
           return articles;
@@ -69,37 +69,16 @@ namespace OnlineNews.Services
             var articles = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(5).ToList();
             return articles;
        }
-        public List<Article> Sweden()
+        public List<Article> GetAllArticlesByItsCategory(int categoryId) 
         {
-            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Sweden").ToList();
+            var articles = _db.Articles.Where(x => x.Category.Id == categoryId)
+                        .ToList();
             return articles;
         }
-        public List<Article> World()
-        {
-            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="World").ToList();
-            return articles;
-        }
-        public List<Article> Travel()
-        {
-            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Travel").ToList();
-            return articles;
-        }
-        public List<Article> Sport()
-        {
-            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Sport").ToList();
-            return articles;
-        }
-        public List<Article> Culture()
-        {
-            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Culture").ToList();
-            return articles;
-        }
-        public List<Article> Business()
-        {
-            var articles = _db.Articles.OrderByDescending(x => x.ChosenCategory=="Business").ToList();
-            return articles;
-        }
-        
+
+
+
+
     }
         
 }

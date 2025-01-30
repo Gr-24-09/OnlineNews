@@ -1,10 +1,14 @@
 ﻿@model OnlineNews.Models.Database.Article
 
+
 <div class="card">
+
     <img src="@Model.ImageLink" class="card-img-top" />
+
     <div class="card-body">
+
         <h5 class="card-title">@Model.Headline</h5>
-        <p class="card-text">@Model.Headline</p>
-        <a class="btn btn-primary" asp-action="Detailes" asp-controller="Article">@Model.ContentSummary</a>
+        @* <p class="card-text">@Model.Headline</p> *@
+        <a class="btn btn-success" asp-action="Details" asp-controller="Article">@Model.ContentSummary</a>
     </div>
 </div>
