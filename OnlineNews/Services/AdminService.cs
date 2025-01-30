@@ -1,27 +1,48 @@
-﻿namespace OnlineNews.Service
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
+using OnlineNews.Models.Database;
+using System.Data;
+
+namespace OnlineNews.Service
 {
     public class AdminService: IAdminService
     {
-        
-        
-        public void Create()
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
+        public AdminService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
+            _roleManager = roleManager;
+            _userManager = userManager;
 
         }
 
-        public void Update() 
+        public async Task<string> AddRoleToEmployee(string userId)
         {
-        
+            var user = _userManager.FindByIdAsync(userId).Result;
+            var result =  _userManager.AddToRoleAsync(user, "Admin").Result;
+
+            if (result.Succeeded)
+            {
+                return "Success";
+            }
+            return "Failure";
         }
-
-        public void Delete()
+        public async Task<string> CreateRole()
         {
+            if (!await _roleManager.RoleExistsAsync("DeleteMe"))
+            {
+                var result = await _roleManager.CreateAsync(new IdentityRole("DeleteMe"));
 
-        }
+                if (result.Succeeded)
+                {
+                    return "Success";
+                }
 
-        public void ManageRoles()
-        {
 
+            }
+            return "Failure";
         }
     }
+    
 }

@@ -7,10 +7,12 @@ namespace OnlineNews.Service
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager ;
+        private readonly RoleManager<IdentityRole> _roleManager ;
 
-        public UserService(UserManager<User> userManager)
+        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         public async Task<string> AddEmployee()
         {
@@ -29,14 +31,7 @@ namespace OnlineNews.Service
             }
             return "Failure";
         }
-        public void AddRoleToEmployee(string userId)
-        {
-            return;
-        }
-        public void CreateRole()
-        {
-            return;
-        }
+
 
         
 
