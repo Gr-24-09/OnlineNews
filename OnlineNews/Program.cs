@@ -21,6 +21,8 @@ namespace OnlineNews
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
+            builder.Services.AddScoped<IAdminService, AdminService>();
+
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
