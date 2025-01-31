@@ -59,10 +59,6 @@ namespace OnlineNews.Controllers
             }
             return View(newArticle);
         }
-        public IActionResult ArticleSuccess()
-        {
-            return View();
-        }
         public IActionResult RemovedArticle()
         {
             return View();
