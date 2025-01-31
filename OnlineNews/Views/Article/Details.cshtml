@@ -5,25 +5,49 @@
     ViewData["Title"] = "Details";
 }
 
-
-
-<div class="row">
-    <div class="col-md-10">
-       
-            <h1 class="row">
-                @Model.Headline
-            </h1>
-            <div>
-                <div><img src="@Model.ImageLink" /></div>
-            </div>
-            <div class="offset-md-9">
-                <p>@Model.Content</p>
-                <hr />
-            </div>
+<br />
+<br />
+<div class="container-fluid">
+  <div class="row">
+    <div class="row">
+        <h1 class="row justify-content-center">
+            @Model.Headline
+        </h1>
+        
+    </div>
+    
+ </div>
+</div>
+<br />
+<br />
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <em>@Model.PublishedDate</em>
     </div>
 </div>
+<br />
+<div class="container-fluid">
+    <div class="rounded max-auto d-block img">
+        <div>
+            <img src="@Model.ImageLink" style="width:590px;height:300px"/>
+        </div>
+    </div>
+  
+</div>
+<br />
+<br />
+<br />
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <p>@Model.Content</p>
+    </div>
+</div>
+<a class="row">
+    @Model.LinkText
+</a>
 
-
-
+<hr />
 
 

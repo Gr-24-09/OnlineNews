@@ -7,8 +7,8 @@
 
     <div class="card-body">
 
-        <h5 class="card-title">@Model.Headline</h5>
+        <h4 class="card-title">@Model.Headline</h4>
         @* <p class="card-text">@Model.Headline</p> *@
-        <a class="btn btn-success" asp-action="Details" asp-controller="Article">@Model.ContentSummary</a>
+        <a class="btn btn-success" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><p>@Model.ContentSummary</p></a>
     </div>
 </div>

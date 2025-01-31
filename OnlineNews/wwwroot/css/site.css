@@ -27,7 +27,6 @@ body {
     margin-left: 30%;
 }
 .tbn {
-   
     margin-top: 5%;
     margin-bottom: 10%;
     margin-right: 10%;
@@ -40,7 +39,10 @@ body {
     margin-left: 10%;
     color: blue;
 }
-
+.img {
+    margin-right: 50%;
+    margin-left: 30%;
+}
 
 
 
