@@ -39,7 +39,6 @@ namespace OnlineNews.Service
                     return "Success";
                 }
 
-
             }
             return "Failure";
         }

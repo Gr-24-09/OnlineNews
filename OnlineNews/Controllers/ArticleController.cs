@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace OnlineNews.Controllers
 {
@@ -86,25 +87,27 @@ namespace OnlineNews.Controllers
             var articleDetails = _articleService.GetDetails(id);
             return View(articleDetails);
         }
-        public IActionResult CategoryNews(int Id)
+        public IActionResult CategoryNews(int id)
         {
-            var articles = _articleService.GetAllArticlesByItsCategory(Id);
+            var articles = _articleService.GetAllArticlesByItsCategory(id);
+            var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            ViewData["CategoryName"] = category.Name;
             return View(articles);
         }
-        
+
         //public IActionResult SearchResult(string byParameter)
         //{
         //    if (string.IsNullOrEmpty(byParameter))
         //    {
         //        return View(new List<Article>());
         //    }
-        //    var articleList = _db.Articles.AsQueryable();
 
-        //    articleList = articleList.Where(x =>
-        //        x.Id.ToString().Contains(byParameter)
-        //    );
-        //    var articles = articleList.ToList();
+
+        //    var articles = _articleService.SearchArticles(byParameter);
+
         //    return View(articles);
         //}
+        // check search bar,errors here
+
     }
 }
