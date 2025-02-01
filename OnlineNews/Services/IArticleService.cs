@@ -18,5 +18,6 @@ namespace OnlineNews.Interfaces
         public List<Article> EditorsChoice();
         public List<Article> LatestNews();
         public List<Article> GetAllArticlesByItsCategory(int categoryId);
+        //public List<Article> SearchArticles(string searchitem);
     }
 }

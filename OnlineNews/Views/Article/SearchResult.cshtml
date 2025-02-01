@@ -1,0 +1,32 @@
+﻿@model List<OnlineNews.Models.Database.Article>
+@{
+    ViewData["Title"] = "SearchResult";
+}
+
+<h2>Search Results</h2>
+
+@if (!Model.Any())
+{
+    <p>No articles found matching your Search.</p>
+}
+
+
+else
+
+{
+
+        <div class="row">
+            @foreach (var article in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">@article.Headline</h5>
+                            <a href="@Url.Action("Details", "Article", new { id = article.Id })" class="btn btn-primary">@article.ContentSummary</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+   
+}

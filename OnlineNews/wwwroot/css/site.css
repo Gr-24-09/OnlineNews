@@ -44,5 +44,17 @@ body {
     margin-left: 30%;
 }
 
+.navbar .dropdown-menu {
+    width: 120px;
+    height: 450px;
+}
+
+
+.navbar .dropdown-menu {
+    min-width: 100px; 
+    width: auto; 
+    height:270px;
+}
+
 
 

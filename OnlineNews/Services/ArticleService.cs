@@ -73,10 +73,26 @@ namespace OnlineNews.Services
             var articles = _db.Articles.Where(x => x.Category.Id == categoryId).ToList();
             return articles;
         }
+        //public List<Article> SearchArticles(string searchitem)
+        //{
+        //    if (string.IsNullOrWhiteSpace(searchitem))
+        //    {
+        //        return new List<Article>();
+        //    }
 
+        //    // Perform the search on the client side (after pulling data into memory)
+        //    var articles = _db.Articles
+        //        .ToList() 
+        //        .Where(a => a.Headline.Contains(searchitem, StringComparison.OrdinalIgnoreCase) ||
+        //                    a.Content.Contains(searchitem, StringComparison.OrdinalIgnoreCase) ||
+        //                    a.Category.Name.Contains(searchitem, StringComparison.OrdinalIgnoreCase))
+        //        .ToList();
+
+        //    return articles;
+        //}
 
 
 
     }
-        
+
 }
