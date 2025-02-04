@@ -72,13 +72,20 @@ namespace OnlineNews.Controllers
 
         public IActionResult Edit(int id)
         {
+            var data = _db.Articles.FirstOrDefault(x => x.Id == id);
             return View();
 
         }
         [HttpPost]
         public IActionResult Edit(Article article)
         {
-            _articleService.EditArticle(article);
+            var data = _db.Articles.FirstOrDefault(x => x.Id == article.Id);
+            if (data != null)
+            {
+                _articleService.EditArticle(article);
+
+            }
+            
             return RedirectToAction("Index", "Home");
         }
 
@@ -95,19 +102,27 @@ namespace OnlineNews.Controllers
             return View(articles);
         }
 
-        //public IActionResult SearchResult(string byParameter)
-        //{
-        //    if (string.IsNullOrEmpty(byParameter))
-        //    {
-        //        return View(new List<Article>());
-        //    }
+        public IActionResult SearchResult(string searchitem)
+        {
+            if (string.IsNullOrEmpty(searchitem))
+            {
+                return View(new List<Article>());
+            }
 
+            var articleList = _db.Articles.AsQueryable();
 
-        //    var articles = _articleService.SearchArticles(byParameter);
+            articleList = articleList.Where(x =>
+                x.Category.Name.Contains(searchitem) ||
+                x.LinkText.Contains(searchitem) ||
+                x.EditorsChoice.ToString().Contains(searchitem)||
+                x.Likes.ToString().Contains(searchitem)||
+                x.Views.ToString().Contains(searchitem)
+            );
+            var articles = articleList.ToList();
 
-        //    return View(articles);
-        //}
-        // check search bar,errors here
+            //ViewData["myDatahere"]=articleList.Where(x => x.Category.Name.
+            return View(articles);
+        }
 
     }
 }
