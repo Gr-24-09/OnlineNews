@@ -16,9 +16,9 @@
 </head>
 <body>
     <header>
-        <div class="row">
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow">
-                <div class="container-fluid">
+        <div class="row headpage">
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm secondLine ">
+                <div class="container-fluid dropdwnSearch">
                     <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
@@ -35,16 +35,14 @@
                                 </ul>
                             </li>
                         </ul>
-                        @* <div>
-                            <form method="get" action="@Url.Action("SearchResult", "Article")">
-                                <div class="form-group">
-                                    <label for="search"></label>
-                                    <input type="text" name="byParameter" id="search" class="form-control" placeholder="Search here...." />
-                                </div>
-                                <button type="submit" class="btn btn-primary">Search</button>
-                            </form>
-                        </div> *@
+                    
+                        <form asp-Controller="Article" asp-action="SearchResult">
+                            <label for="searchitem"></label>
+                            <input type="text" name="searchitem" id="searchitem" class="searchBar" placeholder="Search here by category......" />
+                            <button class="searchBtn" type="submit">Search</button>
+                        </form>
                     </div>
+
                     <a class="navbar-brand" style="font-family:fantasy;font-size:60px;color: blue;" asp-area="" asp-controller="Home" asp-action="Index">ASAM</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -57,7 +55,7 @@
             </nav>
         </div>
         <div class="row">
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-primary-subtle navbar-primary">
+            <nav class="navbar navbar-expand-sm  d-flex justify-content-center bg-primary-subtle navbar-primary">
                 <div class="container-fluid">
                     <ul class="navbar-nav">
                         @foreach (var item in categoryList)
@@ -72,9 +70,10 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Create">Add Category</a>
                         </li>
-                        @* <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Article" asp-action="DeleteArticle" asp-route-id="@item.Id">Delete Article</a>
-                    </li> *@
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Article" asp-action="Edit">Edit article</a>
+                        </li>
+                       
                     </ul>
                 </div>
             </nav>
@@ -86,8 +85,9 @@
         </main>
     </div>
 
-    @* <footer class="border-top footer text-muted">
-        <div class="container">
+    @* <footer class="container-fluid border-top footer footersize text-muted">
+        <div class="row">
+            
             &copy; 2025 - OnlineNews - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer> *@
