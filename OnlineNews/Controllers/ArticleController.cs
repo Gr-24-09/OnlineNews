@@ -69,23 +69,66 @@ namespace OnlineNews.Controllers
             _articleService.Delete(id);
             return RedirectToAction("GetAllArticles");
         }
-
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var data = _db.Articles.FirstOrDefault(x => x.Id == id);
-            return View();
+
+            if (data == null)
+            {
+                return NotFound(); // If article is not found, return a 404 response.
+            }
+
+            // Populate Categories if needed for the dropdown
+            data.Categories = _db.Categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
+            return View(data);
 
         }
         [HttpPost]
         public IActionResult Edit(Article article)
         {
-            var data = _db.Articles.FirstOrDefault(x => x.Id == article.Id);
-            if (data != null)
+            if (!ModelState.IsValid)
             {
-                _articleService.EditArticle(article);
-
+                // If the model is not valid, return to the same view to show validation errors.
+                article.Categories = _db.Categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList();
+                return View(article);
             }
-            
+
+            // Fetch the existing article from the database
+            var data = _db.Articles.FirstOrDefault(x => x.Id == article.Id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+
+            // Updating properties of the article
+            data.Headline = article.Headline;
+            data.ContentSummary = article.ContentSummary;
+            data.Content = article.Content;
+            data.ImageLink = article.ImageLink;
+            data.LinkText = article.LinkText;
+            data.EditorsChoice = article.EditorsChoice;
+
+            // Assuming Category is updated from ChosenCategory
+            if (!string.IsNullOrEmpty(article.ChosenCategory))
+            {
+                var categoryId = int.Parse(article.ChosenCategory);
+                data.Category = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
+            }
+
+            // Save changes to the database
+            _db.SaveChanges();
+
+            // Redirect after successful update
             return RedirectToAction("Index", "Home");
         }
 
