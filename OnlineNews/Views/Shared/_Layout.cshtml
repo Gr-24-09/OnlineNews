@@ -35,6 +35,7 @@
                                 </ul>
                             </li>
                         </ul>
+
                     
                         <form asp-Controller="Article" asp-action="SearchResult">
                             <label for="searchitem"></label>
@@ -46,6 +47,7 @@
                     <a class="navbar-brand" style="font-family:fantasy;font-size:60px;color: blue;" asp-area="" asp-controller="Home" asp-action="Index">ASAM</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
+
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="navbar-collapse collapse justify-content-xl-end">
@@ -55,7 +57,9 @@
             </nav>
         </div>
         <div class="row">
+
             <nav class="navbar navbar-expand-sm  d-flex justify-content-center bg-primary-subtle navbar-primary">
+
                 <div class="container-fluid">
                     <ul class="navbar-nav">
                         @foreach (var item in categoryList)
@@ -70,10 +74,29 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Create">Add Category</a>
                         </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+                        { //this dropdown menu is only meant for the admin to see
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Admin page
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" asp-controller="Admin" asp-action="ListUsers">Manage users</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    
+                                </ul>
+                            </li>
+                        }
+
+                    @* <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Article" asp-action="DeleteArticle" asp-route-id="@item.Id">Delete Article</a>
+                    </li> *@
+                </ul>
+            </div>
+        </nav>
+      </div>
+
     </header>
     <div class="container">
         <main role="main" class="pb-3">
