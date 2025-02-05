@@ -28,12 +28,6 @@ namespace OnlineNews.Services
             _db.SaveChanges();
         }
         
-        public void Delete(int id)
-        {
-            var Article = _db.Articles.FirstOrDefault(a => a.Id == id);
-            _db.Articles.Remove(Article);
-            _db.SaveChanges();
-        }
         public List<Article> GetAllArticles()
         {
             var articles = _db.Articles.ToList();
@@ -71,9 +65,6 @@ namespace OnlineNews.Services
             return articles;
         }
         
-
-        
-
     }
 
 }

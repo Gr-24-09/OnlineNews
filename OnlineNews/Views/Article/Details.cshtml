@@ -8,43 +8,47 @@
 <br />
 <br />
 <div class="container-fluid">
-  <div class="row">
     <div class="row">
-        <h1 class="row justify-content-center">
-            @Model.Headline
-        </h1>
-        
+        <div class="row">
+            <h1 class="row justify-content-center">
+                @Model.Headline
+            </h1>
+
+        </div>
+
     </div>
-    
- </div>
 </div>
 <br />
 <br />
 <br />
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <em>@Model.PublishedDate</em>
     </div>
 </div>
 <br />
-<div class="container-fluid">
+<div class="container">
     <div class="rounded max-auto d-block img">
         <div>
-            <img src="@Model.ImageLink" style="width:590px;height:300px"/>
+            <img src="@Model.ImageLink" style="width:700px;height:400px"/>
         </div>
     </div>
-  
 </div>
 <br />
 <br />
 <br />
-<br />
-<div class="container-fluid">
-    <div class="row">
-        <p>@Model.Content</p>
-    </div>
+
+<div class="row">
+    @Model.Content
 </div>
 
+@* <p><b>Likes</b>@Model.Likes</p>
+@using (Html.BeginForm("GetLikes"))
+{ 
+
+} *@
 <hr />
+
+
 
 

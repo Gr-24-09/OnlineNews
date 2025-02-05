@@ -2,7 +2,7 @@
 
 <h1>Edit Article</h1>
 
-<form asp-action="Edit" method="post">
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="LinkText"></label>
@@ -24,7 +24,7 @@
 
     <div class="form-group">
         <label asp-for="Content"></label>
-        <textarea asp-for="Content" class="form-control"></textarea>
+        <textarea  asp-for="Content"  class="form-control"></textarea>
         <span asp-validation-for="Content" class="text-danger"></span>
     </div>
 
@@ -38,6 +38,11 @@
         <label asp-for="EditorsChoice"></label>
         <input type="checkbox" asp-for="EditorsChoice" />
         <span asp-validation-for="EditorsChoice" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsArchieved"></label>
+        <input type="checkbox" asp-for="IsArchieved" />
+        <span asp-validation-for="IsArchieved" class="text-danger"></span>
     </div>
 
     <div class="form-group">
@@ -56,3 +61,4 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+

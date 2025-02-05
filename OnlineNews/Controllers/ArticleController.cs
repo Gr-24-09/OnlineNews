@@ -64,11 +64,16 @@ namespace OnlineNews.Controllers
         {
             return View();
         }
-        public IActionResult DeleteArticle(int id)
+
+        [Authorize]
+        public IActionResult Delete(int id)
         {
-            _articleService.Delete(id);
-            return RedirectToAction("GetAllArticles");
+            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+            _db.Articles.Remove(article);
+            _db.SaveChanges();
+            return RedirectToAction("RemovedArticle");
         }
+
         [Authorize]
         public IActionResult Edit(int id)
         {
@@ -76,10 +81,8 @@ namespace OnlineNews.Controllers
 
             if (data == null)
             {
-                return NotFound(); // If article is not found, return a 404 response.
+                return NotFound(); 
             }
-
-            // Populate Categories if needed for the dropdown
             data.Categories = _db.Categories.Select(c => new SelectListItem
             {
                 Value = c.Id.ToString(),
@@ -89,12 +92,12 @@ namespace OnlineNews.Controllers
             return View(data);
 
         }
+
         [HttpPost]
         public IActionResult Edit(Article article)
         {
             if (!ModelState.IsValid)
             {
-                // If the model is not valid, return to the same view to show validation errors.
                 article.Categories = _db.Categories.Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
@@ -102,33 +105,24 @@ namespace OnlineNews.Controllers
                 }).ToList();
                 return View(article);
             }
-
-            // Fetch the existing article from the database
             var data = _db.Articles.FirstOrDefault(x => x.Id == article.Id);
             if (data == null)
             {
                 return NotFound();
             }
-
-            // Updating properties of the article
             data.Headline = article.Headline;
             data.ContentSummary = article.ContentSummary;
             data.Content = article.Content;
             data.ImageLink = article.ImageLink;
             data.LinkText = article.LinkText;
             data.EditorsChoice = article.EditorsChoice;
-
-            // Assuming Category is updated from ChosenCategory
+            data.IsArchieved = article.IsArchieved;
             if (!string.IsNullOrEmpty(article.ChosenCategory))
             {
                 var categoryId = int.Parse(article.ChosenCategory);
                 data.Category = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
             }
-
-            // Save changes to the database
             _db.SaveChanges();
-
-            // Redirect after successful update
             return RedirectToAction("Index", "Home");
         }
 
@@ -162,10 +156,43 @@ namespace OnlineNews.Controllers
                 x.Views.ToString().Contains(searchitem)
             );
             var articles = articleList.ToList();
-
-            //ViewData["myDatahere"]=articleList.Where(x => x.Category.Name.
             return View(articles);
         }
+        //public IActionResult GetNumberOfLikesForAnArticle(int id)
+        //{
+        //    var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+        //    if(article == null) 
+        //    {
+
+        //        return NotFound();
+        //    }
+
+        //    var likesCount = article.Likes;
+
+        //    return View(likesCount);
+        //}
+        //public IActionResult GetLikes(int id)
+        //{
+        //    var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+
+        //    if (article == null)
+        //    {
+
+        //        return NotFound();
+        //    }
+
+        //    article.Likes++;
+        //    _db.SaveChanges();
+        //    return RedirectToAction("Details", new { id = id });
+        //}
+
+
+
+
+
+
+
+
 
     }
 }

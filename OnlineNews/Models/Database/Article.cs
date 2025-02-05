@@ -34,7 +34,6 @@ namespace OnlineNews.Models.Database
         public int Likes { get; set; } = 0;
         public string ImageLink { get; set; } = string.Empty;
 
-
         [ValidateNever]
         public Category? Category { get; set; } = new Category();
 

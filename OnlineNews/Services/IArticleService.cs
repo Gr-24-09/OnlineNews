@@ -9,7 +9,6 @@ namespace OnlineNews.Interfaces
     public interface IArticleService
     {
         public void AddArticle(Article article, string authorId);
-        public void Delete(int id);
         public Article GetDetails(int id);
         public List<Article> GetAllArticles();
         public List<string> GetAllCategories();
