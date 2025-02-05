@@ -11,12 +11,13 @@
         <div class="row">
             @foreach (var item in Model)
             { 
-             <div class="col-3 m-3">
-                <partial name="_ArticlePartial" model="item"/>
-             </div>
-
+               <div class="col-3 m-3">
+                    <partial name="_ArticlePartial" model="item"/>
+                    <a class="bg-light" asp-action="Edit" asp-controller="Article" asp-route-id="@item.Id">Edit Article</a>
+               </div>
             }
         </div>
     </div>
 </div>
 
+<br/>

@@ -13,10 +13,10 @@ namespace OnlineNews.Interfaces
         public Article GetDetails(int id);
         public List<Article> GetAllArticles();
         public List<string> GetAllCategories();
-        public void EditArticle(Article article);
         public List<Article> Mostpopular();
         public List<Article> EditorsChoice();
         public List<Article> LatestNews();
         public List<Article> GetAllArticlesByItsCategory(int categoryId);
+        
     }
 }

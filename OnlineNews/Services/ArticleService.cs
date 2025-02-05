@@ -5,6 +5,7 @@ using OnlineNews.Interfaces;
 using OnlineNews.Models.Database;
 using OnlineNews.Service;
 using System.Linq;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace OnlineNews.Services
@@ -26,11 +27,7 @@ namespace OnlineNews.Services
             _db.Articles.Add(newarticle);
             _db.SaveChanges();
         }
-        public void EditArticle(Article article)
-        {
-            _db.Articles.Update(article);
-            _db.SaveChanges();
-        }
+        
         public void Delete(int id)
         {
             var Article = _db.Articles.FirstOrDefault(a => a.Id == id);
@@ -73,10 +70,10 @@ namespace OnlineNews.Services
             var articles = _db.Articles.Where(x => x.Category.Id == categoryId).ToList();
             return articles;
         }
+        
 
-
-
+        
 
     }
-        
+
 }

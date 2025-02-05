@@ -9,5 +9,6 @@ namespace OnlineNews.Service
         void DeleteCategory(int id);
         Category GetCategory(int id);
         bool Edit(int id, Category updatedCategory);
+        
     }
 }

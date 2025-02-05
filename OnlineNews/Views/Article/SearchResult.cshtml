@@ -1,0 +1,24 @@
+﻿@model IEnumerable<OnlineNews.Models.Database.Article>
+
+@{
+    ViewData["Title"] = "SearchResult";
+}
+
+<h1>Searching Results:</h1>
+
+
+<div class="row justify-content-center">
+
+
+   <div class="col-md-10">
+
+      <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-3 m-3">
+                <partial name="_ArticlePartial" model="item" />
+            </div>
+        }
+     </div>
+   </div>
+</div>

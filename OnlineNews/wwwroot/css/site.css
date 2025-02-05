@@ -45,4 +45,41 @@ body {
 }
 
 
+.navbar .dropdown-menu {
+    min-width: 100px; 
+    width: auto; 
+    height:270px;
+}
 
+.dropdwnSearch {
+    position: relative;
+    display: flex;
+    -webkit-box-pack: start;
+    justify-content: start;
+}
+
+.headpage {
+   top:0px;
+   left:0px;
+   right:0px;
+   height:100px;
+   border-bottom:thin;
+   z-index:4000;
+}
+.secondLine {
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 12px 16px;
+    text-align : center; 
+}
+/*.footersize {
+    max-width: 1280px;
+    width: 100%;
+    margin: 16px auto 48px;
+    padding: 0px 16px;
+    box-sizing: border-box;
+    border-top:thick;
+    justify-content:end;
+}*/
