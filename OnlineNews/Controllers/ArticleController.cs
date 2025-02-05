@@ -126,9 +126,13 @@ namespace OnlineNews.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize]
         public IActionResult Details(int id)
         {
             var articleDetails = _articleService.GetDetails(id);
+            articleDetails.Views++;
+            _db.SaveChanges();
+
             return View(articleDetails);
         }
         public IActionResult CategoryNews(int id)
@@ -158,33 +162,35 @@ namespace OnlineNews.Controllers
             var articles = articleList.ToList();
             return View(articles);
         }
-        //public IActionResult GetNumberOfLikesForAnArticle(int id)
-        //{
-        //    var article = _db.Articles.FirstOrDefault(a => a.Id == id);
-        //    if(article == null) 
-        //    {
+        public IActionResult GetNumberOfLikesForAnArticle(int id)
+        {
+            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+            if (article == null)
+            {
 
-        //        return NotFound();
-        //    }
+                return NotFound();
+            }
 
-        //    var likesCount = article.Likes;
+            var likesCount = article.Likes;
 
-        //    return View(likesCount);
-        //}
-        //public IActionResult GetLikes(int id)
-        //{
-        //    var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+            return View(likesCount);
+        }
 
-        //    if (article == null)
-        //    {
+        [Authorize]
+        public IActionResult LikeAnArticle(int id)
+        {
+            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
 
-        //        return NotFound();
-        //    }
+            if (article == null)
+            {
 
-        //    article.Likes++;
-        //    _db.SaveChanges();
-        //    return RedirectToAction("Details", new { id = id });
-        //}
+                return NotFound();
+            }
+
+            article.Likes++;
+            _db.SaveChanges();
+            return RedirectToAction("Details", new { id = id });
+        }
 
 
 
