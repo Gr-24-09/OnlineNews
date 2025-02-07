@@ -17,7 +17,6 @@ namespace OnlineNews.Services
         public ArticleService(ApplicationDbContext db)
         {
             _db = db;
-            
         }
         public void AddArticle(Article newarticle,string authorId)
         {
@@ -46,18 +45,18 @@ namespace OnlineNews.Services
         }
         public List<Article> Mostpopular()
         {
-            var articles = _db.Articles.OrderByDescending(x => x.Views).Take(5).ToList();
-            return articles;
+            var articles3 = _db.Articles.OrderByDescending(x => x.Views).Take(10).ToList();
+            return articles3;
         }
         public List<Article> EditorsChoice()
         {
-          var articles = _db.Articles.Where(x => x.EditorsChoice).ToList();
-          return articles;
+          var articles1 = _db.Articles.Where(x => x.EditorsChoice).ToList();
+          return articles1;
         }
        public  List<Article> LatestNews() 
        {
-            var articles = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(5).ToList();
-            return articles;
+            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(10).ToList();
+            return articles2;
        }
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 
         {
