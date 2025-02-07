@@ -8,6 +8,7 @@ using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using OnlineNews.Models;
 
 namespace OnlineNews.Controllers
 {
@@ -165,14 +166,7 @@ namespace OnlineNews.Controllers
         public IActionResult GetNumberOfLikesForAnArticle(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
-            if (article == null)
-            {
-
-                return NotFound();
-            }
-
             var likesCount = article.Likes;
-
             return View(likesCount);
         }
 
@@ -180,21 +174,23 @@ namespace OnlineNews.Controllers
         public IActionResult LikeAnArticle(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
-
-            if (article == null)
-            {
-
-                return NotFound();
-            }
-
             article.Likes++;
             _db.SaveChanges();
             return RedirectToAction("Details", new { id = id });
         }
 
+        [Authorize]
+        public IActionResult DisLikeAnArticle(int id)
+        {
+            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+            article.Likes--;
+            _db.SaveChanges();
+            return RedirectToAction("Details", new { id = id });
+        }
 
-
-
+        
+            
+       
 
 
 

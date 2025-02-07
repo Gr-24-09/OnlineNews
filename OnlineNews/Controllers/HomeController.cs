@@ -28,8 +28,11 @@ public class HomeController : Controller
     public async Task<IActionResult> Index()
     {
         var result = await _userService.AddEmployee();
-        
-        return  View(_articleService.GetAllArticles());
+        FrontPageViewModel obj = new FrontPageViewModel();
+        obj.EditorsChoice = _articleService.EditorsChoice();
+        obj.Mostpopular = _articleService.Mostpopular();
+        obj.LatestNews = _articleService.LatestNews();
+        return View(obj);
     }
 
     public IActionResult Privacy()

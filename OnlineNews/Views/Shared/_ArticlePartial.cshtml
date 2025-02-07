@@ -3,10 +3,10 @@
 
 <div class="card">
 
-    <img src="@Model.ImageLink" class="card-img-top" />
+    <img src="@Model.ImageLink" class="card-img-top" style="width:500px;height:300px" />
 
     <div class="card-body">
-        <h4 class="card-title">@Model.Headline</h4>
-        <a class="bg-primary" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><p>@Model.ContentSummary</p></a>
+        <h2 class="card-title">@Model.Headline</h2>
+        <a class="bg-primary" style="text-decoration-line: none" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><p>@Model.ContentSummary</p></a>
     </div>
 </div>
