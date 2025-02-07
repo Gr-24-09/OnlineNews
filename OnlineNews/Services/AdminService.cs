@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 using OnlineNews.Models.Database;
 using System.Data;
@@ -17,10 +18,10 @@ namespace OnlineNews.Service
 
         }
 
-        public async Task<string> AddRoleToEmployee(string userId)
+        public async Task<string> AddAdminRoleToEmployee(string userId)
         {
             var user = _userManager.FindByIdAsync(userId).Result;
-            var result =  _userManager.AddToRoleAsync(user, "Admin").Result;
+            var result = _userManager.AddToRoleAsync(user, "Admin").Result;
 
             if (result.Succeeded)
             {
@@ -28,6 +29,19 @@ namespace OnlineNews.Service
             }
             return "Failure";
         }
+
+        public async Task<string> RemoveAdminRoleFromEmployee(string userId)
+        {
+            var user = _userManager.FindByIdAsync(userId).Result;
+            var result = _userManager.RemoveFromRoleAsync(user, "Admin").Result;
+
+            if (result.Succeeded)
+            {
+                return "Success";
+            }
+            return "Failure";
+        }
+
         public async Task<string> CreateRole()
         {
             if (!await _roleManager.RoleExistsAsync("DeleteMe"))
@@ -41,6 +55,20 @@ namespace OnlineNews.Service
 
             }
             return "Failure";
+        }
+
+
+        public async Task<string> FindRole(User user)
+        {
+            string role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+
+            return role;
+        }
+
+        public async Task<string> FindUser(User user)
+        {
+            var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+            return role;
         }
     }
     
