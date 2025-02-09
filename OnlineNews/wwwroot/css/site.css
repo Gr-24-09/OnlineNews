@@ -82,3 +82,26 @@ button:disabled {
 .Likebtn{
     display:inline;
 }
+.card:hover{
+    text-decoration:underline;
+}
+.icons-container {
+    display: flex;
+    justify-content: flex-start; /* Align the icons to the start of the container */
+    gap: 6px; /* Optional: Add space between the icons */
+    flex-wrap: nowrap; /* Prevent wrapping */
+}
+
+.icons {
+    padding: 5px 10px;
+    font-size: 20px; /* Adjust size as needed */
+    white-space: nowrap; /* Prevent text inside buttons from wrapping */
+}
+button {
+    border: none;
+    outline: none;
+    background: none;
+    padding: 5px 5px;
+    font-size: 20px;
+    font-weight:900;
+}
