@@ -1,9 +1,9 @@
 ﻿@model OnlineNews.Models.Database.Article
 
 
-<div class="card">
+<div class="card border-white mb-1">
     <div class="card-body">
         <h5 class="card-title">@Model.Headline</h5>
-        <a class="bg-primary" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id" sstyle="text-decoration-line: none"><p>@Model.ContentSummary</p></a>
+        <a  asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id" style="color:black;text-decoration-line: none"><p>@Model.ContentSummary</p></a>
     </div>
 </div>
