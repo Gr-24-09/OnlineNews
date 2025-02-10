@@ -5,6 +5,8 @@ using OnlineNews.Models.Database;
 using OnlineNews.Interfaces;
 using OnlineNews.Services;
 using OnlineNews.Service;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using OnlineNews.Models.Helper;
 
 namespace OnlineNews
 {
@@ -18,11 +20,11 @@ namespace OnlineNews
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
 
             builder.Services.AddScoped<IAdminService, AdminService>();
-
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
