@@ -4,6 +4,7 @@ using OnlineNews.Models;
 using OnlineNews.Service;
 using OnlineNews.Services;
 using System.Diagnostics;
+using System.Security.Claims;
 
 public class HomeController : Controller
 {
@@ -44,5 +45,18 @@ public class HomeController : Controller
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    public IActionResult Claims()
+    {
+        var user = HttpContext.User;
+        var claims = user.Claims;
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        if (user.IsInRole("Admin"))
+        {
+            return NotFound("Deactivated");
+        }
+        return RedirectToAction("ListUsers");
     }
 }

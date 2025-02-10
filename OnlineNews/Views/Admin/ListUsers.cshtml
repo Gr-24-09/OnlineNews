@@ -1,6 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using OnlineNews.Models.Database
+@using OnlineNews.Service
+@inject IAdminService _adminService
+
 @model IEnumerable<User>
+
+
 
 
 
@@ -20,12 +25,19 @@
             <th>
                 Last Name
             </th>
+            <th>
+                Role
+            </th>
+            <th>
+                ChangeRole
+            </th>
+
         </tr>
     </thead>
     <tbody>
         @foreach(var item in Model)
         {
-            
+
             <tr>
 
                 <td>
@@ -40,7 +52,15 @@
                 <td>
                     @item.LastName
                 </td>
-
+                <td>
+                    @{
+                        string role = await _adminService.FindRole(item);
+                    }
+                    <span>@role</span>
+                </td>
+                <td>
+                        <a asp-controller="Admin" asp-action="AddRoleToUser" asp-route-userId="@item.Id"> Add</a>
+                </td>
             </tr>
 
         }
