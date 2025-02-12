@@ -22,7 +22,8 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Weather()
     {
-        var weatherForecast = await _requestService.GetForecast("Sweden");
+
+        var weatherForecast = await _requestService.GetForecast("Linköping");
         return View(weatherForecast); 
     }
 
