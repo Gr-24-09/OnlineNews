@@ -33,8 +33,13 @@
                                         </li>
                                     }
                                 </ul>
+                            
+
                             </li>
-                        </ul>
+
+                        </ul>  
+                      
+                          
                         <form asp-Controller="Article" asp-action="SearchResult">
                             <label for="searchitem"></label>
                             <input type="text" name="searchitem" id="searchitem" class="searchBar" placeholder="Search here by category......" />
@@ -48,6 +53,8 @@
 
                         <span class="navbar-toggler-icon"></span>
                     </button>
+
+                  
                     <div class="navbar-collapse collapse justify-content-xl-end">
                         <partial name="_LoginPartial" />
                     </div>
@@ -75,9 +82,11 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Create">Add Category</a>
                         </li>
+                        <div class="navbar-text ms-auto">
+                            @await Component.InvokeAsync("Weather", new { city = "Linköping" })
 
                         @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
-                        { //this dropdown menu is only meant for the admin to see
+                        { 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Admin page

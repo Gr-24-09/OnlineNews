@@ -87,15 +87,15 @@ button:disabled {
 }
 .icons-container {
     display: flex;
-    justify-content: flex-start; /* Align the icons to the start of the container */
-    gap: 6px; /* Optional: Add space between the icons */
-    flex-wrap: nowrap; /* Prevent wrapping */
+    justify-content: flex-start;
+    gap: 6px; 
+    flex-wrap: nowrap; 
 }
 
 .icons {
     padding: 5px 10px;
-    font-size: 20px; /* Adjust size as needed */
-    white-space: nowrap; /* Prevent text inside buttons from wrapping */
+    font-size: 20px; 
+    white-space: nowrap; 
 }
 button {
     border: none;
@@ -104,4 +104,54 @@ button {
     padding: 5px 5px;
     font-size: 20px;
     font-weight:900;
+}
+.weather-widget {
+    display: flex;
+    align-items: center; 
+    font-size: 14px; 
+    color: #333; 
+    background-color: #e9ecef; 
+    padding: 6px 12px; 
+    border-radius: 30px; 
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+    margin-left: 15px; 
+    max-width: 180px; 
+    transition: all 0.3s ease-in-out; 
+}
+
+    .weather-widget:hover {
+        background-color: #f1f1f1; 
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); 
+        cursor: pointer;
+    }
+
+    .weather-widget img {
+        width: 28px; 
+        height: 28px;
+        margin-right: 10px;
+    }
+
+    .weather-widget h5 {
+        font-size: 14px;
+        margin: 0; 
+        font-weight: bold; 
+    }
+
+    .weather-widget p {
+        font-size: 12px; 
+        margin: 0; 
+        color: #007bff; 
+    }
+
+@media (max-width: 767px) {
+    .weather-widget {
+        font-size: 12px; 
+        padding: 5px 10px; 
+        max-width: 150px; 
+    }
+
+        .weather-widget img {
+            width: 22px;
+            height: 22px;
+        }
 }
