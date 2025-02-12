@@ -18,25 +18,19 @@
 </div>
 <br />
 <br />
-<br />
-<br />
 <div class="container">
-    <div class="rounded max-auto d-block img">
+    <div class="row justify-content-center">
         <div class="row">
             <em>@Model.PublishedDate</em>
         </div>
         <br />
-        <br />
-        <br />
-        <div>
-            <img src="@Model.ImageLink" style="width:720px;height:400px"/>
+        <div class="row img">
+            <img src="@Model.ImageLink" alt="picture of Article" style="width:720px;height:400px" />
         </div>
     </div>
 </div>
 <br />
 <br />
-<br />
-
 <div class="row">
     <p>
         @Html.Raw(@Model.Content);

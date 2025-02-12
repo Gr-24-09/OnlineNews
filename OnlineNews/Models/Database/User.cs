@@ -6,7 +6,6 @@ namespace OnlineNews.Models.Database
     public class User:IdentityUser
     {
         //public int Id { get; set; }
-
         [Required(ErrorMessage = "Name of Employee is required.")]
         [Display(Name = "Name of Employee")]
         [StringLength(50)]

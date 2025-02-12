@@ -29,7 +29,6 @@ namespace OnlineNews.Models.Database
         [Display(Name = "Content of Article")]
         public string Content { get; set; }
         public bool IsArchieved { get; set; }
-
         public int Views { get; set; } = 0;
         public int Likes { get; set; } = 0;
         public string ImageLink { get; set; } = string.Empty;
@@ -42,9 +41,7 @@ namespace OnlineNews.Models.Database
 
         [NotMapped]
         public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
-
         public User? Author { get; set; }
         public bool EditorsChoice { get; set; }
-       
     }
 }
