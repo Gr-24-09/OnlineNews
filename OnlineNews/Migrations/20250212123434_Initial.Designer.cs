@@ -12,8 +12,8 @@ using OnlineNews.Data;
 namespace OnlineNews.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250128092544_NewMigration_file_has_all_information")]
-    partial class NewMigration_file_has_all_information
+    [Migration("20250212123434_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -171,10 +171,9 @@ namespace OnlineNews.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -257,7 +256,6 @@ namespace OnlineNews.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SubscriberId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SubscriptionTypeId")
@@ -429,15 +427,11 @@ namespace OnlineNews.Migrations
                 {
                     b.HasOne("OnlineNews.Models.Database.User", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("OnlineNews.Models.Database.Category", "Category")
                         .WithMany("Articles")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Author");
 
@@ -448,9 +442,7 @@ namespace OnlineNews.Migrations
                 {
                     b.HasOne("OnlineNews.Models.Database.User", "Subscriber")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("SubscriberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubscriberId");
 
                     b.HasOne("OnlineNews.Models.Database.SubscriptionType", "SubscriptionType")
                         .WithMany("Subscriptions")

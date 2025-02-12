@@ -50,8 +50,8 @@ namespace OnlineNews.Services
         }
         public List<Article> EditorsChoice()
         {
-          var articles1 = _db.Articles.Where(x => x.EditorsChoice).ToList();
-          return articles1;
+          var articles1 = _db.Articles.Where(x => x.EditorsChoice).Take(10).ToList();
+            return articles1;
         }
        public  List<Article> LatestNews() 
        {

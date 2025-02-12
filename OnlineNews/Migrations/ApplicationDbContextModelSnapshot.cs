@@ -168,10 +168,9 @@ namespace OnlineNews.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
@@ -216,7 +215,7 @@ namespace OnlineNews.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Category", b =>
@@ -233,7 +232,7 @@ namespace OnlineNews.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Subscription", b =>
@@ -254,7 +253,6 @@ namespace OnlineNews.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("SubscriberId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("SubscriptionTypeId")
@@ -266,7 +264,7 @@ namespace OnlineNews.Migrations
 
                     b.HasIndex("SubscriptionTypeId");
 
-                    b.ToTable("Subscriptions", (string)null);
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.SubscriptionType", b =>
@@ -290,7 +288,7 @@ namespace OnlineNews.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionTypes", (string)null);
+                    b.ToTable("SubscriptionTypes");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.User", b =>
@@ -426,15 +424,11 @@ namespace OnlineNews.Migrations
                 {
                     b.HasOne("OnlineNews.Models.Database.User", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.HasOne("OnlineNews.Models.Database.Category", "Category")
                         .WithMany("Articles")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoryId");
 
                     b.Navigation("Author");
 
@@ -445,9 +439,7 @@ namespace OnlineNews.Migrations
                 {
                     b.HasOne("OnlineNews.Models.Database.User", "Subscriber")
                         .WithMany("Subscriptions")
-                        .HasForeignKey("SubscriberId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("SubscriberId");
 
                     b.HasOne("OnlineNews.Models.Database.SubscriptionType", "SubscriptionType")
                         .WithMany("Subscriptions")
