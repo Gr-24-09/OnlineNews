@@ -1,0 +1,123 @@
+﻿@model UserPageViewModel
+
+<h2>Your Subscription</h2>
+
+@if (Model?.Subscription != null)
+{
+    <div>
+        <h3>Subscription Status: @Model.Subscription.SubscriptionType?.TypeName</h3>
+        <p>Price: $@Model.Subscription.SubscriptionType?.Price</p>
+        <p>Created At: @Model.Subscription.CreatedAt.ToString("d")</p>
+
+        @if (Model.Subscription.PaymentComplete)
+        {
+            <p>Payment Status: Paid</p>
+        }
+        else
+        {
+            <p>Payment Status: Not Paid</p>
+        }
+    </div>
+}
+else
+{
+    <div>
+        <p>No subscription data available.</p>
+    </div>
+}
+
+<h3>Change Subscription</h3>
+<form asp-action="ChangeSubscription" method="post">
+    <div class="form-group">
+        <label for="SubscriptionType">Select Subscription Type</label>
+        <select id="SubscriptionType" name="subscriptionType" class="form-control" asp-for="Subscription.SubscriptionType.TypeName">
+            <option value="Basic">Basic</option>
+            <option value="Premium">Premium</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Change Subscription</button>
+</form>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+<style>
+
+
+h2, h3 {
+    color: #2d3e50;
+    text-align: center;
+}
+
+.subscription-status {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.subscription-status h3 {
+    font-size: 24px;
+    color: #4a90e2;
+}
+
+.subscription-status p {
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.payment-status {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+
+.payment-status.not-paid {
+    color: #f44336;
+}
+
+.no-subscription {
+    text-align: center;
+    font-size: 18px;
+    color: #777;
+}
+
+h3 {
+    margin-top: 30px;
+    color: #2d3e50;
+    font-size: 22px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 18px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+</style>

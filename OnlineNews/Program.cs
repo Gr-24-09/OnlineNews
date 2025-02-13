@@ -7,6 +7,7 @@ using OnlineNews.Services;
 using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using OnlineNews.Models.Helper;
+using FluentAssertions.Common;
 
 namespace OnlineNews
 {
@@ -30,10 +31,20 @@ namespace OnlineNews
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IRequestService, RequestService>();
             builder.Services.AddHttpClient<RequestService>();
+            builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+
 
             builder.Services.AddControllersWithViews();
-
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var context = services.GetRequiredService<ApplicationDbContext>();
+
+                SeedData.Initialize(services, context);
+            }
+          
 
             if (app.Environment.IsDevelopment())
             {

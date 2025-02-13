@@ -16,5 +16,6 @@ namespace OnlineNews.Models.Database
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
         public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+
     }
 }
