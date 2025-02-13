@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineNews.Migrations
 {
     /// <inheritdoc />
-    public partial class NewMigration_file_has_all_information : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -202,8 +202,8 @@ namespace OnlineNews.Migrations
                     Views = table.Column<int>(type: "int", nullable: false),
                     Likes = table.Column<int>(type: "int", nullable: false),
                     ImageLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
-                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     EditorsChoice = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -213,14 +213,12 @@ namespace OnlineNews.Migrations
                         name: "FK_Articles_AspNetUsers_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Articles_Categories_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -232,7 +230,7 @@ namespace OnlineNews.Migrations
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentComplete = table.Column<bool>(type: "bit", nullable: false),
-                    SubscriberId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SubscriberId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     SubscriptionTypeId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -242,8 +240,7 @@ namespace OnlineNews.Migrations
                         name: "FK_Subscriptions_AspNetUsers_SubscriberId",
                         column: x => x.SubscriberId,
                         principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Subscriptions_SubscriptionTypes_SubscriptionTypeId",
                         column: x => x.SubscriptionTypeId,

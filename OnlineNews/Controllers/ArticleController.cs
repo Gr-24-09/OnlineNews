@@ -131,9 +131,10 @@ namespace OnlineNews.Controllers
         public IActionResult Details(int id)
         {
             var articleDetails = _articleService.GetDetails(id);
-            articleDetails.Views++;
-            _db.SaveChanges();
-
+            if (articleDetails == null)
+            {
+                return NotFound();
+            }
             return View(articleDetails);
         }
         public IActionResult CategoryNews(int id)
@@ -143,7 +144,6 @@ namespace OnlineNews.Controllers
             ViewData["CategoryName"] = category.Name;
             return View(articles);
         }
-
         public IActionResult SearchResult(string searchitem)
         {
             if (string.IsNullOrEmpty(searchitem))
@@ -169,32 +169,35 @@ namespace OnlineNews.Controllers
             var likesCount = article.Likes;
             return View(likesCount);
         }
-
         [Authorize]
         public IActionResult LikeAnArticle(int id)
         {
+            var userId = _userManager.GetUserId(User);
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+            if (article == null)
+            {
+                return NotFound();
+            }
             article.Likes++;
             _db.SaveChanges();
             return RedirectToAction("Details", new { id = id });
         }
-
         [Authorize]
         public IActionResult DisLikeAnArticle(int id)
         {
+            var userId = _userManager.GetUserId(User);
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
-            article.Likes--;
+            if (article == null)
+            {
+                return NotFound();
+            }
+            if (article.Likes > 0) // Ensure likes cannot go below zero
+            {
+                article.Likes--;  // Decrement the like count
+            }
             _db.SaveChanges();
             return RedirectToAction("Details", new { id = id });
         }
-
-        
-            
-       
-
-
-
-
 
     }
 }

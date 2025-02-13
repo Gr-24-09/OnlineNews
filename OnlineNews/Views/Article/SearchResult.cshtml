@@ -4,8 +4,15 @@
     ViewData["Title"] = "SearchResult";
 }
 
-<h1>Searching Results:</h1>
+@{
+    var searchresults = ViewData["Searchresultsbysearchbar"];
+}
 
+
+<br />
+<br />
+<br/>
+<h3 style="text-align:center">Your search results:@searchresults</h3>
 
 <div class="row justify-content-center">
 
@@ -16,7 +23,7 @@
         @foreach (var item in Model)
         {
             <div class="col-3 m-3">
-                <partial name="_ArticlePartial" model="item" />
+                <partial name="_EditorsPartial" model="item" />
             </div>
         }
      </div>
