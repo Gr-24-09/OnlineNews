@@ -13,10 +13,11 @@ namespace OnlineNews.Models.Database
         [Required(ErrorMessage = "First Date of Subscription  is required.")]
         public DateTime CreatedAt { get; set; }
 
-        //[Required(ErrorMessage = "Last Date of the Subscription is required.")]
-        //public DateTime ExpiredAt { get; set; }
-        public bool PaymentComplete { get; set; }//Here i need to write paid/Not paid later in the project to appear on users screen
+        [Required(ErrorMessage = "Last Date of the Subscription is required.")]
+        public DateTime ExpiredAt { get; set; }
+        public bool PaymentComplete { get; set; }
         public   User Subscriber { get; set; }
         public SubscriptionType SubscriptionType { get; set; }
+
     }
 }

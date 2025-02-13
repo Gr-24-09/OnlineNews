@@ -6,8 +6,8 @@ namespace OnlineNews.Service
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<User> _userManager ;
-        private readonly RoleManager<IdentityRole> _roleManager ;
+        private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -24,18 +24,18 @@ namespace OnlineNews.Service
                 LastName = "Forsberg",
                 PhoneNumber = "1234567890",
             };
-            var result = await _userManager.CreateAsync(newEmployee, "newPassword22" );
-            if (result.Succeeded) 
+            var result = await _userManager.CreateAsync(newEmployee, "newPassword22");
+            if (result.Succeeded)
             {
                 return "Success";
             }
             return "Failure";
         }
 
-
-        
-
-
-
+        public async Task<User> GetUserByIdAsync(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            return user;
+        }
     }
 }
