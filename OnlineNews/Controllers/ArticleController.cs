@@ -23,9 +23,19 @@ namespace OnlineNews.Controllers
             _userManager = userManager;
             _db = db;
         }
-        public IActionResult Index()
+
+        [Authorize]
+        public IActionResult Index(string name)
         {
-            return View(_articleService.GetAllArticles());
+            CategoryViewModel obj = new CategoryViewModel();
+            obj.WorldArticles = _db.Articles.Where(a => a.Category.Name == "World").ToList();
+            obj.EconomyArticles = _db.Articles.Where(a => a.Category.Name == "Economy").ToList();
+            obj.TravelArticles = _db.Articles.Where(a => a.Category.Name == "Travel").ToList();
+            obj.SwedenArticles = _db.Articles.Where(a => a.Category.Name == "Sweden").ToList();
+            obj.ArtArticles = _db.Articles.Where(a => a.Category.Name == "Arts").ToList();
+            obj.SportArticles = _db.Articles.Where(a => a.Category.Name == "Sport").ToList();
+            obj.HealthArticles = _db.Articles.Where(a => a.Category.Name == "Health").ToList();
+            return View(obj);
         }
 
         [Authorize]

@@ -1,5 +1,6 @@
 ﻿@using OnlineNews.Service
 @inject ICategoryService _categoryService;
+
 @{
     var categoryList = _categoryService.GetAllCategory();
 }
@@ -32,12 +33,15 @@
                                             <a class="nav-link " asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id">@item.Name</a>
                                         </li>
                                     }
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="Index">All Articles</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="ArchivedNews">Archived Articles</a>
+                                    </li>
                                 </ul>
-                            
                             </li>
-
                         </ul>  
-                     
                         <form asp-Controller="Article" asp-action="SearchResult">
                             <label for="searchitem"></label>
                             <input type="text" name="searchitem" id="searchitem" class="searchBar" placeholder="Search here by category......" />
@@ -76,6 +80,7 @@
                         </li>
                         <div class="navbar-text ms-auto">
                             @await Component.InvokeAsync("Weather", new { city = "Linköping" })
+                        </div>
                         @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
                         { 
                             <li class="nav-item dropdown">
