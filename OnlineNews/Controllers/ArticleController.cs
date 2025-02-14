@@ -149,6 +149,7 @@ namespace OnlineNews.Controllers
             {
                 return NotFound();
             }
+            articleDetails.Views++;
             return View(articleDetails);
         }
         public IActionResult CategoryNews(int id)
