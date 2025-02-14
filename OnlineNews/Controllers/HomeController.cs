@@ -31,9 +31,9 @@ public class HomeController : Controller
     {
         var result = await _userService.AddEmployee();
         FrontPageViewModel obj = new FrontPageViewModel();
-        obj.EditorsChoice = _articleService.EditorsChoice();
+        obj.SomeLatestNews = _articleService.SomeLatestNews();
         obj.Mostpopular = _articleService.Mostpopular();
-        obj.LatestNews = _articleService.LatestNews();
+        obj.OneLatestNews = _articleService.OneLatestNews();
         return View(obj);
     }
 
@@ -59,5 +59,10 @@ public class HomeController : Controller
             return NotFound("Deactivated");
         }
         return RedirectToAction("ListUsers");
+    }
+    public IActionResult EditorsChoiced()
+    {
+        var articles1 = _articleService.EditorsChoice();
+        return View(articles1);
     }
 }

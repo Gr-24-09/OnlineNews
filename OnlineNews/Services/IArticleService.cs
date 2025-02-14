@@ -14,8 +14,10 @@ namespace OnlineNews.Interfaces
         public List<string> GetAllCategories();
         public List<Article> Mostpopular();
         public List<Article> EditorsChoice();
-        public List<Article> LatestNews();
+        public List<Article> OneLatestNews();
         public List<Article> GetAllArticlesByItsCategory(int categoryId);
-        
+        public List<Article> SomeLatestNews();
+
+
     }
 }
