@@ -21,7 +21,7 @@ namespace OnlineNews.Services
         public void AddArticle(Article newarticle,string authorId)
         {
             newarticle.PublishedDate = DateTime.Now;
-            newarticle.Author = _db.Users.Find(authorId);
+            newarticle.User = _db.Users.Find(authorId);
             newarticle.Category = _db.Categories.Where(c => c.Name == newarticle.Category.Name).First();
             _db.Articles.Add(newarticle);
             _db.SaveChanges();
@@ -50,12 +50,17 @@ namespace OnlineNews.Services
         }
         public List<Article> EditorsChoice()
         {
-          var articles1 = _db.Articles.Where(x => x.EditorsChoice).Take(10).ToList();
+            var articles1 = _db.Articles.Where(x => x.EditorsChoice).Take(10).ToList();
             return articles1;
         }
-       public  List<Article> LatestNews() 
+        public  List<Article> OneLatestNews() 
        {
-            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(10).ToList();
+            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(1).ToList();
+            return articles2;
+       }
+       public List<Article> SomeLatestNews()
+       {
+            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(11).ToList();
             return articles2;
        }
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 

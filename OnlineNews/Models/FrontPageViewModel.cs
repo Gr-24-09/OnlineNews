@@ -6,8 +6,8 @@ namespace OnlineNews.Models
     {
 
         public List<Article> Mostpopular { get; set; } = new List<Article>();
-        public List<Article> LatestNews { get; set; } = new List<Article>();
-        public List<Article> EditorsChoice{ get; set; } = new List<Article>();
+        public List<Article> OneLatestNews { get; set; } = new List<Article>();
+        public List<Article> SomeLatestNews{ get; set; } = new List<Article>();
        
     }
 }

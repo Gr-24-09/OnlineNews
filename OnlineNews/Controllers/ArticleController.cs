@@ -37,7 +37,11 @@ namespace OnlineNews.Controllers
             obj.HealthArticles = _db.Articles.Where(a => a.Category.Name == "Health").ToList();
             return View(obj);
         }
-
+        public IActionResult ArchivedArticles()
+        {
+            var articles1 = _db.Articles.Where(x => x.IsArchieved).Take(10).ToList();
+            return View(articles1);
+        }
         [Authorize]
         [HttpGet]
         public ViewResult AddArticle()
