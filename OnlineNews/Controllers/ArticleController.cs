@@ -213,6 +213,55 @@ namespace OnlineNews.Controllers
             _db.SaveChanges();
             return RedirectToAction("Details", new { id = id });
         }
+        [Authorize]
+        public IActionResult EditAsWriter(int id)
+        {
+            var data = _db.Articles.FirstOrDefault(x => x.Id == id);
 
+            if (data == null)
+            {
+                return NotFound();
+            }
+            data.Categories = _db.Categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
+            return View(data);
+
+        }
+
+        [HttpPost]
+        public IActionResult EditAsWriter(Article article)
+        {
+            if (!ModelState.IsValid)
+            {
+                article.Categories = _db.Categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList();
+                return View(article);
+            }
+            var data = _db.Articles.FirstOrDefault(x => x.Id == article.Id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+            data.Headline = article.Headline;
+            data.ContentSummary = article.ContentSummary;
+            data.Content = article.Content;
+            data.ImageLink = article.ImageLink;
+            data.LinkText = article.LinkText;
+            if (!string.IsNullOrEmpty(article.ChosenCategory))
+            {
+                var categoryId = int.Parse(article.ChosenCategory);
+                data.Category = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
+            }
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+        
     }
 }

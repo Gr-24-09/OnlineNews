@@ -72,7 +72,7 @@ namespace OnlineNews
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                var roles = new[] { "Admin", "Editor", "Subscriber" };
+                var roles = new[] { "Admin", "Editor", "Subscriber","Writer" };
 
                 foreach (var role in roles)
                 {
@@ -97,8 +97,22 @@ namespace OnlineNews
                     await userManager.CreateAsync(user, password);
                     await userManager.AddToRoleAsync(user, "Admin");
                 }
+            }
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
 
+                string email = "madhurimandalapu82473@gmail.com";
+                string password = "H@mms1992";
 
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    var user = new User();
+                    user.UserName = email;
+                    user.Email = email;
+                    await userManager.CreateAsync(user, password);
+                    await userManager.AddToRoleAsync(user, "Writer");
+                }
             }
 
             app.Run();

@@ -23,13 +23,11 @@ namespace OnlineNews.Controllers
             _userManager = userManager;
             _adminService = adminService;
         }
-
         public async Task<IActionResult> ListUsers()
         { 
             var users = await _userManager.Users.ToListAsync();
             return View(users); 
         }
-
         public IActionResult Claims()
         {
             var user = HttpContext.User;
@@ -42,8 +40,6 @@ namespace OnlineNews.Controllers
             }
             return RedirectToAction("ListUsers");
         }
-
-
         public async Task<IActionResult> RemoveRoleFromUser(string userId) 
         {
             await _adminService.RemoveAdminRoleFromEmployee(userId);
