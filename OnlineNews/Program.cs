@@ -72,7 +72,7 @@ namespace OnlineNews
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                var roles = new[] { "Admin", "Editor", "Subscriber" };
+                var roles = new[] { "Admin", "Editor", "Subscriber","Writer" };
 
                 foreach (var role in roles)
                 {
