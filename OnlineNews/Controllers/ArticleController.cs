@@ -186,6 +186,7 @@ namespace OnlineNews.Controllers
             var likesCount = article.Likes;
             return View(likesCount);
         }
+
         [Authorize]
         public IActionResult LikeAnArticle(int id)
         {
@@ -215,7 +216,8 @@ namespace OnlineNews.Controllers
             _db.SaveChanges();
             return RedirectToAction("Details", new { id = id });
         }
-        [Authorize(Roles = "Admin, Editor")]
+
+        [Authorize(Roles = " Writer,")]
         [HttpGet]
         public IActionResult EditAsWriter(int id)
         {
@@ -232,9 +234,7 @@ namespace OnlineNews.Controllers
             }).ToList();
 
             return View(data);
-
         }
-
         [HttpPost]
         public IActionResult EditAsWriter(Article article)
         {

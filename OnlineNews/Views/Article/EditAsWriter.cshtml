@@ -1,5 +1,8 @@
 ﻿@model OnlineNews.Models.Database.Article
 
+@{
+    ViewData["Title"] = "EditAsWriter";
+}
 <h1>Edit An Article</h1>
 
 <form asp-action="EditAsWriter" method="post" enctype="multipart/form-data">
@@ -44,7 +47,9 @@
         <span asp-validation-for="ChosenCategory" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </form>
 
 @section Scripts {
