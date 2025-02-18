@@ -42,8 +42,9 @@ namespace OnlineNews.Controllers
             var articles1 = _db.Articles.Where(x => x.IsArchieved).Take(10).ToList();
             return View(articles1);
         }
-        [Authorize]
+
         [HttpGet]
+        [Authorize(Roles = "Admin, Editor,Writer")]
         public ViewResult AddArticle()
         {
             Article addArticle = new Article();
@@ -75,12 +76,13 @@ namespace OnlineNews.Controllers
             }
             return View(newArticle);
         }
+       
         public IActionResult RemovedArticle()
         {
             return View();
         }
 
-        [Authorize]
+        [Authorize(Roles ="Admin, Editor")]
         public IActionResult Delete(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
@@ -89,7 +91,7 @@ namespace OnlineNews.Controllers
             return RedirectToAction("RemovedArticle");
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin, Editor")]
         public IActionResult Edit(int id)
         {
             var data = _db.Articles.FirstOrDefault(x => x.Id == id);
@@ -213,7 +215,8 @@ namespace OnlineNews.Controllers
             _db.SaveChanges();
             return RedirectToAction("Details", new { id = id });
         }
-        [Authorize]
+        [Authorize(Roles = "Admin, Editor")]
+        [HttpGet]
         public IActionResult EditAsWriter(int id)
         {
             var data = _db.Articles.FirstOrDefault(x => x.Id == id);

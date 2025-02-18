@@ -22,7 +22,6 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Weather()
     {
-
         var cities = new List<string> { "Stockholm", "Malmö", "Linköping", "Norrköping", "Uppsala", "Gothenburg", "Helsingborg", "Örebro", "Jönköping" ,"Lund", "Västerås", "Gotland" };
         var forecasts = await _requestService.GetForecasts(cities);
         return View(forecasts);
