@@ -22,11 +22,10 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Weather()
     {
-
-        var weatherForecast = await _requestService.GetForecast("Linköping");
-        return View(weatherForecast); 
+        var cities = new List<string> { "Stockholm", "Malmö", "Linköping", "Norrköping", "Uppsala", "Gothenburg", "Helsingborg", "Örebro", "Jönköping" ,"Lund", "Västerås", "Gotland" };
+        var forecasts = await _requestService.GetForecasts(cities);
+        return View(forecasts);
     }
-
     public async Task<IActionResult> Index()
     {
         var result = await _userService.AddEmployee();

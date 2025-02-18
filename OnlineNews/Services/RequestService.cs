@@ -19,5 +19,20 @@ namespace OnlineNews.Services
             var forecast = await _httpClient.GetFromJsonAsync<WeatherForecast>(url);
             return forecast;
         }
+        public async Task<List<WeatherForecast>> GetForecasts(List<string> cities)
+        {
+            var forecasts = new List<WeatherForecast>();
+
+            foreach (var item in cities)
+            {
+                var url = $"http://weatherapi.dreammaker-it.se/forecast?city={item}&lang=en";
+                var forecast = await _httpClient.GetFromJsonAsync<WeatherForecast>(url);
+                if (forecast != null)
+                {
+                    forecasts.Add(forecast);
+                }
+            }
+            return forecasts;
+        }
     }
 }

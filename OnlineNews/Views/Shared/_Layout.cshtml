@@ -4,7 +4,6 @@
 @{
     var categoryList = _categoryService.GetAllCategory();
 }
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,10 +16,9 @@
 </head>
 <body>
     <header>
-        <div class="row headpage">
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm secondLine">
+            <nav class="navbar navbar-expand-lg navbar-toggleable-sm secondLine">
                 <div class="container-fluid dropdwnSearch">
-                    <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
+                    <div class="collapse navbar-collapse ms-auto" id="navbarNavDarkDropdown">
                         <ul class="navbar-nav">
                             <li class="nav-item dropdown">
                                 <a class="nav-link" style="font-size:30px" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -45,10 +43,13 @@
                                 </ul>
                             </li>
                         </ul>  
-                        <form asp-Controller="Article" asp-action="SearchResult">
+                        <form asp-Controller="Article" asp-action="SearchResult" class="d-flex align-items-center gap-3">
                             <label for="searchitem"></label>
                             <input type="text" name="searchitem" id="searchitem" class="searchBar" placeholder="Search here by category......" />
                             <button class="searchBtn" type="submit"><svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#0000F5"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" /></svg></button>
+                            <div class="navbar-text ms-auto" style="box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);background-color:lightblue">
+                                @await Component.InvokeAsync("Weather", new { city = "Linköping" })
+                            </div>
                         </form>
                     </div>
                     <a class="navbar-brand" style="font-family:fantasy;font-size:60px;color: blue;" asp-area="" asp-controller="Home" asp-action="Index">ASAM</a>
@@ -61,7 +62,6 @@
                     </div>
                 </div>
             </nav>
-        </div>
         <div class="row">
             <nav class="navbar navbar-expand-sm  d-flex justify-content-center bg-primary-subtle navbar-primary">
                 <div class="container-fluid justify-content-center" style="color:blue;font-size:20px">
@@ -75,15 +75,6 @@
                                 <a class="nav-link" asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id">@item.Name</a>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Article" asp-action="AddArticle">Add Article</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Create">Add Category</a>
-                        </li>
-                        <div class="navbar-text ms-auto">
-                            @await Component.InvokeAsync("Weather", new { city = "Linköping" })
-                        </div>
                         @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
                         { 
                             <li class="nav-item dropdown">
@@ -106,6 +97,22 @@
                                 </ul>
                             </li>
                         }
+                        @if (User.IsInRole("Writer"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Writer's page
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="AddArticle">Add Article</a>
+                                    </li>
+                                    <li class="dropdown-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Create">Add Category</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        } 
                     </ul>
                 </div>
             </nav>
@@ -121,7 +128,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 
-    @* <footer class="container-fluid border-top footer footersize text-muted">
+    @* @* <footer class="container-fluid border-top footer footersize text-muted">
         <div class="row">
 
             &copy; 2025 - OnlineNews - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
