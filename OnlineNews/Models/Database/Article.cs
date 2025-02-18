@@ -23,11 +23,11 @@ namespace OnlineNews.Models.Database
 
         [Required(ErrorMessage = "ContentSummary of Article is required.")]
         [Display(Name = "ContentSummary of Article")]
-        public string ContentSummary { get; set; }
+        public string ContentSummary { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Content of Article is required.")]
         [Display(Name = "Content of Article")]
-        public string Content { get; set; }
+        public string Content { get; set; } = string.Empty;
         public bool IsArchieved { get; set; }
         public int Views { get; set; } = 0;
         public int Likes { get; set; } = 0;
@@ -43,5 +43,7 @@ namespace OnlineNews.Models.Database
         public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
         public User? User { get; set; }
         public bool EditorsChoice { get; set; }
+
+        public bool IsApproved { get; set; }
     }
 }

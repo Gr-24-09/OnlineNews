@@ -116,6 +116,26 @@ namespace OnlineNews
                 }
             }
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+
+                string email = "editor@editor.com";
+                string password = "Editor_password_1";
+
+                if (await userManager.FindByEmailAsync(email) == null)
+                {
+                    var user = new User();
+                    user.UserName = email;
+                    user.Email = email;
+
+                    await userManager.CreateAsync(user, password);
+                    await userManager.AddToRoleAsync(user, "Editor");
+                }
+
+
+            }
+
             app.Run();
         }
     }

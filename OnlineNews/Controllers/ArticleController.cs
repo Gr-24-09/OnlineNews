@@ -47,7 +47,10 @@ namespace OnlineNews.Controllers
         [Authorize(Roles = "Admin, Editor,Writer")]
         public ViewResult AddArticle()
         {
-            Article addArticle = new Article();
+            Article addArticle = new Article() { 
+                ContentSummary = string.Empty,
+                Content = string.Empty,
+            };
             var categoryList = _articleService.GetAllCategories();
             foreach (var item in categoryList)
             {
@@ -57,7 +60,9 @@ namespace OnlineNews.Controllers
             }
             return View(addArticle);
         }
+
         [HttpPost]
+        [Authorize(Roles = "Editor, Admin")]
         public IActionResult AddArticle(Article newArticle)
         {
             if (ModelState.IsValid)
@@ -82,6 +87,7 @@ namespace OnlineNews.Controllers
             return View();
         }
 
+
         [Authorize(Roles ="Admin, Editor")]
         public IActionResult Delete(int id)
         {
@@ -90,7 +96,6 @@ namespace OnlineNews.Controllers
             _db.SaveChanges();
             return RedirectToAction("RemovedArticle");
         }
-
         [Authorize(Roles = "Admin, Editor")]
         public IActionResult Edit(int id)
         {

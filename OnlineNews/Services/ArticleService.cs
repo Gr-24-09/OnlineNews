@@ -10,7 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OnlineNews.Services
 {
-
+    
     public class ArticleService : IArticleService
     {
         private readonly ApplicationDbContext _db;
@@ -30,6 +30,20 @@ namespace OnlineNews.Services
         {
             var articles = _db.Articles.ToList();
             return articles;
+        }
+
+        public Article GetArticleById(int id)
+        {
+            return _db.Articles.FirstOrDefault(a => a.Id == id);
+        }
+
+        public void UppdateArticleApproval(int id, bool isApproved)
+        {
+            var article = GetArticleById(id);
+            if (article != null)
+            {
+                article.IsApproved = isApproved;
+            }
         }
         public List<string> GetAllCategories()
         {
