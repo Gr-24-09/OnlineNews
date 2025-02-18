@@ -98,6 +98,7 @@ namespace OnlineNews
                     await userManager.AddToRoleAsync(user, "Admin");
                 }
             }
+
             using (var scope = app.Services.CreateScope())
             {
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();

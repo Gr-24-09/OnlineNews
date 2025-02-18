@@ -26,7 +26,6 @@ namespace OnlineNews.Services
             _db.Articles.Add(newarticle);
             _db.SaveChanges();
         }
-        
         public List<Article> GetAllArticles()
         {
             var articles = _db.Articles.ToList();
