@@ -26,11 +26,11 @@ public class HomeController : Controller
         var forecasts = await _requestService.GetForecasts(cities);
         return View(forecasts);
     }
-    public async Task<IActionResult> Electricity()
-    {
-        var data = await _requestService.GetData();
-        return View(data);
-    }
+    //public async Task<IActionResult> Electricity()
+    //{
+    //    var data = await _requestService.GetData();
+    //    return View(data);
+    //}
     public async Task<IActionResult> Index()
     {
         var result = await _userService.AddEmployee();

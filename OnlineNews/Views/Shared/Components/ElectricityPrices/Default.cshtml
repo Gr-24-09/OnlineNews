@@ -1,0 +1,53 @@
+﻿   
+@model OnlineNews.Models.API.SpotPriceNow
+
+
+<h3 class="justify-content-center" style="text-decoration: underline;">Spot Prices Now</h3>
+<div class="row">
+    <div style="display:-webkit-inline;margin-left:auto">
+        <span><b>Date:@Model.date</b></span><span> </span>
+        @for (int i = 0; i < Model.SE1.Length; i++)
+        {
+            <span><strong>Hour:@Model.SE1[i].hour:00</strong></span>
+        }
+
+    </div>
+    <br />
+    <div class="row justify-content-center" style="margin-left:5px">
+        <table>
+            <tr>
+                <th>Area</th>
+                <th>Price (SEK)</th>
+            </tr>
+            @for (int i = 0; i < Model.SE1.Length; i++)
+            {
+                <tr>
+                    <td>SE1</td>
+                    <td>@Model.SE1[i].price_sek</td>
+                </tr>
+                <tr>
+                    <td>SE2</td>
+                    <td>@Model.SE2[i].price_sek</td>
+                </tr>
+                <tr>
+                    <td>SE3</td>
+                    <td>@Model.SE3[i].price_sek</td>
+                </tr>
+                <tr>
+                    <td>SE4</td>
+                    <td>@Model.SE4[i].price_sek</td>
+                </tr>
+            }
+        </table>
+  </div>
+</div>
+
+
+<style>
+    span{
+        padding-left:5px;
+        text-align:center;
+        text-decoration: underline;
+    }
+
+</style>

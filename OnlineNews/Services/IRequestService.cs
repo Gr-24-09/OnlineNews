@@ -6,6 +6,6 @@ namespace OnlineNews.Services
     {
         Task<List<WeatherForecast>> GetForecasts(List<string> cities);
         Task<WeatherForecast> GetForecast(string city);
-        Task<ElectricitySpotPrice> GetData();
+        Task<SpotPriceNow> GetData();
     }
 }
