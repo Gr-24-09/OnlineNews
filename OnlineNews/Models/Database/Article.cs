@@ -41,7 +41,7 @@ namespace OnlineNews.Models.Database
 
         [NotMapped]
         public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
-        public User? User { get; set; }
+        public User? Author { get; set; }
         public bool EditorsChoice { get; set; }
     }
 }

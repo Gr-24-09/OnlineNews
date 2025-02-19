@@ -21,7 +21,7 @@ namespace OnlineNews.Services
         public void AddArticle(Article newarticle,string authorId)
         {
             newarticle.PublishedDate = DateTime.Now;
-            newarticle.User = _db.Users.Find(authorId);
+            newarticle.Author = _db.Users.Find(authorId);
             newarticle.Category = _db.Categories.Where(c => c.Name == newarticle.Category.Name).First();
             _db.Articles.Add(newarticle);
             _db.SaveChanges();

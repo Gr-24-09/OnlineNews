@@ -8,5 +8,7 @@ namespace OnlineNews.Service
         Task<User> GetUserByIdAsync(string userId);
         public Task<string> AddEmployee();
 
+        public List<User> GetUsersByIsActive();
+
     }
 }

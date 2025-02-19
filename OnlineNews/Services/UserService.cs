@@ -37,5 +37,11 @@ namespace OnlineNews.Service
             var user = await _userManager.FindByIdAsync(userId);
             return user;
         }
+
+        public List<User> GetUsersByIsActive()
+        {
+            var activeUsers = _userManager.Users.Where(x => x.IsActive).ToList();
+            return activeUsers;
+        }
     }
 }
