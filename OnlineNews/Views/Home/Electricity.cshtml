@@ -1,0 +1,100 @@
+﻿@model OnlineNews.Models.API.ElectricitySpotPrice
+
+@{
+    ViewData["Title"] = "Electricity Spot Prices";  // Set the page title
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1> <!-- Display the title -->
+    <p><strong>Date:</strong> @Model.Date</p>
+
+    <div class="row">
+        <div class="col-md-3">
+            <h3>SE1</h3>
+            @if (Model.SE1 != null && Model.SE1.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var price in Model.SE1)
+                    {
+                        <li class="list-group-item">
+                            <strong>Hour:</strong> @price.hour <br />
+                            <strong>Price (EUR):</strong> @price.price_eur <br />
+                            <strong>Price (SEK):</strong> @price.price_sek <br />
+                            <strong>KMeans:</strong> @price.kmeans
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No data available.</p>
+            }
+        </div>
+
+        <div class="col-md-3">
+            <h3>SE2</h3>
+            @if (Model.SE2 != null && Model.SE2.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var price in Model.SE2)
+                    {
+                        <li class="list-group-item">
+                            <strong>Hour:</strong> @price.hour <br />
+                            <strong>Price (EUR):</strong> @price.price_eur <br />
+                            <strong>Price (SEK):</strong> @price.price_sek <br />
+                            <strong>KMeans:</strong> @price.kmeans
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No data available.</p>
+            }
+        </div>
+
+        <div class="col-md-3">
+            <h3>SE3</h3>
+            @if (Model.SE3 != null && Model.SE3.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var price in Model.SE3)
+                    {
+                        <li class="list-group-item">
+                            <strong>Hour:</strong> @price.hour <br />
+                            <strong>Price (EUR):</strong> @price.price_eur <br />
+                            <strong>Price (SEK):</strong> @price.price_sek <br />
+                            <strong>KMeans:</strong> @price.kmeans
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No data available.</p>
+            }
+        </div>
+
+        <div class="col-md-3">
+            <h3>SE4</h3>
+            @if (Model.SE4 != null && Model.SE4.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var price in Model.SE4)
+                    {
+                        <li class="list-group-item">
+                            <strong>Hour:</strong> @price.hour <br />
+                            <strong>Price (EUR):</strong> @price.price_eur <br />
+                            <strong>Price (SEK):</strong> @price.price_sek <br />
+                            <strong>KMeans:</strong> @price.kmeans
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p>No data available.</p>
+            }
+        </div>
+    </div>
+</div>
