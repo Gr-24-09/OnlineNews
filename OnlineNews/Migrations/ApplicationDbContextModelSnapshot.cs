@@ -167,6 +167,9 @@ namespace OnlineNews.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AuthorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
@@ -190,9 +193,6 @@ namespace OnlineNews.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsArchieved")
                         .HasColumnType("bit");
 
@@ -206,17 +206,14 @@ namespace OnlineNews.Migrations
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int>("Views")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("AuthorId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("CategoryId");
 
                     b.ToTable("Articles", (string)null);
                 });
@@ -431,17 +428,17 @@ namespace OnlineNews.Migrations
 
             modelBuilder.Entity("OnlineNews.Models.Database.Article", b =>
                 {
+                    b.HasOne("OnlineNews.Models.Database.User", "Author")
+                        .WithMany()
+                        .HasForeignKey("AuthorId");
+
                     b.HasOne("OnlineNews.Models.Database.Category", "Category")
                         .WithMany("Articles")
                         .HasForeignKey("CategoryId");
 
-                    b.HasOne("OnlineNews.Models.Database.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.Navigation("Author");
 
                     b.Navigation("Category");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Subscription", b =>
