@@ -35,7 +35,7 @@ namespace OnlineNews.Services
             }
             return forecasts;
         }
-        public async Task<ElectricitySpotPrice> GetData()
+        public async Task<SpotPriceNow> GetData()
         {
             try
             {
@@ -44,20 +44,16 @@ namespace OnlineNews.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var data = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<ElectricitySpotPrice>(data)!;
+                    return JsonConvert.DeserializeObject<SpotPriceNow>(data)!;
                 }
                 else
                 {
-                    // Log an error or handle failure case as needed
-                    return new ElectricitySpotPrice();
+                    return new SpotPriceNow();
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception details for debugging
-                // For example, log using a logger: _logger.LogError(ex, "Error fetching electricity data");
-
-                return new ElectricitySpotPrice(); // Return an empty object on failure
+                return new SpotPriceNow(); 
             }
         }
 
