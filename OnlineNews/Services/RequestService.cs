@@ -1,4 +1,5 @@
-﻿using OnlineNews.Models.API;
+﻿using Newtonsoft.Json;
+using OnlineNews.Models.API;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -34,5 +35,32 @@ namespace OnlineNews.Services
             }
             return forecasts;
         }
+        public async Task<ElectricitySpotPrice> GetData()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("https://spotprices.lexlink.se/espot");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<ElectricitySpotPrice>(data)!;
+                }
+                else
+                {
+                    // Log an error or handle failure case as needed
+                    return new ElectricitySpotPrice();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details for debugging
+                // For example, log using a logger: _logger.LogError(ex, "Error fetching electricity data");
+
+                return new ElectricitySpotPrice(); // Return an empty object on failure
+            }
+        }
+
+
     }
 }
