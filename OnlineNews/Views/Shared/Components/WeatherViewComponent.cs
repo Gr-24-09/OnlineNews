@@ -18,5 +18,6 @@ namespace OnlineNews.ViewComponents
             var weather = await _requestService.GetWeatherByCityNameAsync(city);
             return View(weather); 
         }
+
     }
 }
