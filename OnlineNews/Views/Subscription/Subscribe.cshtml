@@ -1,0 +1,12 @@
+﻿<h2>Subscribe Now</h2>
+
+<p>Select your subscription type:</p>
+
+<form asp-controller="Subscription" asp-action="Subscribe" method="post">
+    <label for="subscriptionType">Subscription Type:</label>
+    <select id="subscriptionType" name="subscriptionType">
+        <option value="Basic">Basic</option>
+        <option value="Premium">Premium</option>
+    </select>
+    <button type="submit">Subscribe</button>
+</form>

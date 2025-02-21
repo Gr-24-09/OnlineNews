@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Interfaces;
 using OnlineNews.Models;
@@ -23,7 +24,7 @@ public class HomeController : Controller
     public async Task<IActionResult> Weather()
     {
 
-        var weatherForecast = await _requestService.GetForecast("Link�ping");
+        var weatherForecast = await _requestService.GetForecast("Linköping");
         return View(weatherForecast); 
     }
 
@@ -59,5 +60,32 @@ public class HomeController : Controller
             return NotFound("Deactivated");
         }
         return RedirectToAction("ListUsers");
+    }
+    [Authorize]
+    public class NewsController : Controller
+    {
+        private readonly ISubscriptionService _subscriptionService;
+
+        public NewsController(ISubscriptionService subscriptionService)
+        {
+            _subscriptionService = subscriptionService;
+        }
+
+        public async Task<IActionResult> PremiumArticle()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
+
+            if (subscription != null && subscription.SubscriptionType?.TypeName == "Premium")
+            {
+             
+                return View();
+            }
+            else
+            {
+                TempData["Error"] = "This article is only available for Premium subscribers.";
+                return RedirectToAction("Index", "Home");
+            }
+        }
     }
 }
