@@ -14,6 +14,7 @@ namespace OnlineNews.Services
     public class ArticleService : IArticleService
     {
         private readonly ApplicationDbContext _db;
+        private const string CookieConsentKey = "CookieConsent";
         public ArticleService(ApplicationDbContext db)
         {
             _db = db;
@@ -81,7 +82,20 @@ namespace OnlineNews.Services
             var articles = _db.Articles.Where(x => x.Category.Id == categoryId).ToList();
             return articles;
         }
-        
+        public bool HasConsented(IHttpContextAccessor httpContextAccessor)
+        {
+            var consent = httpContextAccessor.HttpContext.Request.Cookies[CookieConsentKey];
+            return consent == "true";
+        }
+
+        // Set cookie consent to true
+        public void AcceptCookies(IHttpContextAccessor httpContextAccessor)
+        {
+            httpContextAccessor.HttpContext.Response.Cookies.Append(CookieConsentKey, "true", new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1)
+            });
+        }
     }
 
 }

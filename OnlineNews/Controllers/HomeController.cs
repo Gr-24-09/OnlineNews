@@ -12,16 +12,20 @@ public class HomeController : Controller
     private readonly IUserService _userService;
     private readonly IRequestService _requestService;
     private readonly IArticleService _articleService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService,IArticleService articleService)
+    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService,IArticleService articleService,IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _userService = userService;
         _requestService = requestService;
         _articleService = articleService;
+        _httpContextAccessor = httpContextAccessor;
     }
     public async Task<IActionResult> Index()
     {
+        // Check if the user has consented
+        ViewBag.HasConsented = _articleService.HasConsented(_httpContextAccessor);
         var result = await _userService.AddEmployee();
         FrontPageViewModel obj = new FrontPageViewModel();
         obj.SomeLatestNews = _articleService.SomeLatestNews();
@@ -58,5 +62,11 @@ public class HomeController : Controller
         var articles1 = _articleService.EditorsChoice();
         return View(articles1);
     }
-
+    [HttpPost]
+    public IActionResult AcceptCookies()
+    {
+        // Accept cookies and set the cookie consent status
+        _articleService.AcceptCookies(_httpContextAccessor);
+        return RedirectToAction("Index");
+    }
 }

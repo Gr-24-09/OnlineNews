@@ -172,15 +172,15 @@ namespace OnlineNews.Controllers
             {
                 return View(new List<Article>());
             }
-
             var articleList = _db.Articles.AsQueryable();
-
             articleList = articleList.Where(x =>
                 x.Category.Name.Contains(searchitem) ||
                 x.LinkText.Contains(searchitem) ||
                 x.EditorsChoice.ToString().Contains(searchitem)||
                 x.Likes.ToString().Contains(searchitem)||
-                x.Views.ToString().Contains(searchitem)
+                x.Views.ToString().Contains(searchitem)||
+                x.Content.Contains(searchitem)||
+                x.ContentSummary.Contains(searchitem)
             );
             var articles = articleList.ToList();
             return View(articles);
@@ -222,7 +222,7 @@ namespace OnlineNews.Controllers
             return RedirectToAction("Details", new { id = id });
         }
 
-        [Authorize(Roles = " Writer,")]
+        [Authorize(Roles = "Writer")]
         [HttpGet]
         public IActionResult EditAsWriter(int id)
         {
