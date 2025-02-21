@@ -51,6 +51,22 @@ namespace OnlineNews.Controllers
             await _adminService.AddAdminRoleToEmployee(userId);
             return RedirectToAction(nameof(ListUsers));
         }
+
+        // testing area
+
+        public async Task<IActionResult> ToggleUserStatus(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.IsActive = !user.IsActive; // Toggle the active status
+                await _userManager.UpdateAsync(user); // Save changes to the user
+            }
+            return RedirectToAction(nameof(ListUsers)); // Redirect back to the user list
+        }
+
+        // testing area
+
         //[Authorize(Roles = "Admin")]
         //private readonly IAdminService _adminService;
         //private readonly UserManager<User> _userManager;
