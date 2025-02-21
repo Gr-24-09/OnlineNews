@@ -2,7 +2,7 @@
 using OnlineNews.Interfaces;
 using OnlineNews.Models.Database;
 using OnlineNews.Data;
-using AspNetCoreGeneratedDocument;
+
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity;

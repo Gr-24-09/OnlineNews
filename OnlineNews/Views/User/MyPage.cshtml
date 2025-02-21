@@ -1,83 +1,60 @@
-﻿@model UserPageViewModel
+﻿@using System.Security.Claims
+@model OnlineNews.Models.ViewModels.UserPageViewModel
+
+<h1>Welcome @Model.User.FirstName @Model.User.LastName</h1>
+<p>Date of Birth: @Model.User.DateofBirth.ToString("d")<a asp-controller="Subscription" asp-action="EditProfile"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000F5"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" /></svg></a></p>
+<p>Email: @Model.User.Email</p>
 
 <h2>Your Subscription</h2>
 
 @if (Model?.Subscription != null)
 {
-    <div>
-        <h3>Subscription Status: @Model.Subscription.SubscriptionType?.TypeName</h3>
-        <p>Price: $@Model.Subscription.SubscriptionType?.Price</p>
-        <p>Created At: @Model.Subscription.CreatedAt.ToString("d")</p>
+    <p>Subscription Status: @Model.Subscription.SubscriptionType?.TypeName</p>
+    <p>Price: $@Model.Subscription.SubscriptionType?.Price</p>
+    <p>Created At: @Model.Subscription.CreatedAt.ToString("d")</p>
+    <p>Expires At: @Model.Subscription.ExpiredAt.ToString("d")</p>
+    <p>Remaining Days: @Model.RemainingDays() days</p>
+    <h2>Edit Profile</h2>
+    <form  method="get">
+        <button type="submit">Edit Profile</button>
+    </form>
 
-        @if (Model.Subscription.PaymentComplete)
-        {
-            <p>Payment Status: Paid</p>
-        }
-        else
-        {
-            <p>Payment Status: Not Paid</p>
-        }
-    </div>
+    @if (Model.Subscription.PaymentComplete)
+    {
+        <p>Payment Status: Paid</p>
+    }
+    else
+    {
+        <p>Payment Status: Not Paid</p>
+    }
 }
 else
 {
-    <div>
-        <p>No subscription data available.</p>
-    </div>
+    <p>No subscription data available.</p>
+    <a asp-controller="Subscription" asp-action="Subscribe">Subscribe Now</a>
 }
 
-<h3>Change Subscription</h3>
-<form asp-action="ChangeSubscription" method="post">
-    <div class="form-group">
-        <label for="SubscriptionType">Select Subscription Type</label>
-        <select id="SubscriptionType" name="subscriptionType" class="form-control" asp-for="Subscription.SubscriptionType.TypeName">
-            <option value="Basic">Basic</option>
-            <option value="Premium">Premium</option>
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Change Subscription</button>
+<h2>Change Subscription</h2>
+
+<form asp-controller="User" asp-action="ChangeSubscription" method="post">
+    <label for="subscriptionType">Select Subscription Type:</label>
+    <select id="subscriptionType" name="subscriptionType">
+        <option value="Basic">Basic</option>
+        <option value="Premium">Premium</option>
+    </select>
+    <button type="submit">Change Subscription</button>
 </form>
 
 @if (TempData["Message"] != null)
 {
-    <div class="alert alert-success">@TempData["Message"]</div>
+    <p>@TempData["Message"]</p>
 }
+
 @if (TempData["Error"] != null)
 {
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
-<style>
-
-
-h2, h3 {
-    color: #2d3e50;
-    text-align: center;
+    <p>@TempData["Error"]</p>
 }
 
-.subscription-status {
-    background-color: #ffffff;
-    padding: 20px;
-    margin: 20px auto;
-    width: 80%;
-    max-width: 600px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.subscription-status h3 {
-    font-size: 24px;
-    color: #4a90e2;
-}
-
-.subscription-status p {
-    font-size: 18px;
-    margin: 10px 0;
-}
-
-.payment-status {
-    font-weight: bold;
-    font-size: 16px;
-}
 
 .payment-status.not-paid {
     color: #f44336;
@@ -116,3 +93,4 @@ button {
     transition: background-color 0.3s ease;
 }
 </style>
+

@@ -1,3 +1,4 @@
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Interfaces;
 using OnlineNews.Models;
@@ -22,6 +23,15 @@ public class HomeController : Controller
         _articleService = articleService;
         _httpContextAccessor = httpContextAccessor;
     }
+
+    public async Task<IActionResult> Weather()
+    {
+
+        var weatherForecast = await _requestService.GetForecast("Linköping");
+        return View(weatherForecast); 
+    }
+
+
     public async Task<IActionResult> Index()
     {
         // Check if the user has consented
@@ -57,6 +67,34 @@ public class HomeController : Controller
         }
         return RedirectToAction("ListUsers");
     }
+
+    [Authorize]
+    public class NewsController : Controller
+    {
+        private readonly ISubscriptionService _subscriptionService;
+
+        public NewsController(ISubscriptionService subscriptionService)
+        {
+            _subscriptionService = subscriptionService;
+        }
+
+        public async Task<IActionResult> PremiumArticle()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
+
+            if (subscription != null && subscription.SubscriptionType?.TypeName == "Premium")
+            {
+             
+                return View();
+            }
+            else
+            {
+                TempData["Error"] = "This article is only available for Premium subscribers.";
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
     public IActionResult EditorsChoiced()
     {
         var articles1 = _articleService.EditorsChoice();
@@ -68,5 +106,6 @@ public class HomeController : Controller
         // Accept cookies and set the cookie consent status
         _articleService.AcceptCookies(_httpContextAccessor);
         return RedirectToAction("Index");
+
     }
 }
