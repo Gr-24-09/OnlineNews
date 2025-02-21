@@ -120,6 +120,56 @@
 
 <div class="row borderbar"></div>
 
+<div class="container">
+    @* <h1>@ViewData["Title"]</h1> *@
+
+    <!-- Cookie Consent Popup -->
+    @if (!ViewBag.HasConsented)
+    {
+        <div id="cookieConsentPopup" class="cookie-popup">
+            <div class="cookie-popup-content">
+                <p>This website uses cookies to improve your experience. By continuing to use this site, you accept our use of cookies.</p>
+                <form method="post" asp-action="AcceptCookies">
+                    <button type="submit">Accept</button>
+                </form>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- CSS for the cookie consent -->
+<style>
+    .cookie-popup {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        color: white;
+        padding: 10px;
+        text-align: center;
+        z-index: 9999;
+    }
+
+    .cookie-popup-content {
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .cookie-popup button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+        .cookie-popup button:hover {
+            background-color: #45a049;
+        }
+</style>
+
+
 <style>
 
     .borderbar{
