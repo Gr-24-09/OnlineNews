@@ -1,0 +1,21 @@
+﻿@model IEnumerable<OnlineNews.Models.Database.Article>
+@{
+    ViewData["Title"] = "EditorsChoiced";
+}
+
+<h1>Editors Choice</h1>
+
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-3 m-3">
+                    <em>Editors choice</em>
+                    <partial name="_EditorsPartial" model="@item" />
+                </div>
+
+            }
+        </div>
+    </div>
+</div>

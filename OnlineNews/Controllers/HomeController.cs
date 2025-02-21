@@ -13,14 +13,17 @@ public class HomeController : Controller
     private readonly IUserService _userService;
     private readonly IRequestService _requestService;
     private readonly IArticleService _articleService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService,IArticleService articleService)
+    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService,IArticleService articleService,IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _userService = userService;
         _requestService = requestService;
         _articleService = articleService;
+        _httpContextAccessor = httpContextAccessor;
     }
+
     public async Task<IActionResult> Weather()
     {
 
@@ -28,13 +31,16 @@ public class HomeController : Controller
         return View(weatherForecast); 
     }
 
+
     public async Task<IActionResult> Index()
     {
+        // Check if the user has consented
+        ViewBag.HasConsented = _articleService.HasConsented(_httpContextAccessor);
         var result = await _userService.AddEmployee();
         FrontPageViewModel obj = new FrontPageViewModel();
-        obj.EditorsChoice = _articleService.EditorsChoice();
+        obj.SomeLatestNews = _articleService.SomeLatestNews();
         obj.Mostpopular = _articleService.Mostpopular();
-        obj.LatestNews = _articleService.LatestNews();
+        obj.OneLatestNews = _articleService.OneLatestNews();
         return View(obj);
     }
 
@@ -61,6 +67,7 @@ public class HomeController : Controller
         }
         return RedirectToAction("ListUsers");
     }
+
     [Authorize]
     public class NewsController : Controller
     {
@@ -87,5 +94,18 @@ public class HomeController : Controller
                 return RedirectToAction("Index", "Home");
             }
         }
+
+    public IActionResult EditorsChoiced()
+    {
+        var articles1 = _articleService.EditorsChoice();
+        return View(articles1);
+    }
+    [HttpPost]
+    public IActionResult AcceptCookies()
+    {
+        // Accept cookies and set the cookie consent status
+        _articleService.AcceptCookies(_httpContextAccessor);
+        return RedirectToAction("Index");
+
     }
 }

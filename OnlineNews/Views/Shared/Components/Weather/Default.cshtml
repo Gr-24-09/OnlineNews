@@ -1,13 +1,57 @@
 ﻿@model OnlineNews.Models.API.WeatherForecast
 
-<a href="@Url.Action("Weather", "Home")" class="weather-widget d-flex align-items-center" style="text-decoration: none; color: inherit;">
-    
-    <img src="@Model.icon?.url" alt="@Model.summary" style="width: 24px; height: 24px; margin-right: 8px;" />
-    
-    <div>
-        <h5 style="font-size: 14px; margin-bottom: 0;">@Model.city</h5>
-        <p style="font-size: 12px; margin-bottom: 0;">
-            @Model.temperatureC °C
-        </p>
-    </div>
-</a>
+
+<div class="weather-container">
+    <h4>Weather in @Model.city</h4>
+   @*  <form method="get" action="@Url.Action("Invoke", "WeatherViewComponent")"> *@
+    <form method="get" action="@Url.Action("Invoke", "WeatherViewComponent")">
+        <label for="city"></label>
+        <input type="text" id="city" name="city" placeholder="Enter City...." value="@Model?.city"/>
+        <button type="submit"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000F5"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" /></svg></button>
+    </form>
+    @if (Model != null)
+    {
+        <div class="weather-details">
+            <img src="@Model.icon?.url" alt="Weather icon" style="text-align:center;"/>
+            <p><strong>Temperature:</strong> @Model.temperatureC °C (@Model.temperatureF °F)</p>
+            <p><strong>Humidity:</strong> @Model.humidity %</p>
+            <p><strong>Wind Speed:</strong> @Model.windSpeed km/h</p>
+            <p><strong>Summary:</strong> @Model.summary</p>
+            <p><strong>Time:</strong> @Model.date</p>
+        </div>
+    }
+    else
+    {
+        <p>No weather data available</p>
+    }
+</div>
+<style>
+    .weather-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap:2px;
+    }
+
+    .weather-details {
+        text-align:left;
+        padding: 5px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        max-width: 200px;
+        transition: all 0.3s ease-in-out;
+    }
+
+        .weather-details img {
+            width: 90px;
+            height: 90px;
+            margin-top:-15px;
+            margin-bottom:-5px;
+        }
+
+        .weather-details h1 {
+            font-size: 18px;
+            color: #0056b3;
+        }
+</style>

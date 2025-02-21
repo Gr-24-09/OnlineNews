@@ -4,6 +4,7 @@ namespace OnlineNews.Services
 {
     public interface IRequestService
     {
-        Task<WeatherForecast> GetForecast(string city);
+        Task<SpotPriceNow> GetData();
+        Task<WeatherForecast> GetWeatherByCityNameAsync(string cityName);
     }
 }

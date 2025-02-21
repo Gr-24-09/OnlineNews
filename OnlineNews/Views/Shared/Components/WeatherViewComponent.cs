@@ -13,10 +13,11 @@ namespace OnlineNews.ViewComponents
             _requestService = requestService; 
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string city)
+        public async Task<IViewComponentResult> InvokeAsync(string city="Linköping")
         {
-            var weather = await _requestService.GetForecast(city); 
+            var weather = await _requestService.GetWeatherByCityNameAsync(city);
             return View(weather); 
         }
+
     }
 }

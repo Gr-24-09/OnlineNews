@@ -2,11 +2,9 @@
 
 
 <div class="card border-white mb-1">
-
-    <img src="@Model.ImageLink" class="card-img-top" style="width:640px;height:350px" />
-
+    <a asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><img src="@Model.ImageLink" class="card-img-top" style="width:640px;height:350px" /></a>
     <div class="card-body">
-        <h2 class="card-title">@Model.Headline</h2>
-        <a style="color:black;text-decoration-line: none" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><p>@Model.ContentSummary</p></a>
+        <a style="color:black;text-decoration-line: none" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><h2 class="card-title"><b>@Model.Headline</b></h2></a>
+        <a style="color:black;text-decoration-line: none;font-size:medium" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><p>@Model.ContentSummary</p></a>
     </div>
 </div>

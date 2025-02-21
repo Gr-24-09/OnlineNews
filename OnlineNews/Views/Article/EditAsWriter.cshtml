@@ -1,11 +1,11 @@
 ﻿@model OnlineNews.Models.Database.Article
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "EditAsWriter";
 }
-<h2>Edit An Article</h2>
+<h1>Edit An Article</h1>
 
-<form asp-action="Edit" method="post" enctype="multipart/form-data">
+<form asp-action="EditAsWriter" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="LinkText"></label>
@@ -27,10 +27,10 @@
 
     <div class="form-group">
         <label asp-for="Content"></label>
-        <input type="hidden" id="NewContent" asp-for="@Model.Content" class="form-control"/>
-       <div id="editor">
-           @Html.Raw(Model.Content)
-       </div>
+        <input type="hidden" id="NewContent" asp-for="@Model.Content" class="form-control" />
+        <div id="editor">
+            @Html.Raw(Model.Content)
+        </div>
         <span asp-validation-for="Content" class="text-danger"></span>
     </div>
 
@@ -39,18 +39,6 @@
         <input asp-for="ImageLink" class="form-control" />
         <span asp-validation-for="ImageLink" class="text-danger"></span>
     </div>
-
-    <div class="form-group">
-        <label asp-for="EditorsChoice"></label>
-        <input type="checkbox" asp-for="EditorsChoice" />
-        <span asp-validation-for="EditorsChoice" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="IsArchieved"></label>
-        <input type="checkbox" asp-for="IsArchieved" />
-        <span asp-validation-for="IsArchieved" class="text-danger"></span>
-    </div>
-
     <div class="form-group">
         <label asp-for="ChosenCategory"></label>
         <select asp-for="ChosenCategory" class="form-control" asp-items="Model.Categories">
@@ -59,7 +47,9 @@
         <span asp-validation-for="ChosenCategory" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
 </form>
 
 @section Scripts {
@@ -68,6 +58,7 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 <script src="https://unpkg.com/quill-html-edit-button@2.2.7/dist/quill.htmlEditButton.min.js"></script>

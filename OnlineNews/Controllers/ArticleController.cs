@@ -23,16 +23,34 @@ namespace OnlineNews.Controllers
             _userManager = userManager;
             _db = db;
         }
-        public IActionResult Index()
-        {
-            return View(_articleService.GetAllArticles());
-        }
 
         [Authorize]
+        public IActionResult Index(string name)
+        {
+            CategoryViewModel obj = new CategoryViewModel();
+            obj.WorldArticles = _db.Articles.Where(a => a.Category.Name == "World").ToList();
+            obj.EconomyArticles = _db.Articles.Where(a => a.Category.Name == "Economy").ToList();
+            obj.TravelArticles = _db.Articles.Where(a => a.Category.Name == "Travel").ToList();
+            obj.SwedenArticles = _db.Articles.Where(a => a.Category.Name == "Sweden").ToList();
+            obj.ArtArticles = _db.Articles.Where(a => a.Category.Name == "Arts").ToList();
+            obj.SportArticles = _db.Articles.Where(a => a.Category.Name == "Sport").ToList();
+            obj.HealthArticles = _db.Articles.Where(a => a.Category.Name == "Health").ToList();
+            return View(obj);
+        }
+        public IActionResult ArchivedArticles()
+        {
+            var articles1 = _db.Articles.Where(x => x.IsArchieved).Take(10).ToList();
+            return View(articles1);
+        }
+
         [HttpGet]
+        [Authorize(Roles = "Admin, Editor,Writer")]
         public ViewResult AddArticle()
         {
-            Article addArticle = new Article();
+            Article addArticle = new Article() { 
+                ContentSummary = string.Empty,
+                Content = string.Empty,
+            };
             var categoryList = _articleService.GetAllCategories();
             foreach (var item in categoryList)
             {
@@ -42,7 +60,9 @@ namespace OnlineNews.Controllers
             }
             return View(addArticle);
         }
+
         [HttpPost]
+        [Authorize(Roles = "Editor, Admin")]
         public IActionResult AddArticle(Article newArticle)
         {
             if (ModelState.IsValid)
@@ -61,12 +81,14 @@ namespace OnlineNews.Controllers
             }
             return View(newArticle);
         }
+       
         public IActionResult RemovedArticle()
         {
             return View();
         }
 
-        [Authorize]
+
+        [Authorize(Roles ="Admin, Editor")]
         public IActionResult Delete(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
@@ -74,8 +96,7 @@ namespace OnlineNews.Controllers
             _db.SaveChanges();
             return RedirectToAction("RemovedArticle");
         }
-
-        [Authorize]
+        [Authorize(Roles = "Admin, Editor")]
         public IActionResult Edit(int id)
         {
             var data = _db.Articles.FirstOrDefault(x => x.Id == id);
@@ -135,6 +156,7 @@ namespace OnlineNews.Controllers
             {
                 return NotFound();
             }
+            articleDetails.Views++;
             return View(articleDetails);
         }
         public IActionResult CategoryNews(int id)
@@ -150,15 +172,15 @@ namespace OnlineNews.Controllers
             {
                 return View(new List<Article>());
             }
-
             var articleList = _db.Articles.AsQueryable();
-
             articleList = articleList.Where(x =>
                 x.Category.Name.Contains(searchitem) ||
                 x.LinkText.Contains(searchitem) ||
                 x.EditorsChoice.ToString().Contains(searchitem)||
                 x.Likes.ToString().Contains(searchitem)||
-                x.Views.ToString().Contains(searchitem)
+                x.Views.ToString().Contains(searchitem)||
+                x.Content.Contains(searchitem)||
+                x.ContentSummary.Contains(searchitem)
             );
             var articles = articleList.ToList();
             return View(articles);
@@ -169,6 +191,7 @@ namespace OnlineNews.Controllers
             var likesCount = article.Likes;
             return View(likesCount);
         }
+
         [Authorize]
         public IActionResult LikeAnArticle(int id)
         {
@@ -199,5 +222,54 @@ namespace OnlineNews.Controllers
             return RedirectToAction("Details", new { id = id });
         }
 
+        [Authorize(Roles = "Writer")]
+        [HttpGet]
+        public IActionResult EditAsWriter(int id)
+        {
+            var data = _db.Articles.FirstOrDefault(x => x.Id == id);
+
+            if (data == null)
+            {
+                return NotFound();
+            }
+            data.Categories = _db.Categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
+
+            return View(data);
+        }
+        [HttpPost]
+        public IActionResult EditAsWriter(Article article)
+        {
+            if (!ModelState.IsValid)
+            {
+                article.Categories = _db.Categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList();
+                return View(article);
+            }
+            var data = _db.Articles.FirstOrDefault(x => x.Id == article.Id);
+            if (data == null)
+            {
+                return NotFound();
+            }
+            data.Headline = article.Headline;
+            data.ContentSummary = article.ContentSummary;
+            data.Content = article.Content;
+            data.ImageLink = article.ImageLink;
+            data.LinkText = article.LinkText;
+            if (!string.IsNullOrEmpty(article.ChosenCategory))
+            {
+                var categoryId = int.Parse(article.ChosenCategory);
+                data.Category = _db.Categories.FirstOrDefault(c => c.Id == categoryId);
+            }
+            _db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+        
     }
 }

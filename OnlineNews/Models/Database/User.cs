@@ -20,6 +20,10 @@ namespace OnlineNews.Models.Database
         [Display(Name = "Date of Birth")]
         public DateTime DateofBirth { get; set; }
 
+
         public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
+
+        public bool IsActive { get; set; }
+
     }
 }

@@ -8,6 +8,7 @@ namespace OnlineNews.Models.API
         [JsonProperty("summary")]
         public string summary { get; set; }
         public string city { get; set; }
+
         [JsonProperty("lang")]
         public string language { get; set; }
         public int temperatureC { get; set; }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineNews.Data;
 
@@ -11,9 +12,11 @@ using OnlineNews.Data;
 namespace OnlineNews.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250218121526_Change id")]
+    partial class Changeid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,9 +170,6 @@ namespace OnlineNews.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
@@ -193,6 +193,9 @@ namespace OnlineNews.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsApproved")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsArchieved")
                         .HasColumnType("bit");
 
@@ -206,16 +209,19 @@ namespace OnlineNews.Migrations
                     b.Property<DateTime>("PublishedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("Views")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorId");
-
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Articles", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Category", b =>
@@ -232,7 +238,7 @@ namespace OnlineNews.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Subscription", b =>
@@ -267,7 +273,7 @@ namespace OnlineNews.Migrations
 
                     b.HasIndex("SubscriptionTypeId");
 
-                    b.ToTable("Subscriptions", (string)null);
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.SubscriptionType", b =>
@@ -291,7 +297,7 @@ namespace OnlineNews.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SubscriptionTypes", (string)null);
+                    b.ToTable("SubscriptionTypes");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.User", b =>
@@ -320,9 +326,6 @@ namespace OnlineNews.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -428,17 +431,17 @@ namespace OnlineNews.Migrations
 
             modelBuilder.Entity("OnlineNews.Models.Database.Article", b =>
                 {
-                    b.HasOne("OnlineNews.Models.Database.User", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
-
                     b.HasOne("OnlineNews.Models.Database.Category", "Category")
                         .WithMany("Articles")
                         .HasForeignKey("CategoryId");
 
-                    b.Navigation("Author");
+                    b.HasOne("OnlineNews.Models.Database.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Category");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineNews.Models.Database.Subscription", b =>
