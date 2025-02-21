@@ -2,7 +2,7 @@
 @model OnlineNews.Models.API.SpotPriceNow
 
 
-<h3 class="justify-content-center" style="text-decoration: underline;">Spot Prices Now</h3>
+<h4 class="justify-content-center" style="text-decoration:underline;">Electricity Spot Prices</h4>
 <div class="row">
     <div style="display:-webkit-inline;margin-left:auto">
         <span><b>Date:@Model.date</b></span><span> </span>
@@ -14,7 +14,7 @@
     </div>
     <br />
     <div class="row justify-content-center" style="margin-left:5px">
-        <table>
+        <table id="prices">
             <tr>
                 <th>Area</th>
                 <th>Price (SEK)</th>
@@ -42,7 +42,6 @@
   </div>
 </div>
 
-
 <style>
     span{
         padding-left:5px;
@@ -50,4 +49,27 @@
         text-decoration: underline;
     }
 
+    #prices {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 140%;
+    }
+        #prices td, #prices th {
+            border: 1px solid #3cb371;
+            padding: 8px;
+            text-align:center;
+        }
+        #prices tr:nth-child(even) {
+            background-color: #ddd;
+        }
+        #prices tr:hover {
+            background-color: #7e82aa;
+        }
+        #prices th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: center;
+            background-color: #143;
+            color: white;
+        }
 </style>

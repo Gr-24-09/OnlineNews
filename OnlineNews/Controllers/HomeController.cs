@@ -20,17 +20,6 @@ public class HomeController : Controller
         _requestService = requestService;
         _articleService = articleService;
     }
-    public async Task<IActionResult> Weather()
-    {
-        var cities = new List<string> { "Stockholm", "Malmö", "Linköping", "Norrköping", "Uppsala", "Gothenburg", "Helsingborg", "Örebro", "Jönköping" ,"Lund", "Västerås", "Gotland" };
-        var forecasts = await _requestService.GetForecasts(cities);
-        return View(forecasts);
-    }
-    //public async Task<IActionResult> Electricity()
-    //{
-    //    var data = await _requestService.GetData();
-    //    return View(data);
-    //}
     public async Task<IActionResult> Index()
     {
         var result = await _userService.AddEmployee();
