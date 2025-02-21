@@ -58,4 +58,5 @@ public class HomeController : Controller
         var articles1 = _articleService.EditorsChoice();
         return View(articles1);
     }
+
 }
