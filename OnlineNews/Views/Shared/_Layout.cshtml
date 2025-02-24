@@ -51,6 +51,9 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-area="" asp-controller="Article" asp-action="ArchivedArticles">Archived Articles</a>
                                     </li>
+                                    <li>
+                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch">Weather</a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -83,6 +86,9 @@
                                 <a class="nav-link" asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id">@item.Name</a>
                             </li>
                         }
+                        <li>
+                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch">Weather</a>
+                        </li>
                         @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
                         { 
                             <li class="nav-item dropdown">

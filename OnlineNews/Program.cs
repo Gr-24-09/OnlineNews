@@ -32,6 +32,7 @@ namespace OnlineNews
             builder.Services.AddScoped<IRequestService, RequestService>();
             builder.Services.AddHttpClient<RequestService>();
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
+            builder.Services.AddHttpClient();
 
 
             builder.Services.AddControllersWithViews();

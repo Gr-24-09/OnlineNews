@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Interfaces;
 using OnlineNews.Models;
+using OnlineNews.Models.API;
 using OnlineNews.Service;
 using OnlineNews.Services;
 using System.Diagnostics;
@@ -76,5 +77,19 @@ public class HomeController : Controller
         _articleService.DeclineCookies(_httpContextAccessor);
         TempData["Message"] = "You have declined cookies.";
         return RedirectToAction("Index");
+    }
+    public async Task<IActionResult> WeatherSearch(string city)
+    {
+        WeatherForecast weather = null;
+
+        // If city is provided, fetch weather data
+        if (!string.IsNullOrEmpty(city))
+        {
+            weather = await _requestService.GetWeatherByCityNameAsync(city);
+        }
+
+        // Pass the city and weather data to the view
+        ViewData["City"] = city;
+        return View(weather);
     }
 }

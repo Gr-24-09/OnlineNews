@@ -15,11 +15,14 @@ namespace OnlineNews.Services
         }
         public async Task<WeatherForecast> GetWeatherByCityNameAsync(string cityName)
         {
-
             var url = $"http://weatherapi.dreammaker-it.se/forecast?city={cityName}&lang=en";
-            var forecast = await _httpClient.GetFromJsonAsync<WeatherForecast>(url);
+            var response = await _httpClient.GetStringAsync(url);
+
+            // Deserialize the JSON response into the WeatherForecast object
+            var forecast = JsonConvert.DeserializeObject<WeatherForecast>(response);
             return forecast;
         }
+        
 
         public async Task<SpotPriceNow> GetData()
         {
