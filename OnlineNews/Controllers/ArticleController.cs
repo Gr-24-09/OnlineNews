@@ -240,6 +240,7 @@ namespace OnlineNews.Controllers
 
             return View(data);
         }
+
         [HttpPost]
         public IActionResult EditAsWriter(Article article)
         {
@@ -271,5 +272,7 @@ namespace OnlineNews.Controllers
             return RedirectToAction("Index", "Home");
         }
         
+
+
     }
 }

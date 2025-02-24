@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Interfaces;
 using OnlineNews.Models;
+using OnlineNews.Models.API;
 using OnlineNews.Service;
 using OnlineNews.Services;
 using System.Diagnostics;
@@ -87,7 +88,20 @@ public class HomeController : Controller
             return RedirectToAction("Index", "Home");
         }
     }
+    public async Task<IActionResult> WeatherSearch(string city)
+    {
+        WeatherForecast weather = null;
 
+        // If city is provided, fetch weather data
+        if (!string.IsNullOrEmpty(city))
+        {
+            weather = await _requestService.GetWeatherByCityNameAsync(city);
+        }
+
+        // Pass the city and weather data to the view
+        ViewData["City"] = city;
+        return View(weather);
+    }
         public IActionResult EditorsChoiced()
         {
             var articles1 = _articleService.EditorsChoice();
@@ -109,6 +123,5 @@ public class HomeController : Controller
             return RedirectToAction("Index");
 
         }
-    
 }
 
