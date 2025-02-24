@@ -84,7 +84,7 @@
     </div>
 </div>
 <div class="row borderbar"></div>
-<div class="card mt-2 mb-2 text-center">
+<div class="card mt-2 mb-2 text-center border-white">
     <div class="row">
         <div class="row">
             <h3 class="justify-conytent-center">Advertisement</h3>
@@ -117,27 +117,31 @@
         </div>
     </div>
 </div>
-
 <div class="row borderbar"></div>
-
 <div class="container">
-    @* <h1>@ViewData["Title"]</h1> *@
-
     <!-- Cookie Consent Popup -->
     @if (!ViewBag.HasConsented)
     {
         <div id="cookieConsentPopup" class="cookie-popup">
-            <div class="cookie-popup-content">
-                <p>This website uses cookies to improve your experience. By continuing to use this site, you accept our use of cookies.</p>
-                <form method="post" asp-action="AcceptCookies">
-                    <button type="submit">Accept</button>
+            <div class="cookie-banner">
+                <p>We use cookies to improve your experience.</p>
+                <form method="post" asp-controller="Home" asp-action="AcceptCookies" style="display:inline;">
+                    <button type="submit" class="btn btn-primary">Accept</button>
+                </form>
+                <form method="post" asp-controller="Home" asp-action="DeclineCookies" style="display:inline;">
+                    <button type="submit" class="btn btn-danger">Decline</button>
                 </form>
             </div>
         </div>
     }
+
+    <!-- Display TempData Message -->
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-warning">@TempData["Message"]</div>
+    }
 </div>
 
-<!-- CSS for the cookie consent -->
 <style>
     .cookie-popup {
         position: fixed;
@@ -151,29 +155,27 @@
         z-index: 9999;
     }
 
-    .cookie-popup-content {
-        max-width: 500px;
-        margin: 0 auto;
-    }
-
-    .cookie-popup button {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        padding: 10px 20px;
-        cursor: pointer;
-    }
-
-        .cookie-popup button:hover {
-            background-color: #45a049;
+        .cookie-popup button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
         }
-</style>
 
+            .cookie-popup button:hover {
+                background-color: #45a049;
+            }
+
+    .alert {
+        margin-top: 20px;
+    }
+</style>
 
 <style>
 
     .borderbar{
-        border-bottom: 3px solid black;
+        border-bottom: 1px solid black;
     }
 
     .electricity{

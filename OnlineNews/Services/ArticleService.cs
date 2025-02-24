@@ -93,8 +93,15 @@ namespace OnlineNews.Services
         {
             httpContextAccessor.HttpContext.Response.Cookies.Append(CookieConsentKey, "true", new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddYears(1)
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
+                HttpOnly = true,
+                Secure = true // Ensures cookie is only sent over HTTPS
             });
+        }
+        public void DeclineCookies(IHttpContextAccessor httpContextAccessor)
+        {
+            httpContextAccessor.HttpContext.Response.Cookies.Delete(CookieConsentKey);
+           
         }
     }
 
