@@ -1,7 +1,18 @@
 ﻿using OnlineNews.Models.Database;
 
-public class UserPageViewModel
+namespace OnlineNews.Models.ViewModels
 {
-    public User User { get; set; }
-    public Subscription Subscription { get; set; }
+    public class UserPageViewModel
+    {
+        public User User { get; set; }
+        public Subscription Subscription { get; set; }
+        public int RemainingDays()
+        {
+            if (Subscription != null && Subscription.ExpiredAt > DateTime.UtcNow)
+            {
+                return (Subscription.ExpiredAt - DateTime.UtcNow).Days;
+            }
+            return 0;
+        }
+    }
 }

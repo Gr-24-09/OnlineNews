@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Models.Database;
+using OnlineNews.Models.ViewModels;
 using OnlineNews.Service;
-
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace OnlineNews.Controllers
 {
+    [Authorize] 
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -58,7 +60,5 @@ namespace OnlineNews.Controllers
 
             return RedirectToAction("MyPage");
         }
-
-
     }
 }
