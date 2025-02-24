@@ -19,6 +19,7 @@ namespace OnlineNews.Interfaces
         public List<Article> SomeLatestNews();
         public bool HasConsented(IHttpContextAccessor httpContextAccessor);
         public void AcceptCookies(IHttpContextAccessor httpContextAccessor);
+        public void DeclineCookies(IHttpContextAccessor httpContextAccessor);
 
 
     }
