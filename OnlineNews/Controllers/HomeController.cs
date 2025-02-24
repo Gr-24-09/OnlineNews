@@ -14,21 +14,23 @@ public class HomeController : Controller
     private readonly IRequestService _requestService;
     private readonly IArticleService _articleService;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ISubscriptionService _subscriptionService;
 
-    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService,IArticleService articleService,IHttpContextAccessor httpContextAccessor)
+    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService, ISubscriptionService subscriptionService, IArticleService articleService, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _userService = userService;
         _requestService = requestService;
         _articleService = articleService;
         _httpContextAccessor = httpContextAccessor;
-    }
+        _subscriptionService = subscriptionService;
 
+    }
     public async Task<IActionResult> Weather()
     {
 
-        var weatherForecast = await _requestService.GetForecast("Linköping");
-        return View(weatherForecast); 
+        var weatherForecast = await _requestService.GetWeatherByCityNameAsync("Linköping");
+        return View(weatherForecast);
     }
 
 
@@ -69,51 +71,44 @@ public class HomeController : Controller
     }
 
     [Authorize]
-    public class NewsController : Controller
+    public async Task<IActionResult> PremiumArticle()
     {
-        private readonly ISubscriptionService _subscriptionService;
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
 
-        public NewsController(ISubscriptionService subscriptionService)
+        if (subscription != null && subscription.SubscriptionType?.TypeName == "Premium")
         {
-            _subscriptionService = subscriptionService;
-        }
 
-        public async Task<IActionResult> PremiumArticle()
+            return View();
+        }
+        else
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
-
-            if (subscription != null && subscription.SubscriptionType?.TypeName == "Premium")
-            {
-             
-                return View();
-            }
-            else
-            {
-                TempData["Error"] = "This article is only available for Premium subscribers.";
-                return RedirectToAction("Index", "Home");
-            }
+            TempData["Error"] = "This article is only available for Premium subscribers.";
+            return RedirectToAction("Index", "Home");
         }
+    }
 
-    public IActionResult EditorsChoiced()
-    {
-        var articles1 = _articleService.EditorsChoice();
-        return View(articles1);
-    }
-    [HttpPost]
-    public IActionResult AcceptCookies()
-    {
-        // Accept cookies and set the cookie consent status
-        _articleService.AcceptCookies(_httpContextAccessor);
-        TempData["Message"] = "You have accepted cookies.";
-        return RedirectToAction("Index");
-    }
-    [HttpPost]
-    public IActionResult DeclineCookies()
-    {
-        _articleService.DeclineCookies(_httpContextAccessor);
-        TempData["Message"] = "You have declined cookies.";
-        return RedirectToAction("Index");
+        public IActionResult EditorsChoiced()
+        {
+            var articles1 = _articleService.EditorsChoice();
+            return View(articles1);
+        }
+        [HttpPost]
+        public IActionResult AcceptCookies()
+        {
+            // Accept cookies and set the cookie consent status
+            _articleService.AcceptCookies(_httpContextAccessor);
+            TempData["Message"] = "You have accepted cookies.";
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult DeclineCookies()
+        {
+            _articleService.DeclineCookies(_httpContextAccessor);
+            TempData["Message"] = "You have declined cookies.";
+            return RedirectToAction("Index");
 
-    }
+        }
+    
 }
+
