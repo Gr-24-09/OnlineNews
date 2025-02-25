@@ -39,7 +39,7 @@
                                     @foreach (var item in categoryList)
                                     {
                                         <li class="nav-item">
-                                            <a class="nav-link " asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id">@item.Name</a>
+                                        <a class="nav-link " style="color:blue;" asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id">@item.Name</a>
                                         </li>
                                     }
                                     <li class="nav-item">
@@ -52,7 +52,7 @@
                                         <a class="nav-link" asp-area="" asp-controller="Article" asp-action="ArchivedArticles">Archived Articles</a>
                                     </li>
                                     <li>
-                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch">Weather</a>
+                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch">Weather Forecast</a>
                                     </li>
                                 </ul>
                             </li>
@@ -75,19 +75,19 @@
             </nav>
         <div class="row">
             <nav class="navbar navbar-expand-sm  d-flex justify-content-center bg-primary-subtle navbar-primary">
-                <div class="container-fluid justify-content-center" style="color:blue;font-size:20px">
+                <div class="container-fluid justify-content-center" style="font-size:20px">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index" style="color:blue;">Home</a>
                         </li>
                         @foreach (var item in categoryList)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id">@item.Name</a>
+                                <a class="nav-link" asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id" style="color:blue;">@item.Name</a>
                             </li>
                         }
                         <li>
-                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch">Weather</a>
+                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch" style="color:blue;">Weather Forecast</a>
                         </li>
                         @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
                         { 

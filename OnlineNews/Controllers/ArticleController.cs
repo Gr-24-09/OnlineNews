@@ -62,7 +62,7 @@ namespace OnlineNews.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "Editor, Admin,Writer")]
         public IActionResult AddArticle(Article newArticle)
         {
             if (ModelState.IsValid)
