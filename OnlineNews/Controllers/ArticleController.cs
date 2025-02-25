@@ -35,6 +35,7 @@ namespace OnlineNews.Controllers
             obj.ArtArticles = _db.Articles.Where(a => a.Category.Name == "Arts").ToList();
             obj.SportArticles = _db.Articles.Where(a => a.Category.Name == "Sport").ToList();
             obj.HealthArticles = _db.Articles.Where(a => a.Category.Name == "Health").ToList();
+            obj.WeatherArticles=_db.Articles.Where(a => a.Category.Name == "Weather").ToList();
             return View(obj);
         }
         public IActionResult ArchivedArticles()
@@ -60,7 +61,6 @@ namespace OnlineNews.Controllers
             }
             return View(addArticle);
         }
-
         [HttpPost]
         [Authorize(Roles = "Editor, Admin,Writer")]
         public IActionResult AddArticle(Article newArticle)
@@ -81,13 +81,10 @@ namespace OnlineNews.Controllers
             }
             return View(newArticle);
         }
-       
         public IActionResult RemovedArticle()
         {
             return View();
         }
-
-
         [Authorize(Roles ="Admin, Editor")]
         public IActionResult Delete(int id)
         {

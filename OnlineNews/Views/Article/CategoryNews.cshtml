@@ -11,7 +11,7 @@
 
 <h1>@categoryName News</h1>
 
-<div class="row justify-content-center">
+@* <div class="row justify-content-center allfont" style="font-weight:bold">
     <div class="col-md-10">
         <div class="row">
             @foreach (var item in Model)
@@ -20,6 +20,20 @@
                     <partial name="_EditorsPartial" model="item" />
                 </div>
 
+            }
+        </div>
+    </div>
+</div>
+ *@
+<div class="row justify-content-center allfont" style="font-weight:bold">
+    <div class="col-md-10">
+        <div class="row justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-3 mb-3">
+                    <!-- Responsive layout -->
+                    <partial name="_EditorsPartial" model="item" />
+                </div>
             }
         </div>
     </div>

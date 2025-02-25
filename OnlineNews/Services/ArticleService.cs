@@ -68,10 +68,10 @@ namespace OnlineNews.Services
             return articles1;
         }
         public  List<Article> OneLatestNews() 
-       {
+        {
             var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(1).ToList();
             return articles2;
-       }
+        }
        public List<Article> SomeLatestNews()
        {
             var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(12).ToList();

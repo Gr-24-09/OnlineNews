@@ -27,14 +27,6 @@ public class HomeController : Controller
         _subscriptionService = subscriptionService;
 
     }
-    public async Task<IActionResult> Weather()
-    {
-
-        var weatherForecast = await _requestService.GetWeatherByCityNameAsync("Linköping");
-        return View(weatherForecast);
-    }
-
-
     public async Task<IActionResult> Index()
     {
         // Check if the user has consented
@@ -91,13 +83,11 @@ public class HomeController : Controller
     public async Task<IActionResult> WeatherSearch(string city)
     {
         WeatherForecast weather = null;
-
         // If city is provided, fetch weather data
         if (!string.IsNullOrEmpty(city))
         {
             weather = await _requestService.GetWeatherByCityNameAsync(city);
         }
-
         // Pass the city and weather data to the view
         ViewData["City"] = city;
         return View(weather);
