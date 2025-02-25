@@ -20,7 +20,10 @@ namespace OnlineNews.Interfaces
         public bool HasConsented(IHttpContextAccessor httpContextAccessor);
         public void AcceptCookies(IHttpContextAccessor httpContextAccessor);
         public void DeclineCookies(IHttpContextAccessor httpContextAccessor);
-
-
+        public void UpdateArticle(int id, Article updatedArticle);
+        public void UpdateArticleViews(int id, int views);
+        public UserInteractionWithArticle GetUserArticleInteraction(string userId, int articleId);
+        public void AddArticleInteraction(string userId, int articleId, bool liked, bool disliked);
+        public void UpdateArticleInteraction(string userId, int articleId, bool liked, bool disliked);
     }
 }

@@ -11,6 +11,7 @@ namespace OnlineNews.Data
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<SubscriptionType> SubscriptionTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserInteractionWithArticle> UserInteractionWithArticles { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
