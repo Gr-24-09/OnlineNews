@@ -11,6 +11,7 @@ namespace OnlineNews.Models
         public List<Article> TravelArticles { get; set; } = new List<Article>();
         public List<Article> ArtArticles { get; set; } = new List<Article>();
         public List<Article> EconomyArticles { get; set; } = new List<Article>();
+        public List<Article> WeatherArticles { get; set; } = new List<Article>();
 
 
     }
