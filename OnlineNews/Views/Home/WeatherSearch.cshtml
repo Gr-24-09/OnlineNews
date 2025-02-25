@@ -1,54 +1,65 @@
 ﻿@model OnlineNews.Models.API.WeatherForecast
 
-
 @{
     ViewData["Title"] = "Weather Search";
 }
 
-
-
-<h2>Search Weather by City</h2>
-
 <!-- Search form to enter city name -->
-<form method="get" asp-controller="Home" asp-action="WeatherSearch">
-    <input type="text" name="city" placeholder="Enter city name" value="@ViewData["City"]" required />
-    <button class="btn btn-primary"type="submit">Search</button>
-</form>
+<div class="row searchbtnWeather">
+    <h2><b>Search Weather by City</b></h2>
+    <form method="get" asp-controller="Home" asp-action="WeatherSearch">
+        <input type="text" name="city" placeholder="Enter city name" value="@ViewData["City"]" required />
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+</div>
 
 <!-- Display Weather Data -->
 @if (Model != null)
 {
-    <div class="row">
-        <div class="col-8">
-            <div class="row weatherbtn">
-                <h3>Weather in @Model.city</h3>
-                <p><strong>Summary:</strong> @Model.summary</p>
-                <p><strong>Temperature:</strong> @Model.temperatureC °C / @Model.temperatureF °F</p>
-                <p><strong>Humidity:</strong> @Model.humidity%</p>
-                <p><strong>Wind Speed:</strong> @Model.windSpeed km/h</p>
-                <p><strong>Date:</strong> @Model.date.ToString("MMMM dd, yyyy")</p>
-                @if (Model.icon != null)
-                {
-                    <img src="@Model.icon.url" alt="Weather icon" />
-                }
-                else
-                {
+    <div class="row weatherbtn">
+        <div class="col-12">
+            <div class="row">
+                <h4><b>Weather in @Model.city</b></h4>
+                <div>
+                    @if (Model.icon != null)
+                    {
+                        <img src="@Model.icon.url" alt="Weather icon" width="200" height="200" />
+                    }
+                    else
+                    {
                     <p>No weather data available. Please enter a valid city.</p>
-                }
+                    }
+                </div>
+                <h5><strong>Summary:</strong> @Model.summary</h5>
+                <h5><strong>Temperature:</strong> @Model.temperatureC °C / @Model.temperatureF °F</h5>
+                <h5><strong>Humidity:</strong> @Model.humidity%</h5>
+                <h5><strong>Wind Speed:</strong> @Model.windSpeed km/h</h5>
+                <h5><strong>Date:</strong> @Model.date.ToString("MMMM dd, yyyy")</h5>
             </div>
         </div>
     </div>
 }
 
-
 <style>
     .weatherbtn
     {
-        background-color: #7e82aa;
-        color:black;
-        font-size:25px;
-        text-align:center;
-        height:90px;
+        padding-top: 60px;
+        padding-bottom: 40px;
+        background: #3D79BC;
+        color:white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size:18px;
+        width: 30%;
+        text-align: center;
+        margin-left:20%;
+        margin-right:50%;
+        position:absolute;
     }
-
+    .searchbtnWeather{
+        position: center;
+        margin-left: auto;
+        margin-right: 50%;
+        padding-top: 100px;
+        padding-bottom: 50px;
+    }
 </style>
