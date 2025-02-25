@@ -69,12 +69,12 @@ namespace OnlineNews.Services
         }
         public  List<Article> OneLatestNews() 
         {
-            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(1).ToList();
+            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(2).ToList();
             return articles2;
         }
        public List<Article> SomeLatestNews()
        {
-            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(12).ToList();
+            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(11).ToList();
             return articles2;
        }
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 
