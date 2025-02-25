@@ -97,21 +97,6 @@ public class HomeController : Controller
             var articles1 = _articleService.EditorsChoice();
             return View(articles1);
         }
-        [HttpPost]
-        public IActionResult AcceptCookies()
-        {
-            // Accept cookies and set the cookie consent status
-            _articleService.AcceptCookies(_httpContextAccessor);
-            TempData["Message"] = "You have accepted cookies.";
-            return RedirectToAction("Index");
-        }
-        [HttpPost]
-        public IActionResult DeclineCookies()
-        {
-            _articleService.DeclineCookies(_httpContextAccessor);
-            TempData["Message"] = "You have declined cookies.";
-            return RedirectToAction("Index");
 
-        }
 }
 
