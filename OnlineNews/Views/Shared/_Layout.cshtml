@@ -27,7 +27,7 @@
                 </div>
             </div>
         </div>
-            <nav class="navbar navbar-expand-lg navbar-toggleable-sm secondLine">
+            <nav class="navbar navbar-expand-lg navbar-toggleable-sm secondLine allfont">
                 <div class="container-fluid dropdwnSearch">
                     <div class="collapse navbar-collapse ms-auto" id="navbarNavDarkDropdown">
                         <ul class="navbar-nav">
@@ -35,7 +35,7 @@
                                 <a class="nav-link" style="font-size:30px" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     ☰
                                 </a>
-                                <ul class="dropdown-menu bg-light flex-column" style="font-size:20px; border:2px solid #234;" aria-labelledby="navbarDarkDropdownMenuLink">
+                            <ul class="dropdown-menu bg-light flex-column bg-primary-subtle" style="font-size:20px; border:2px solid;" aria-labelledby="navbarDarkDropdownMenuLink">
                                     @foreach (var item in categoryList)
                                     {
                                         <li class="nav-item">
@@ -46,10 +46,10 @@
                                     <a class="nav-link" asp-area="" asp-controller="Article" asp-action="Index" style="color:blue;">All Articles</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Home" asp-action="EditorsChoiced">Editor's Choice</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="EditorsChoiced" style="color:blue;">Editor's Choice</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Article" asp-action="ArchivedArticles">Archived Articles</a>
+                                    <a class="nav-link" asp-area="" asp-controller="Article" asp-action="ArchivedArticles" style="color:blue;">Archived Articles</a>
                                     </li>
                                     <li>
                                     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch" style="color:blue;">Weather Forecast</a>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </nav>
-        <div class="row">
+        <div class="row allfont" style="border:1px solid blue">
             <nav class="navbar navbar-expand-sm  d-flex justify-content-center bg-primary-subtle navbar-primary">
                 <div class="container-fluid justify-content-center" style="font-size:20px">
                     <ul class="navbar-nav">
@@ -92,7 +92,7 @@
                         @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
                         { 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
                                     Admin page
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -101,14 +101,11 @@
                                     
                                 </ul>
                             </li>
-
-                            
                         }
-
                         @if (User.IsInRole("Editor"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
                                     Editor's page
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -123,15 +120,15 @@
                         @if (User.IsInRole("Writer"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
                                     Writer's page
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="AddArticle">Add Article</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="AddArticle" style="color:blue;">Add Article</a>
                                     </li>
-                                    <li class="dropdown-item">
-                                        <a class="nav-link" asp-area="" asp-controller="Category" asp-action="Create">Add Category</a>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Create" style="color:blue;">Add Category</a>
                                     </li>
                                 </ul>
                             </li>
@@ -143,28 +140,9 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @RenderBody() <!-- Page content -->
+            @RenderBody() 
         </main>
     </div>
-        @* <footer class="footer text-muted bg-primary-subtle">
-                <b style="color:blue;font-size:30px;">ASAM</b>
-                   <nav class="navbar navbar-expand-sm  d-flex justify-content-center bg-primary-subtle navbar-primary">
-                      <div class="container-fluid justify-content-center" style="color:blue;font-size:20px">
-                           <ul class="navbar-nav">
-                              <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                              </li>
-                              @foreach (var item in categoryList)
-                              {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id">@item.Name</a>
-                                </li>
-                              }
-                              <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                           </ul>
-                      </div>
-                   </nav>
-        </footer> *@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
