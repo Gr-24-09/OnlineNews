@@ -47,12 +47,12 @@ namespace OnlineNews.Services
 
         }
 
-        public void UpdateArticleApproval(int id, bool isApproved)
+        public void UpdateArticleApproval(int id, string status)
         {
             var article = GetArticleById(id);
             if (article != null)
             {
-                article.IsApproved = isApproved;
+                article.ApprovalStatus = status;
                 _db.SaveChanges();
             }
         }
@@ -161,6 +161,11 @@ namespace OnlineNews.Services
                 interaction.Disliked = disliked;
                 _db.SaveChanges();
             }
+        }
+
+        public void UpdateArticleApproval(int id, bool isApproved)
+        {
+            throw new NotImplementedException();
         }
     }
 }
