@@ -33,11 +33,11 @@ namespace OnlineNews.Controllers
             var articles = _articleService.GetAllArticles();
             if (showRejected) 
             {
-                articles = articles.Where(a => !a.IsApproved).ToList();
+                articles = articles.Where(a => a.ApprovalStatus == "Rejected").ToList();
             }
             else
             {
-                articles = articles.Where(a => a.IsApproved).ToList();
+                articles = articles.Where(a => a.ApprovalStatus == "Approved").ToList();
             }
 
             return View(articles);
@@ -51,7 +51,7 @@ namespace OnlineNews.Controllers
             {
                 return NotFound("Article not found");
             }
-            _articleService.UpdateArticleApproval(id, true);
+            _articleService.UpdateArticleApproval(id, "Approved");
             return RedirectToAction("GetAllArticles");
         }
 
@@ -63,14 +63,23 @@ namespace OnlineNews.Controllers
             {
                 return NotFound("Article not found");
             }
-            _articleService.UpdateArticleApproval(id, false);
+            _articleService.UpdateArticleApproval(id, "Rejected");
             return RedirectToAction("GetAllArticles", new { showRejected = true });
         }
 
-        public IActionResult RejectedArticles(int id) 
+        public IActionResult UpdateArticleStatus(int id, string status)
         {
-            var rejectedArticles = _articleService.GetAllArticles().Where(a => !a.IsApproved).ToList();
-            return View(rejectedArticles);
+            var article = _articleService.GetArticleById(id);
+            if(article == null)
+            {
+                return NotFound("Article not found");
+            }
+            if (new[] {"Approved", "Rejected", "Pending"}.Contains(status))
+            {
+                _articleService.UpdateArticleApproval(id, status);
+                return RedirectToAction("GetAllArticles");
+            }
+            return BadRequest("Invalid status");
         }
 
 

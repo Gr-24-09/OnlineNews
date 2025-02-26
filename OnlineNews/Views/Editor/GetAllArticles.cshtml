@@ -18,6 +18,10 @@
         <tr>
             <th>Id</th>
             <th>Content</th>
+            
+            <th>Headline</th>
+            <th>ChosenCategory</th>
+            <th>EditorsChoice</th>
             <th>Approval Status</th>
             <th>Actions</th>
         </tr>
@@ -28,28 +32,34 @@
             <tr>
                 <td>@article.Id</td>
                 <td>@article.Content</td>
+                <td>@article.Headline</td>
+                <td>@article.ChosenCategory</td>
+                <td>@article.EditorsChoice</td>
                 <td>
-                    @if (article.IsApproved)
+                    @if (article.ApprovalStatus == "Approved")
                     {
                         <span class="text-success">Approved</span>
+                    }
+                    else if(article.ApprovalStatus == "Rejected")
+                    {
+                        <span class="text-warning">Rejected</span>
                     }
                     else
                     {
                         <span class="text-warning">Pending</span>
                     }
                 </td>
-                <td>
-                    @if (!article.IsApproved)
-                    {
-                        <form method="post" action="@Url.Action("ApproveArticle", "Editor", new { id = article.Id })" style="display:inline;">
-                            <button type="submit" class="btn btn-success">Approve</button>
-                        </form>
+                 <td>
+    <form method="post" action="@Url.Action("GetAllArticles", "Editor", new { id = article.Id })" style="display:inline;">
+        @Html.AntiForgeryToken() 
+        <select name="status" class="form-control" onchange="this.form.submit()">
 
-                        <form method="post" action="@Url.Action("RejectArticle", "Editor", new { id = article.Id })" style="display:inline;">
-                            <button type="submit" class="btn btn-danger">Reject</button>
-                        </form>
-                    }
-                </td>
+            Pending
+            Approved
+            Rejected
+        </select>
+    </form>
+</td>
             </tr>
         }
     </tbody>
