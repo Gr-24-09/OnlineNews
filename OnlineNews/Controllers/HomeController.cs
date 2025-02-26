@@ -15,20 +15,21 @@ public class HomeController : Controller
     private readonly IArticleService _articleService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService,IArticleService articleService,IHttpContextAccessor httpContextAccessor)
+    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService, IArticleService articleService, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _userService = userService;
         _requestService = requestService;
         _articleService = articleService;
         _httpContextAccessor = httpContextAccessor;
+
     }
 
     public async Task<IActionResult> Weather()
     {
 
-        var weatherForecast = await _requestService.GetForecast("Linköping");
-        return View(weatherForecast); 
+        var weatherForecast = await _requestService.GetWeatherByCityNameAsync("Linköping");
+        return View(weatherForecast);
     }
 
 
@@ -72,10 +73,15 @@ public class HomeController : Controller
     public class NewsController : Controller
     {
         private readonly ISubscriptionService _subscriptionService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IArticleService _articleService;
 
-        public NewsController(ISubscriptionService subscriptionService)
+        public NewsController(ISubscriptionService subscriptionService, ArticleService articleService, HttpContextAccessor httpContextAccessor )
         {
             _subscriptionService = subscriptionService;
+            _articleService = articleService; 
+            _httpContextAccessor = httpContextAccessor;
+
         }
 
         public async Task<IActionResult> PremiumArticle()
@@ -85,7 +91,7 @@ public class HomeController : Controller
 
             if (subscription != null && subscription.SubscriptionType?.TypeName == "Premium")
             {
-             
+
                 return View();
             }
             else
@@ -95,17 +101,18 @@ public class HomeController : Controller
             }
         }
 
-    public IActionResult EditorsChoiced()
-    {
-        var articles1 = _articleService.EditorsChoice();
-        return View(articles1);
-    }
-    [HttpPost]
-    public IActionResult AcceptCookies()
-    {
-        // Accept cookies and set the cookie consent status
-        _articleService.AcceptCookies(_httpContextAccessor);
-        return RedirectToAction("Index");
+        public IActionResult EditorsChoiced()
+        {
+            var articles1 = _articleService.EditorsChoice();
+            return View(articles1);
+        }
+        [HttpPost]
+        public IActionResult AcceptCookies()
+        {
+            // Accept cookies and set the cookie consent status
+            _articleService.AcceptCookies(_httpContextAccessor);
+            return RedirectToAction("Index");
 
+        }
     }
 }

@@ -9,6 +9,9 @@ namespace OnlineNews.Service
 
         Task<string> RemoveAdminRoleFromEmployee(string userId);
 
+        Task<string> AddRoleToUser(string userId, string role);
+        Task<string> RemoveRoleFromUser(string userId);
+
         Task<string> CreateRole();
 
         Task<string> FindRole(User user );

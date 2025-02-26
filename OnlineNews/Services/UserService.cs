@@ -1,6 +1,7 @@
 ﻿using OnlineNews.Data;
 using Microsoft.AspNetCore.Identity;
 using OnlineNews.Models.Database;
+using OnlineNews.Models;
 
 namespace OnlineNews.Service
 {
@@ -42,6 +43,17 @@ namespace OnlineNews.Service
         {
             var activeUsers = _userManager.Users.Where(x => x.IsActive).ToList();
             return activeUsers;
+        }
+
+        public List<UserWithRolesVM> GetUsersWithRoles()
+        {
+            return _userManager.Users
+                .Select(u => new UserWithRolesVM
+                {
+                    User = u,
+                    Roles = _userManager.GetRolesAsync(u).Result.ToList()
+                })
+                .ToList();
         }
     }
 }
