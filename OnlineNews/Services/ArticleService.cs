@@ -92,12 +92,6 @@ namespace OnlineNews.Services
             var articles = _db.Articles.Where(x => x.Category.Id == categoryId).ToList();
             return articles;
         }
-
-        //List<Article> IArticleService.GetArticleById(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-    }
         public bool HasConsented(IHttpContextAccessor httpContextAccessor)
         {
             var consent = _httpContextAccessor.HttpContext.Request.Cookies[CookieConsentKey];
