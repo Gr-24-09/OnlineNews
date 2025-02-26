@@ -101,16 +101,24 @@
                                 </ul>
                             </li>
 
+                            
+                        }
+
+                        @if (User.IsInRole("Editor"))
+                        {
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Editor's page
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" asp-controller="Editor" asp-action="GetArticles">Manage articles</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Article" asp-action="AddArticle">Add articles</a></li>
+                                    @* <li><a class="dropdown-item" asp-controller="Editor" asp-action="ApproveArticle">Approve articles</a></li> *@
+                                    <li><a class="dropdown-item" asp-controller="Editor" asp-action="GetAllArticles">Approve articles</a></li>
+                                    @* <li><a class="dropdown-item" href="#">Approve Articles</a></li> *@
                                 </ul>
                             </li>
                         }
+
                         @if (User.IsInRole("Writer"))
                         {
                             <li class="nav-item dropdown">

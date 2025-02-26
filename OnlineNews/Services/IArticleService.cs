@@ -17,6 +17,8 @@ namespace OnlineNews.Interfaces
         public List<Article> OneLatestNews();
         public List<Article> GetAllArticlesByItsCategory(int categoryId);
         public List<Article> SomeLatestNews();
+        public Article GetArticleById(int id);
+        void UpdateArticleApproval(int id, bool isApproved);
         public bool HasConsented(IHttpContextAccessor httpContextAccessor);
         public void AcceptCookies(IHttpContextAccessor httpContextAccessor);
         public void DeclineCookies(IHttpContextAccessor httpContextAccessor);

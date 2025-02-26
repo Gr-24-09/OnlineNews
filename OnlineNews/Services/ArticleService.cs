@@ -38,15 +38,22 @@ namespace OnlineNews.Services
 
         public Article GetArticleById(int id)
         {
-            return _db.Articles.FirstOrDefault(a => a.Id == id);
+            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+            if (article == null)
+            {
+                Console.WriteLine($"article not found with id {id}");
+            }
+            return article;
+
         }
 
-        public void UppdateArticleApproval(int id, bool isApproved)
+        public void UpdateArticleApproval(int id, bool isApproved)
         {
             var article = GetArticleById(id);
             if (article != null)
             {
                 article.IsApproved = isApproved;
+                _db.SaveChanges();
             }
         }
         public List<string> GetAllCategories()
@@ -85,6 +92,12 @@ namespace OnlineNews.Services
             var articles = _db.Articles.Where(x => x.Category.Id == categoryId).ToList();
             return articles;
         }
+
+        //List<Article> IArticleService.GetArticleById(int id)
+        //{
+        //    throw new NotImplementedException();
+        //}
+    }
         public bool HasConsented(IHttpContextAccessor httpContextAccessor)
         {
             var consent = _httpContextAccessor.HttpContext.Request.Cookies[CookieConsentKey];
@@ -117,7 +130,6 @@ namespace OnlineNews.Services
                 _db.SaveChanges();
             }
         }
-
         public void UpdateArticleViews(int id, int views)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
