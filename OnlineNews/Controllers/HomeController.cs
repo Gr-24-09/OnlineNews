@@ -16,10 +16,7 @@ public class HomeController : Controller
     private readonly IArticleService _articleService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ISubscriptionService _subscriptionService;
-
-
     public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService, ISubscriptionService subscriptionService, IArticleService articleService, IHttpContextAccessor httpContextAccessor)
- 
     {
         _logger = logger;
         _userService = userService;
@@ -40,7 +37,6 @@ public class HomeController : Controller
         obj.OneLatestNews = _articleService.OneLatestNews();
         return View(obj);
     }
-
     public IActionResult Privacy()
     {
         return View();
@@ -51,7 +47,6 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-
     public IActionResult Claims()
     {
         var user = HttpContext.User;
@@ -64,7 +59,6 @@ public class HomeController : Controller
         }
         return RedirectToAction("ListUsers");
     }
-
     [Authorize]
     public async Task<IActionResult> PremiumArticle()
     {
@@ -100,6 +94,5 @@ public class HomeController : Controller
             var articles1 = _articleService.EditorsChoice();
             return View(articles1);
         }
-
 }
 
