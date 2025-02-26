@@ -69,7 +69,7 @@ namespace OnlineNews.Services
         }
         public List<Article> Mostpopular()
         {
-            var articles3 = _db.Articles.OrderByDescending(x => x.Views).Take(10).ToList();
+            var articles3 = _db.Articles.OrderByDescending(x => x.Views).Take(12).ToList();
             return articles3;
         }
         public List<Article> EditorsChoice()
@@ -84,7 +84,7 @@ namespace OnlineNews.Services
         }
        public List<Article> SomeLatestNews()
        {
-            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(11).ToList();
+            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(12).ToList();
             return articles2;
        }
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 

@@ -24,7 +24,7 @@ namespace OnlineNews.Controllers
             _db = db;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Editor,Admin,Writer")]
         public IActionResult Index(string name)
         {
             CategoryViewModel obj = new CategoryViewModel();
@@ -62,7 +62,7 @@ namespace OnlineNews.Controllers
             return View(addArticle);
         }
         [HttpPost]
-        [Authorize(Roles = "Editor, Admin,Writer")]
+        [Authorize(Roles = "Editor,Admin,Writer")]
         public IActionResult AddArticle(Article newArticle)
         {
             if (ModelState.IsValid)
@@ -85,7 +85,7 @@ namespace OnlineNews.Controllers
         {
             return View();
         }
-        [Authorize(Roles ="Admin, Editor")]
+        [Authorize(Roles ="Admin,Editor")]
         public IActionResult Delete(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
@@ -93,7 +93,7 @@ namespace OnlineNews.Controllers
             _db.SaveChanges();
             return RedirectToAction("RemovedArticle");
         }
-        [Authorize(Roles = "Admin, Editor")]
+        [Authorize(Roles = "Admin,Editor")]
         public IActionResult Edit(int id)
         {
             var data = _db.Articles.FirstOrDefault(x => x.Id == id);
@@ -156,31 +156,6 @@ namespace OnlineNews.Controllers
             articleDetails.Views++;
             return View(articleDetails);
         }
-        //[Authorize]
-        //public IActionResult Details(int id)
-        //{
-        //    var articleDetails = _articleService.GetDetails(id);
-        //    if (articleDetails == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    // Check if the user has already viewed this article by using a cookie
-        //    if (Request.Cookies["ViewedArticle_" + id] == null)
-        //    {
-        //        articleDetails.Views++;  // Increment the view count
-        //        _articleService.UpdateArticleViews(id, articleDetails.Views);  // Save the updated views count in your database
-
-        //        // Set a cookie to track the user's view of the article
-        //        Response.Cookies.Append("ViewedArticle_" + id, "true", new CookieOptions
-        //        {
-        //            Expires = DateTime.Now.AddDays(1), // Expires in 1 day or based on your needs
-        //        });
-        //    }
-
-        //    return View(articleDetails);
-        //}
-
         public IActionResult CategoryNews(int id)
         {
             var articles = _articleService.GetAllArticlesByItsCategory(id);
