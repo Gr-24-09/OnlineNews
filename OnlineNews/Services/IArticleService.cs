@@ -17,7 +17,9 @@ namespace OnlineNews.Interfaces
         public List<Article> OneLatestNews();
         public List<Article> GetAllArticlesByItsCategory(int categoryId);
         public List<Article> SomeLatestNews();
+        public Article GetArticleById(int id);
 
-
+        void UpdateArticleApproval(int id, bool isApproved);
+        
     }
 }

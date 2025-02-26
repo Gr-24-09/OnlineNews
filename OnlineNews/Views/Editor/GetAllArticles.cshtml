@@ -1,0 +1,56 @@
+﻿@model List<OnlineNews.Models.Database.Article>
+
+
+
+@{
+    ViewData["Title"] = "GetAllArticles";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div>
+    <a href="@Url.Action("GetAllArticles", "Editor", new { showRejected = false })">Show Approved Articles</a> |
+    <a href="@Url.Action("GetAllArticles", "Editor", new { showRejected = true })">Show Rejected Articles</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Content</th>
+            <th>Approval Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var article in Model)
+        {
+            <tr>
+                <td>@article.Id</td>
+                <td>@article.Content</td>
+                <td>
+                    @if (article.IsApproved)
+                    {
+                        <span class="text-success">Approved</span>
+                    }
+                    else
+                    {
+                        <span class="text-warning">Pending</span>
+                    }
+                </td>
+                <td>
+                    @if (!article.IsApproved)
+                    {
+                        <form method="post" action="@Url.Action("ApproveArticle", "Editor", new { id = article.Id })" style="display:inline;">
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+
+                        <form method="post" action="@Url.Action("RejectArticle", "Editor", new { id = article.Id })" style="display:inline;">
+                            <button type="submit" class="btn btn-danger">Reject</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
