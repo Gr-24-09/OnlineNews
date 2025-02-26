@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
 using OnlineNews.Interfaces;
@@ -14,9 +15,12 @@ namespace OnlineNews.Services
     public class ArticleService : IArticleService
     {
         private readonly ApplicationDbContext _db;
-        public ArticleService(ApplicationDbContext db)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private const string CookieConsentKey = "CookieConsent";
+        public ArticleService(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
         {
             _db = db;
+            _httpContextAccessor = httpContextAccessor;
         }
         public void AddArticle(Article newarticle,string authorId)
         {
@@ -74,13 +78,13 @@ namespace OnlineNews.Services
             return articles1;
         }
         public  List<Article> OneLatestNews() 
-       {
-            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(1).ToList();
+        {
+            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(2).ToList();
             return articles2;
-       }
+        }
        public List<Article> SomeLatestNews()
        {
-            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(13).ToList();
+            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(11).ToList();
             return articles2;
        }
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 
@@ -94,5 +98,76 @@ namespace OnlineNews.Services
         //    throw new NotImplementedException();
         //}
     }
+        public bool HasConsented(IHttpContextAccessor httpContextAccessor)
+        {
+            var consent = _httpContextAccessor.HttpContext.Request.Cookies[CookieConsentKey];
+            return consent == "true";
+        }
 
+        // Set cookie consent to true
+        public void AcceptCookies(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor.HttpContext.Response.Cookies.Append("CookieConsent", "Accepted", new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1),
+                HttpOnly = true,
+                Secure = true
+            });
+        }
+
+        public void DeclineCookies(IHttpContextAccessor httpContextAccessor)
+        {
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete("CookieConsent");
+        }
+        
+        public void UpdateArticle(int id, Article updatedArticle)
+        {
+            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+            if (article != null)
+            {
+                article.Likes = updatedArticle.Likes;
+                article.Views = updatedArticle.Views;
+                _db.SaveChanges();
+            }
+        }
+        public void UpdateArticleViews(int id, int views)
+        {
+            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
+            if (article != null)
+            {
+                article.Views = views;
+                _db.SaveChanges();
+            }
+        }
+
+        public UserInteractionWithArticle GetUserArticleInteraction(string userId, int articleId)
+        {
+            return _db.UserInteractionWithArticles.FirstOrDefault(ai => ai.UserId == userId && ai.ArticleId == articleId);
+        }
+
+        public void AddArticleInteraction(string userId, int articleId, bool liked, bool disliked)
+        {
+            var interaction = new UserInteractionWithArticle
+            {
+                UserId = userId,
+                ArticleId = articleId,
+                Liked = liked,
+                Disliked = disliked
+            };
+            _db.UserInteractionWithArticles.Add(interaction);
+            _db.SaveChanges();
+        }
+
+        public void UpdateArticleInteraction(string userId, int articleId, bool liked, bool disliked)
+        {
+            var interaction = _db.UserInteractionWithArticles.FirstOrDefault(ai => ai.UserId == userId && ai.ArticleId == articleId);
+            if (interaction != null)
+            {
+                interaction.Liked = liked;
+                interaction.Disliked = disliked;
+                _db.SaveChanges();
+            }
+        }
+    }
 }
+

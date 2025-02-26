@@ -6,7 +6,7 @@ namespace OnlineNews.Models.Database
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "SuscriptionType is required.")]
+        [Required(ErrorMessage = "Subscription Type is required.")]
         public string TypeName { get; set; }
 
         [Required(ErrorMessage = "Description is required.")]
@@ -15,7 +15,7 @@ namespace OnlineNews.Models.Database
         [Required(ErrorMessage = "Price is required.")]
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
-        public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 
+        public virtual ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
     }
 }

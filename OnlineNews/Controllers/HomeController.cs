@@ -1,6 +1,8 @@
+ï»¿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Interfaces;
 using OnlineNews.Models;
+using OnlineNews.Models.API;
 using OnlineNews.Service;
 using OnlineNews.Services;
 using System.Diagnostics;
@@ -12,27 +14,23 @@ public class HomeController : Controller
     private readonly IUserService _userService;
     private readonly IRequestService _requestService;
     private readonly IArticleService _articleService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly ISubscriptionService _subscriptionService;
 
-    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService,IArticleService articleService)
+    public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService, ISubscriptionService subscriptionService, IArticleService articleService, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
         _userService = userService;
         _requestService = requestService;
         _articleService = articleService;
-    }
-    public async Task<IActionResult> Weather()
-    {
-        var cities = new List<string> { "Stockholm", "Malmö", "Linköping", "Norrköping", "Uppsala", "Gothenburg", "Helsingborg", "Örebro", "Jönköping" ,"Lund", "Västerås", "Gotland" };
-        var forecasts = await _requestService.GetForecasts(cities);
-        return View(forecasts);
-    }
-    public async Task<IActionResult> Electricity()
-    {
-        var data = await _requestService.GetData();
-        return View(data);
+        _httpContextAccessor = httpContextAccessor;
+        _subscriptionService = subscriptionService;
+
     }
     public async Task<IActionResult> Index()
     {
+        // Check if the user has consented
+        ViewBag.HasConsented = _articleService.HasConsented(_httpContextAccessor);
         var result = await _userService.AddEmployee();
         FrontPageViewModel obj = new FrontPageViewModel();
         obj.SomeLatestNews = _articleService.SomeLatestNews();
@@ -64,9 +62,41 @@ public class HomeController : Controller
         }
         return RedirectToAction("ListUsers");
     }
-    public IActionResult EditorsChoiced()
+
+    [Authorize]
+    public async Task<IActionResult> PremiumArticle()
     {
-        var articles1 = _articleService.EditorsChoice();
-        return View(articles1);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
+
+        if (subscription != null && subscription.SubscriptionType?.TypeName == "Premium")
+        {
+
+            return View();
+        }
+        else
+        {
+            TempData["Error"] = "This article is only available for Premium subscribers.";
+            return RedirectToAction("Index", "Home");
+        }
     }
+    public async Task<IActionResult> WeatherSearch(string city)
+    {
+        WeatherForecast weather = null;
+        // If city is provided, fetch weather data
+        if (!string.IsNullOrEmpty(city))
+        {
+            weather = await _requestService.GetWeatherByCityNameAsync(city);
+        }
+        // Pass the city and weather data to the view
+        ViewData["City"] = city;
+        return View(weather);
+    }
+        public IActionResult EditorsChoiced()
+        {
+            var articles1 = _articleService.EditorsChoice();
+            return View(articles1);
+        }
+
 }
+

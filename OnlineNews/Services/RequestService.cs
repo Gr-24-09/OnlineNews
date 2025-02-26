@@ -13,29 +13,18 @@ namespace OnlineNews.Services
         {
             _httpClient = httpClient;
         }
-
-        public async Task<WeatherForecast> GetForecast(string city)
+        public async Task<WeatherForecast> GetWeatherByCityNameAsync(string cityName)
         {
-            var url = $"http://weatherapi.dreammaker-it.se/forecast?city={city}&lang=en";
-            var forecast = await _httpClient.GetFromJsonAsync<WeatherForecast>(url);
+            var url = $"http://weatherapi.dreammaker-it.se/forecast?city={cityName}&lang=en";
+            var response = await _httpClient.GetStringAsync(url);
+
+            // Deserialize the JSON response into the WeatherForecast object
+            var forecast = JsonConvert.DeserializeObject<WeatherForecast>(response);
             return forecast;
         }
-        public async Task<List<WeatherForecast>> GetForecasts(List<string> cities)
-        {
-            var forecasts = new List<WeatherForecast>();
+        
 
-            foreach (var item in cities)
-            {
-                var url = $"http://weatherapi.dreammaker-it.se/forecast?city={item}&lang=en";
-                var forecast = await _httpClient.GetFromJsonAsync<WeatherForecast>(url);
-                if (forecast != null)
-                {
-                    forecasts.Add(forecast);
-                }
-            }
-            return forecasts;
-        }
-        public async Task<ElectricitySpotPrice> GetData()
+        public async Task<SpotPriceNow> GetData()
         {
             try
             {
@@ -44,20 +33,16 @@ namespace OnlineNews.Services
                 if (response.IsSuccessStatusCode)
                 {
                     var data = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<ElectricitySpotPrice>(data)!;
+                    return JsonConvert.DeserializeObject<SpotPriceNow>(data)!;
                 }
                 else
                 {
-                    // Log an error or handle failure case as needed
-                    return new ElectricitySpotPrice();
+                    return new SpotPriceNow();
                 }
             }
             catch (Exception ex)
             {
-                // Log the exception details for debugging
-                // For example, log using a logger: _logger.LogError(ex, "Error fetching electricity data");
-
-                return new ElectricitySpotPrice(); // Return an empty object on failure
+                return new SpotPriceNow(); 
             }
         }
 
