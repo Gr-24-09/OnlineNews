@@ -46,12 +46,12 @@
                 <label asp-for="Category.Name" class="control-label"></label>
                 <select name="ChosenCategory" class="form-control" style="width:auto;" size="5" asp-for="Category.Name" asp-items="Model.Categories"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="ApprovalStatus"></label>
-                <input type="checkbox" asp-for="ApprovalStatus" />
-                <span asp-validation-for="ApprovalStatus" class="text-danger"></span>
+            @* <div class="form-group">
+                <label asp-for="IsApproved"></label>
+                <input type="checkbox" asp-for="IsApproved" />
+                <span asp-validation-for="IsApproved" class="text-danger"></span>
             </div>
-
+ *@
             <div class="form-group m-3">
                 <input type="submit" value="Add Article" class="btn btn-primary" />
             </div>

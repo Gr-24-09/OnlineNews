@@ -28,16 +28,18 @@ namespace OnlineNews.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAllArticles(bool showRejected = false)
+        public IActionResult GetAllArticles(string status = "Approved")
         {
             var articles = _articleService.GetAllArticles();
-            if (showRejected) 
+            if (status != "All")
             {
-                articles = articles.Where(a => a.ApprovalStatus == "Rejected").ToList();
+                articles = articles.Where(a => a.ApprovalStatus == status).ToList();
             }
-            else
+          ViewData["status"] = status;
+
+            if (!articles.Any())
             {
-                articles = articles.Where(a => a.ApprovalStatus == "Approved").ToList();
+                ViewBag.Message = "No articles found.";
             }
 
             return View(articles);

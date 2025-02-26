@@ -8,10 +8,10 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<div>
-    <a href="@Url.Action("GetAllArticles", "Editor", new { showRejected = false })">Show Approved Articles</a> |
+@* <div>
+    <a href="@Url.Action("GetAllArticles", "Editor", new { showRejected = false })">Show Approved Articles</a> 
     <a href="@Url.Action("GetAllArticles", "Editor", new { showRejected = true })">Show Rejected Articles</a>
-</div>
+</div> *@
 
 <table class="table">
     <thead>
@@ -49,17 +49,12 @@
                         <span class="text-warning">Pending</span>
                     }
                 </td>
-                 <td>
-    <form method="post" action="@Url.Action("GetAllArticles", "Editor", new { id = article.Id })" style="display:inline;">
-        @Html.AntiForgeryToken() 
-        <select name="status" class="form-control" onchange="this.form.submit()">
-
-            Pending
-            Approved
-            Rejected
-        </select>
-    </form>
-</td>
+                   <td>
+                    <a href="@Url.Action("GetAllArticles", "Editor", new { status = "Approved" })" class="btn btn-primary">Show Approved Articles</a>
+                    <a href="@Url.Action("GetAllArticles", "Editor", new { status = "Rejected" })" class="btn btn-secondary">Show Rejected Articles</a>
+                    <a href="@Url.Action("GetAllArticles", "Editor", new { status = "Pending" })" class="btn btn-warning">Show Pending Articles</a>
+                    <a href="@Url.Action("GetAllArticles", "Editor", new { status = "All" })" class="btn btn-info">Show All Articles</a>
+                  </td>
             </tr>
         }
     </tbody>
