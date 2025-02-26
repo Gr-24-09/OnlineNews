@@ -1,6 +1,3 @@
-html {
-  font-size: 14px;
-}
 
 @media (min-width: 768px) {
   html {
@@ -12,14 +9,29 @@ html {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
-html {
-  /*position: relative;*/
-  min-height: 100%;
+html, body {
+    height: 100%; /* Ensure the body and html take full height of the viewport */
+    margin: 0; /* Remove default margins */
 }
 
 body {
-  margin-bottom: 60px;
+    display: flex; /* Use flexbox layout */
+    flex-direction: column; /* Stack elements vertically */
+    min-height: 100%; /* Ensure body takes full height */
 }
+
+.container {
+    flex-grow: 1; /* Let the main content grow to fill available space */
+}
+
+.footer {
+    padding: 5px 0;
+    text-align: center;
+    width: 100%;
+    height: 90px; /* Adjust this height as needed */
+    margin-top:auto; /* Push the footer to the bottom */
+}
+
 .tbMargin {
     margin-top: 20px;
     margin-bottom: 20px;
@@ -95,7 +107,6 @@ button:disabled {
     gap: 6px; 
     flex-wrap: nowrap; 
 }
-
 .icons {
     padding: 5px 10px;
     font-size: 20px; 
@@ -109,13 +120,6 @@ button {
     font-size: 20px;
     font-weight:900;
 }
-.footer {
-    clear: both;
-    position:fixed;
-    height: 200px;
-    margin-bottom:0px;
-}
-
-.allfont{
-    font-family:'Times New Roman', Times, serif;
+.allfont {
+    font-family: "Georgia", "Times New Roman", serif;
 }

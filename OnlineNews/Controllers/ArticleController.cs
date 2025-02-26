@@ -17,7 +17,7 @@ namespace OnlineNews.Controllers
         private readonly IArticleService _articleService;
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _db;
-        public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db)
+        public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db, IHttpContextAccessor httpContextAccessor)
         {
             _articleService = articleService;
             _userManager = userManager;
@@ -35,6 +35,7 @@ namespace OnlineNews.Controllers
             obj.ArtArticles = _db.Articles.Where(a => a.Category.Name == "Arts").ToList();
             obj.SportArticles = _db.Articles.Where(a => a.Category.Name == "Sport").ToList();
             obj.HealthArticles = _db.Articles.Where(a => a.Category.Name == "Health").ToList();
+            obj.WeatherArticles=_db.Articles.Where(a => a.Category.Name == "Weather").ToList();
             return View(obj);
         }
         public IActionResult ArchivedArticles()
@@ -60,9 +61,8 @@ namespace OnlineNews.Controllers
             }
             return View(addArticle);
         }
-
         [HttpPost]
-        [Authorize(Roles = "Editor, Admin")]
+        [Authorize(Roles = "Editor, Admin,Writer")]
         public IActionResult AddArticle(Article newArticle)
         {
             if (ModelState.IsValid)
@@ -81,13 +81,10 @@ namespace OnlineNews.Controllers
             }
             return View(newArticle);
         }
-       
         public IActionResult RemovedArticle()
         {
             return View();
         }
-
-
         [Authorize(Roles ="Admin, Editor")]
         public IActionResult Delete(int id)
         {
@@ -159,6 +156,31 @@ namespace OnlineNews.Controllers
             articleDetails.Views++;
             return View(articleDetails);
         }
+        //[Authorize]
+        //public IActionResult Details(int id)
+        //{
+        //    var articleDetails = _articleService.GetDetails(id);
+        //    if (articleDetails == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    // Check if the user has already viewed this article by using a cookie
+        //    if (Request.Cookies["ViewedArticle_" + id] == null)
+        //    {
+        //        articleDetails.Views++;  // Increment the view count
+        //        _articleService.UpdateArticleViews(id, articleDetails.Views);  // Save the updated views count in your database
+
+        //        // Set a cookie to track the user's view of the article
+        //        Response.Cookies.Append("ViewedArticle_" + id, "true", new CookieOptions
+        //        {
+        //            Expires = DateTime.Now.AddDays(1), // Expires in 1 day or based on your needs
+        //        });
+        //    }
+
+        //    return View(articleDetails);
+        //}
+
         public IActionResult CategoryNews(int id)
         {
             var articles = _articleService.GetAllArticlesByItsCategory(id);
@@ -191,34 +213,67 @@ namespace OnlineNews.Controllers
             var likesCount = article.Likes;
             return View(likesCount);
         }
-
         [Authorize]
+        [HttpPost]
         public IActionResult LikeAnArticle(int id)
         {
             var userId = _userManager.GetUserId(User);
-            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
-            if (article == null)
+            var articleDetails = _articleService.GetDetails(id);
+            if (articleDetails == null)
             {
                 return NotFound();
             }
-            article.Likes++;
-            _db.SaveChanges();
+
+            // Check if the user has already liked or disliked this article
+            var interaction = _articleService.GetUserArticleInteraction(userId, id);
+
+            if (interaction == null)
+            {
+                // If no interaction, create a new like entry
+                _articleService.AddArticleInteraction(userId, id, true, false);  // Add a like, not a dislike
+                articleDetails.Likes++;  // Increment the like count
+            }
+            else if (!interaction.Liked)
+            {
+                // If the user previously disliked, remove the dislike and add a like
+                _articleService.UpdateArticleInteraction(userId, id, true, false);
+                articleDetails.Likes++;  // Increment the like count (undo dislike)
+            }
+            // If the user already liked, do nothing.
+
+            _articleService.UpdateArticle(id, articleDetails);  // Save changes to the article (like count)
             return RedirectToAction("Details", new { id = id });
         }
+
         [Authorize]
+        [HttpPost]
         public IActionResult DisLikeAnArticle(int id)
         {
             var userId = _userManager.GetUserId(User);
-            var article = _db.Articles.FirstOrDefault(a => a.Id == id);
-            if (article == null)
+            var articleDetails = _articleService.GetDetails(id);
+            if (articleDetails == null)
             {
                 return NotFound();
             }
-            if (article.Likes > 0) // Ensure likes cannot go below zero
+
+            // Check if the user has already liked or disliked this article
+            var interaction = _articleService.GetUserArticleInteraction(userId, id);
+
+            if (interaction == null)
             {
-                article.Likes--;  // Decrement the like count
+                // If no interaction, create a new dislike entry
+                _articleService.AddArticleInteraction(userId, id, false, true);  // Add a dislike, not a like
+                articleDetails.Likes--;  // Decrease the like count
             }
-            _db.SaveChanges();
+            else if (!interaction.Disliked)
+            {
+                // If the user previously liked, remove the like and add a dislike
+                _articleService.UpdateArticleInteraction(userId, id, false, true);
+                articleDetails.Likes--;  // Decrease the like count (undo like)
+            }
+            // If the user already disliked, do nothing.
+
+            _articleService.UpdateArticle(id, articleDetails);  // Save changes to the article (like count)
             return RedirectToAction("Details", new { id = id });
         }
 
@@ -240,6 +295,7 @@ namespace OnlineNews.Controllers
 
             return View(data);
         }
+
         [HttpPost]
         public IActionResult EditAsWriter(Article article)
         {
@@ -270,6 +326,30 @@ namespace OnlineNews.Controllers
             _db.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
-        
+        public IActionResult AcceptCookies()
+        {
+            // Set a cookie indicating the user has accepted cookies
+            Response.Cookies.Append("CookieConsent", "Accepted", new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddYears(1),  // Keep for a year
+                HttpOnly = true, // To help with security
+                Secure = true, // Only sent over HTTPS
+            });
+
+            TempData["Message"] = "You have accepted cookies.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult DeclineCookies()
+        {
+            // Remove the cookie or set it to a declined status
+            Response.Cookies.Delete("CookieConsent");
+
+            TempData["Message"] = "You have declined cookies.";
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

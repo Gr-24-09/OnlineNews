@@ -2,22 +2,21 @@
 @model OnlineNews.Models.API.SpotPriceNow
 
 
-<h4 class="justify-content-center" style="text-decoration:underline;">Electricity Spot Prices</h4>
+<h4 class="justify-content-center" style="color:blue;"><b>Electricity Spot Prices</b></h4>
 <div class="row">
     <div style="display:-webkit-inline;margin-left:auto">
-        <span><b>Date:@Model.date</b></span><span> </span>
+        <span><b style="color:blue;">Date:@Model.date</b></span><span> </span>
         @for (int i = 0; i < Model.SE1.Length; i++)
         {
-            <span><strong>Hour:@Model.SE1[i].hour:00</strong></span>
+            <span style="color:blue;"><strong>  Hour:@Model.SE1[i].hour:00</strong></span>
         }
-
     </div>
     <br />
     <div class="row justify-content-center" style="margin-left:5px">
         <table id="prices">
             <tr>
                 <th>Area</th>
-                <th>Price (SEK)</th>
+                <th>Price(SEK)</th>
             </tr>
             @for (int i = 0; i < Model.SE1.Length; i++)
             {
@@ -46,7 +45,6 @@
     span{
         padding-left:5px;
         text-align:center;
-        text-decoration: underline;
     }
 
     #prices {

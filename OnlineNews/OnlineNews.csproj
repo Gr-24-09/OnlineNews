@@ -22,4 +22,8 @@
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
     <PackageReference Include="System.Net.Http.Json" Version="9.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Shared\Components\ElectricityPrices\" />
+  </ItemGroup>
 </Project>
