@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pag
 using OnlineNews.Data;
 using OnlineNews.Models.Database;
 using OnlineNews.Service;
+using System.Data;
 using System.Security.Claims;
 
 
@@ -17,15 +18,21 @@ namespace OnlineNews.Controllers
 
         private readonly UserManager<User> _userManager;
         private readonly IAdminService _adminService;
+        private readonly IUserService _userService;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdminController(UserManager<User> userManager, IAdminService adminService)
+        public AdminController(UserManager<User> userManager, IAdminService adminService, 
+            RoleManager<IdentityRole> roleManager, IUserService userService)
         {
             _userManager = userManager;
             _adminService = adminService;
+            _roleManager = roleManager;
+            _userService = userService;
         }
         public async Task<IActionResult> ListUsers()
         { 
-            var users = await _userManager.Users.ToListAsync();
+            var users = _userService.GetUsersWithRoles();
+            ViewBag.Roles = _roleManager.Roles.ToList();
             return View(users); 
         }
         public IActionResult Claims()
@@ -40,20 +47,41 @@ namespace OnlineNews.Controllers
             }
             return RedirectToAction("ListUsers");
         }
+
+
+
+        public async Task<IActionResult> AddRoleToUser(string userId, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                if (!currentRoles.Contains(role))
+                {
+                    await _userManager.AddToRoleAsync(user, role);
+                }
+            }
+            return RedirectToAction(nameof(ListUsers));
+        }
+
+
+
         public async Task<IActionResult> RemoveRoleFromUser(string userId) 
         {
-            await _adminService.RemoveAdminRoleFromEmployee(userId);
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                foreach (var role in currentRoles)
+                {
+                    await _userManager.RemoveFromRoleAsync(user, role);
+                }
+            }
             return RedirectToAction(nameof(ListUsers));
         }
 
-        public async Task<IActionResult> AddRoleToUser(string userId)
-        {
-            await _adminService.AddAdminRoleToEmployee(userId);
-            return RedirectToAction(nameof(ListUsers));
-        }
 
-        // testing area
-
+        
         public async Task<IActionResult> ToggleUserStatus(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
@@ -65,7 +93,6 @@ namespace OnlineNews.Controllers
             return RedirectToAction(nameof(ListUsers)); // Redirect back to the user list
         }
 
-        // testing area
 
         //[Authorize(Roles = "Admin")]
         //private readonly IAdminService _adminService;

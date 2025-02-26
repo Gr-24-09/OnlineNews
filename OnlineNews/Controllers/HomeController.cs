@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Interfaces;
 using OnlineNews.Models;
@@ -17,7 +17,9 @@ public class HomeController : Controller
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ISubscriptionService _subscriptionService;
 
+
     public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService, ISubscriptionService subscriptionService, IArticleService articleService, IHttpContextAccessor httpContextAccessor)
+ 
     {
         _logger = logger;
         _userService = userService;
@@ -66,12 +68,12 @@ public class HomeController : Controller
     [Authorize]
     public async Task<IActionResult> PremiumArticle()
     {
+
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
 
         if (subscription != null && subscription.SubscriptionType?.TypeName == "Premium")
         {
-
             return View();
         }
         else
@@ -91,6 +93,7 @@ public class HomeController : Controller
         // Pass the city and weather data to the view
         ViewData["City"] = city;
         return View(weather);
+
     }
         public IActionResult EditorsChoiced()
         {

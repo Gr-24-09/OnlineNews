@@ -3,7 +3,7 @@
 @using OnlineNews.Service
 @inject IAdminService _adminService
 
-@model IEnumerable<User>
+@model IEnumerable<UserWithRolesVM>
 
 
 
@@ -41,26 +41,56 @@
             <tr>
 
                 <td>
-                    @item.UserName
+                    @item.User.UserName
                 </td>
                 <td>
-                    @item.Email
+                    @item.User.Email
                 </td>
                 <td>
-                    @item.FirstName
+                    @item.User.FirstName
                 </td>
                 <td>
-                    @item.LastName
+                    @item.User.LastName
                 </td>
                 <td>
-                    @{
+                   @*  @{
                         string role = await _adminService.FindRole(item);
-                    }
-                    <span>@role</span>
+                    } *@
+                    @* <span>@role</span> *@
+
+                    @(item.Roles.Any() ? string.Join(", ", item.Roles) : "No roles assigned")
+
                 </td>
+                
+                    
                 <td>
-                        <a asp-controller="Admin" asp-action="AddRoleToUser" asp-route-userId="@item.Id"> Add</a>
+                    <form asp-controller="Admin" asp-action="AddRoleToUser" method="post" >
+                        <input type="hidden" name="userId" value="@item.User.Id" />
+                        <select name="role" id="Roles">
+                            @foreach(var myRole in ViewBag.Roles)
+                                {
+
+                                    @* <option value="@myRole.Id"> @myRole.Name </option> *@
+                                    <option value="@myRole.Name"> @myRole.Name </option>
+
+                                }
+
+                        </select>
+                        <button type="submit" class="btn btn-primary">Assign Role</button>
+                    </form>
+
+
                 </td>
+
+                <td>
+                    <form asp-action="RemoveRoleFromUser" asp-controller="Admin" method="post" style="display:inline;">
+                        <input type="hidden" name="userId" value="@item.User.Id" />
+                        <button type="submit" class="btn btn-danger">Remove Role</button>
+                    </form>
+                </td>
+            
+
+                
             </tr>
 
         }
@@ -94,28 +124,28 @@
     </thead>
     <tbody>
 
-        @foreach (var item in Model.Where(x => x.IsActive == true))
+        @foreach (var item in Model.Where(x => x.User.IsActive == true))
         {
 
             <tr>
                 <td>
-                    @item.UserName
+                    @item.User.UserName
                 </td>
                 <td>
-                    @item.Email
+                    @item.User.Email
                 </td>
                 <td>
-                    @item.FirstName
+                    @item.User.FirstName
                 </td>
                 <td>
-                    @item.LastName
+                    @item.User.LastName
                 </td>
                 <td>
-                    @item.IsActive
+                    @item.User.IsActive
                 </td>
 
                 <td>
-                    <a class="btn btn-warning" asp-controller="Admin" asp-action="ToggleUserStatus" asp-route-userId="@item.Id">
+                    <a class="btn btn-warning" asp-controller="Admin" asp-action="ToggleUserStatus" asp-route-userId="@item.User.Id">
                         Deactivate
                     </a>
                 </td>
@@ -154,28 +184,28 @@
 
     <tbody>
 
-        @foreach (var item in Model.Where(x => x.IsActive == false))
+        @foreach (var item in Model.Where(x => x.User.IsActive == false))
         {
 
             <tr>
                 <td>
-                    @item.UserName
+                    @item.User.UserName
                 </td>
                 <td>
-                    @item.Email
+                    @item.User.Email
                 </td>
                 <td>
-                    @item.FirstName
+                    @item.User.FirstName
                 </td>
                 <td>
-                    @item.LastName
+                    @item.User.LastName
                 </td>
                 <td>
-                    @item.IsActive
+                    @item.User.IsActive
                 </td>
 
                 <td>
-                    <a class="btn btn-success" asp-controller="Admin" asp-action="ToggleUserStatus" asp-route-userId="@item.Id">
+                    <a class="btn btn-success" asp-controller="Admin" asp-action="ToggleUserStatus" asp-route-userId="@item.User.Id">
                         Activate
                     </a>
                 </td>
