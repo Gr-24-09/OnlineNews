@@ -1,4 +1,5 @@
-﻿using OnlineNews.Models.Database;
+﻿using OnlineNews.Models;
+using OnlineNews.Models.Database;
 
 namespace OnlineNews.Service
 {
@@ -9,6 +10,7 @@ namespace OnlineNews.Service
         public Task<string> AddEmployee();
 
         public List<User> GetUsersByIsActive();
+        List<UserWithRolesVM> GetUsersWithRoles();
 
     }
 }
