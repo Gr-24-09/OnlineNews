@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using OnlineNews.Models;
+using OnlineNews.Services;
 
 namespace OnlineNews.Controllers
 {
@@ -17,11 +18,13 @@ namespace OnlineNews.Controllers
         private readonly IArticleService _articleService;
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _db;
-        public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db, IHttpContextAccessor httpContextAccessor)
+        private readonly IRequestService _requestService;
+        public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db, IHttpContextAccessor httpContextAccessor, IRequestService requestService)
         {
             _articleService = articleService;
             _userManager = userManager;
             _db = db;
+            _requestService= requestService;
         }
 
         [Authorize(Roles = "Editor,Admin,Writer")]
@@ -163,7 +166,7 @@ namespace OnlineNews.Controllers
             ViewData["CategoryName"] = category.Name;
             return View(articles);
         }
-        public IActionResult SearchResult(string searchitem)
+        public async Task<IActionResult> SearchResult(string searchitem)
         {
             if (string.IsNullOrEmpty(searchitem))
             {
@@ -173,13 +176,19 @@ namespace OnlineNews.Controllers
             articleList = articleList.Where(x =>
                 x.Category.Name.Contains(searchitem) ||
                 x.LinkText.Contains(searchitem) ||
-                x.EditorsChoice.ToString().Contains(searchitem)||
-                x.Likes.ToString().Contains(searchitem)||
-                x.Views.ToString().Contains(searchitem)||
-                x.Content.Contains(searchitem)||
-                x.ContentSummary.Contains(searchitem)
+                x.EditorsChoice.ToString().Contains(searchitem) ||
+                x.Likes.ToString().Contains(searchitem) ||
+                x.Views.ToString().Contains(searchitem)
             );
             var articles = articleList.ToList();
+            if (!articles.Any())
+            {
+                ViewBag.msg = $"No results found for '{searchitem}'.";
+            }
+            else
+            {
+                ViewBag.msg = searchitem;
+            }
             return View(articles);
         }
         public IActionResult GetNumberOfLikesForAnArticle(int id)
