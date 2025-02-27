@@ -5,8 +5,8 @@
     ViewData["Title"] = "Details";
 }
 
-<br />
-<br />
+<div class="mt-4"></div>
+<div class="mt-4"></div>
 <div class="container-fluid allfont">
     <div class="row">
         <div class="row">
@@ -16,21 +16,21 @@
         </div>
     </div>
 </div>
-<br />
-<br />
+<div class="mt-4"></div> 
+<div class="mt-4"></div> 
 <div class="container">
     <div class="row justify-content-center">
         <div class="row">
             <em>@Model.PublishedDate</em>
         </div>
-        <br />
+        <div class="mt-4"></div> <!-- Bootstrap class for margin-top -->
         <div class="row img">
             <img src="@Model.ImageLink" alt="picture of Article" style="width:720px;height:400px" />
         </div>
     </div>
 </div>
-<br />
-<br />
+<div class="mt-4"></div> 
+<div class="mt-4"></div> 
 <div class="row allfont">
     <p>
         @Html.Raw(@Model.Content)

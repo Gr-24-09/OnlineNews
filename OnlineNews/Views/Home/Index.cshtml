@@ -72,7 +72,6 @@
             @foreach (var item in Model.SomeLatestNews.Skip(8))
             {
                 <div class="col-12 col-md-6 col-lg-3 mb-3">
-                    <!-- Responsive: Full-width on small screens, 2 per row on medium, 4 per row on large -->
                     <partial name="_EditorsPartial" model="@item" />
 
                     @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
@@ -105,8 +104,8 @@
 <div class="card mt-2 mb-2 text-center border-white">
     <div class="row">
         <div class="row">
-            <a href="https://1040abroad.com/" target="_blank" class="text-white  mx-2" aria-label="Advertisement">
-                <img src="https://tpc.googlesyndication.com/simgad/15465053050894477968" style="width:auto;" />
+            <a href="https://seychelles.com/home?utm_source=paidpartnerships&utm_medium=billboard&utm_campaign=BBC_seychelles_way&utm_content=sustainability" target="_blank" class="text-white  mx-2" aria-label="Advertisement">
+                <img src="https://s0.2mdn.net/dynamic/2/11183915/dyle7zu5kwqf5.cloudfront.net/cb3d0be6-d7ce-4775-bbb8-e47a157de393/gradient.png_1723216546185_gradient.png" style="width:auto;" class="img-fluid" />
             </a>
         </div>
     </div>
@@ -123,7 +122,6 @@
             @foreach (var item in Model.Mostpopular)
             {
                 <div class="col-12 col-md-4 mb-3">
-                    <!-- Full width on small screens, 3 per row on medium+ -->
                     <partial name="_linkTextPartial" model="@item" />
 
                     @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
