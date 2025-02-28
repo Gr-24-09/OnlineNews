@@ -79,12 +79,14 @@ namespace OnlineNews.Services
         }
         public  List<Article> OneLatestNews() 
         {
-            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Take(2).ToList();
+            var categories = new List<string> { "World", "Sweden" };  // List of categories 
+            var articles2 = _db.Articles.Where(x => categories.Contains(x.Category.Name)).OrderByDescending(x => x.PublishedDate).Take(2).ToList();
             return articles2;
         }
        public List<Article> SomeLatestNews()
        {
-            var articles2 = _db.Articles.OrderByDescending(x => x.PublishedDate).Skip(1).Take(12).ToList();
+            var categories = new List<string> { "World", "Sweden" };  // List of categories 
+            var articles2 = _db.Articles.Where(x => categories.Contains(x.Category.Name)).OrderByDescending(x=>x.PublishedDate).Skip(2).Take(20) .ToList();
             return articles2;
        }
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 
