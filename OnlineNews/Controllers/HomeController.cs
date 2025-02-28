@@ -28,7 +28,6 @@ public class HomeController : Controller
     }
     public async Task<IActionResult> Index()
     {
-        // Check if the user has consented
         ViewBag.HasConsented = _articleService.HasConsented(_httpContextAccessor);
         var result = await _userService.AddEmployee();
         FrontPageViewModel obj = new FrontPageViewModel();
@@ -37,6 +36,12 @@ public class HomeController : Controller
         obj.OneLatestNews = _articleService.OneLatestNews();
         return View(obj);
     }
+
+    //public IActionResult Privacy()
+    //{
+    //    return View();
+    //}
+
     public IActionResult Privacy()
     {
         return View();
@@ -83,6 +88,7 @@ public class HomeController : Controller
         {
             weather = await _requestService.GetWeatherByCityNameAsync(city);
         }
+
         ViewData["City"] = city;
         return View(weather);
 
@@ -91,6 +97,21 @@ public class HomeController : Controller
         {
             var articles1 = _articleService.EditorsChoice();
             return View(articles1);
+        }
+        [HttpPost]
+        public IActionResult AcceptCookies()
+        {
+            _articleService.AcceptCookies(_httpContextAccessor);
+            TempData["Message"] = "You have accepted cookies.";
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public IActionResult DeclineCookies()
+        {
+            _articleService.DeclineCookies(_httpContextAccessor);
+            TempData["Message"] = "You have declined cookies.";
+            return RedirectToAction("Index");
+
         }
 }
 

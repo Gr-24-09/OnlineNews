@@ -148,5 +148,95 @@
     </div>
 </div>
 
-    
- 
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2 {
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    text-decoration: underline;
+    color: #007bff;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+    }
+.col-md-10 {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    padding: 20px;
+}
+
+.col-3 {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.col-3:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.partial {
+    margin-bottom: 10px;
+}
+
+a {
+    display: inline-block;
+    margin-top: 10px;
+    margin-right: 10px;
+    text-decoration: none;
+}
+
+a svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s ease-in-out;
+}
+
+a:hover svg {
+    transform: scale(1.1);
+}
+
+a[asp-action="Edit"] svg {
+    fill: #007bff;
+}
+
+a[asp-action="Delete"] svg {
+    fill: #d9534f;
+}
+
+.m-3 {
+    margin: 1rem;
+}
+ {
+    .col-3 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+hr {
+    border: 0;
+    border-top: 2px solid #ccc;
+    margin: 30px 0;
+}
+
+
+</style>
