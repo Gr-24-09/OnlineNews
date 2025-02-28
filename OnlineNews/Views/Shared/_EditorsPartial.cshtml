@@ -3,7 +3,7 @@
 
 <div class="card border-white mb-0 mt-0">
     <div class="card-body">
-        <a  asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><img src="@Model.ImageLink" class="card-img-top" style="width:270px;height:170px" /></a>
+        <a asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><img src="@Model.ImageLink" class="card-img-top img-fluid" style="width:270px;height:170px" /></a>
         <a style="color:black;text-decoration-line:none" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><h5 class="card-title"><b>@Model.Headline</b></h5></a>
         <a style="color:black;text-decoration-line:none" asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id"><p>@Model.ContentSummary</p></a>
     </div>

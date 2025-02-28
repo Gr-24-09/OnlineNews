@@ -70,6 +70,44 @@ namespace OnlineNews.Service
             var role = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
             return role;
         }
+
+        public async Task<string> AddRoleToUser(string userId, string role)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                if (!currentRoles.Contains(role))
+                {
+                    var result = await _userManager.AddToRoleAsync(user, role);
+                    if (result.Succeeded)
+                    {
+                        return "Role Added";
+                    }
+                }
+            }
+            return "Failed to Add Role";
+        }
+
+        public async Task<string> RemoveRoleFromUser(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                var currentRoles = await _userManager.GetRolesAsync(user);
+                foreach (var role in currentRoles)
+                {
+                    var result = await _userManager.RemoveFromRoleAsync(user, role);
+                    if (!result.Succeeded)
+                    {
+                        return "Failed to Remove Role";
+                    }
+                }
+                return "Role Removed";
+            }
+            return "User Not Found";
+        }
+
     }
     
 }

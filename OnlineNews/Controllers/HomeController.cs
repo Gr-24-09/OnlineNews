@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Interfaces;
 using OnlineNews.Models;
@@ -16,7 +16,6 @@ public class HomeController : Controller
     private readonly IArticleService _articleService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly ISubscriptionService _subscriptionService;
-
     public HomeController(ILogger<HomeController> logger, IUserService userService, IRequestService requestService, ISubscriptionService subscriptionService, IArticleService articleService, IHttpContextAccessor httpContextAccessor)
     {
         _logger = logger;
@@ -27,14 +26,6 @@ public class HomeController : Controller
         _subscriptionService = subscriptionService;
 
     }
-    public async Task<IActionResult> Weather()
-    {
-
-        var weatherForecast = await _requestService.GetWeatherByCityNameAsync("Linköping");
-        return View(weatherForecast);
-    }
-
-
     public async Task<IActionResult> Index()
     {
         ViewBag.HasConsented = _articleService.HasConsented(_httpContextAccessor);
@@ -51,12 +42,16 @@ public class HomeController : Controller
     //    return View();
     //}
 
+    public IActionResult Privacy()
+    {
+        return View();
+    }
+
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
-
     public IActionResult Claims()
     {
         var user = HttpContext.User;
@@ -69,16 +64,15 @@ public class HomeController : Controller
         }
         return RedirectToAction("ListUsers");
     }
-
     [Authorize]
     public async Task<IActionResult> PremiumArticle()
     {
+
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
 
         if (subscription != null && subscription.SubscriptionType?.TypeName == "Premium")
         {
-
             return View();
         }
         else
@@ -90,8 +84,6 @@ public class HomeController : Controller
     public async Task<IActionResult> WeatherSearch(string city)
     {
         WeatherForecast weather = null;
-
-        // If city is provided, fetch weather data
         if (!string.IsNullOrEmpty(city))
         {
             weather = await _requestService.GetWeatherByCityNameAsync(city);
@@ -99,6 +91,7 @@ public class HomeController : Controller
 
         ViewData["City"] = city;
         return View(weather);
+
     }
         public IActionResult EditorsChoiced()
         {

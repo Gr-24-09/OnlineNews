@@ -9,20 +9,29 @@
     var categoryName = ViewData["CategoryName"];
 }
 
-<h1>@categoryName News</h1>
-
-<div class="row justify-content-center">
-    <div class="col-md-10">
+<div class="card mt-2 mb-2 text-center border-white bg-light">
+    <div class="row">
         <div class="row">
-            @foreach (var item in Model)
-            {
-                <div class="col-3 m-3">
-                    <partial name="_EditorsPartial" model="item" />
-                </div>
-
-            }
+            <a href="https://www.adobe.com/se/products/photoshop.html?sdid=SPVLM3PR&mv=display&mv2=display&gclid=EAIaIQobChMIit-R2obkiwMV-hmiAx1_lzStEAEYASAAEgLY__D_BwE" target="_blank" class="text-white  mx-2" aria-label="Advertisement">
+                <img src="https://cdn.flashtalking.com/189813/4961332/FY24Q4_CC_Photography_Photoshop_SE_SV_MaxOct2024-DistractionRemoval_ST_728x90_DistractionRemoval_Release-Ps-MAXOct.jpg?472163644" style="width:auto;" class="img-fluid" />
+            </a>
         </div>
     </div>
 </div>
 
+<h1 class="row" style="border-bottom: 2px solid black"><b>@categoryName</b></h1>
+<div class="row justify-content-center allfont">
+    <div class="col-md-10">
+        <div class="row justify-content-center">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 col-md-6 col-lg-3 mb-3">
+                    <!-- Responsive layout -->
+                    <partial name="_EditorsPartial" model="item" />
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
 

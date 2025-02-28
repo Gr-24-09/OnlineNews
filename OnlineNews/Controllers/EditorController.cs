@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using OnlineNews.Data;
 using OnlineNews.Interfaces;
 using OnlineNews.Models.Database;
@@ -9,44 +10,88 @@ using OnlineNews.Services;
 namespace OnlineNews.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("Editor")]
     public class EditorController : Controller
     {
         private readonly UserManager<User> _userManager;
         private readonly IArticleService _articleService;
-        private readonly ApplicationDbContext _context;
-        private readonly ArticleService _articleService1;
-        public EditorController(UserManager<User> userManager, IArticleService articleService, ApplicationDbContext context, ArticleService articleService1)
+        private readonly ApplicationDbContext _db;
+        
+
+        public EditorController(UserManager<User> userManager, IArticleService articleService, ApplicationDbContext db)
         {
             _userManager = userManager;
             _articleService = articleService;
-            _context = context;
-            _articleService1 = articleService1;
-        }
-        public IActionResult GetArticles()
-        {
-            var article = _context.Articles.OrderByDescending(x => x.Id).Take(6).ToList();
-            return View(article);
+            _db = db;
+            
         }
 
-        [HttpGet("all")]
-        public IActionResult GetAllArticles() 
+
+        [HttpGet]
+        public IActionResult GetAllArticles(string status = "Approved")
         {
-            var articles = _articleService1.GetAllArticles();
-            return Ok(articles);
+            var articles = _articleService.GetAllArticles();
+            if (status != "All")
+            {
+                articles = articles.Where(a => a.ApprovalStatus == status).ToList();
+            }
+          ViewData["status"] = status;
+
+            if (!articles.Any())
+            {
+                ViewBag.Message = "No articles found.";
+            }
+
+            return View(articles);
         }
 
         [HttpPost("approve/{id}")]
         public IActionResult ApproveArticle(int id)
         {
-            var article = _articleService1.GetArticleById(id);
+            var article = _articleService.GetArticleById(id);
             if (article == null)
             {
                 return NotFound("Article not found");
             }
-            _articleService1.UppdateArticleApproval(id, false);
-            return Ok("article rejected");
+            _articleService.UpdateArticleApproval(id, "Approved");
+            return RedirectToAction("GetAllArticles");
         }
 
+        [HttpPost("reject/{id}")]
+        public IActionResult RejectArticle(int id)
+        {
+            var article = _articleService.GetArticleById(id);
+            if (article == null)
+            {
+                return NotFound("Article not found");
+            }
+            _articleService.UpdateArticleApproval(id, "Rejected");
+            return RedirectToAction("GetAllArticles", new { showRejected = true });
+        }
+
+        public IActionResult UpdateArticleStatus(int id, string status)
+        {
+            var article = _articleService.GetArticleById(id);
+            if(article == null)
+            {
+                return NotFound("Article not found");
+            }
+            if (new[] {"Approved", "Rejected", "Pending"}.Contains(status))
+            {
+                _articleService.UpdateArticleApproval(id, status);
+                return RedirectToAction("GetAllArticles");
+            }
+            return BadRequest("Invalid status");
+        }
+
+
+        //public enum ArticleStatus
+        //{
+        //    Waiting = 1,
+        //    Pending = 2,
+        //    Rejected = 3,
+        //    Approved = 4
+        //}
+        
     }
 }

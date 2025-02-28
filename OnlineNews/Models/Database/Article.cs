@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static OnlineNews.Controllers.EditorController;
 
 namespace OnlineNews.Models.Database
 {
@@ -44,6 +45,9 @@ namespace OnlineNews.Models.Database
         public User? Author { get; set; }
         public bool EditorsChoice { get; set; }
 
-        public bool IsApproved { get; set; }
+        //public bool IsApproved { get; set; }
+        public string ApprovalStatus { get; set; } = "Pending";
+
+        //public ArticleStatus Status { get; set; } = ArticleStatus.Waiting;
     }
 }
