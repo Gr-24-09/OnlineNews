@@ -118,7 +118,7 @@
 </div>
 <div class="row borderbar"></div>
 <div class="container">
-    <!-- Cookie Consent Popup -->
+
     @if (!ViewBag.HasConsented)
     {
         <div id="cookieConsentPopup" class="cookie-popup">
@@ -133,8 +133,6 @@
             </div>
         </div>
     }
-
-    <!-- Display TempData Message -->
     @if (TempData["Message"] != null)
     {
         <div class="alert alert-warning">@TempData["Message"]</div>
@@ -186,7 +184,3 @@
     }
 
 </style>
-
-
-
-

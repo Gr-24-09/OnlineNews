@@ -37,7 +37,6 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Index()
     {
-        // Check if the user has consented
         ViewBag.HasConsented = _articleService.HasConsented(_httpContextAccessor);
         var result = await _userService.AddEmployee();
         FrontPageViewModel obj = new FrontPageViewModel();
@@ -47,10 +46,10 @@ public class HomeController : Controller
         return View(obj);
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+    //public IActionResult Privacy()
+    //{
+    //    return View();
+    //}
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
@@ -98,7 +97,6 @@ public class HomeController : Controller
             weather = await _requestService.GetWeatherByCityNameAsync(city);
         }
 
-        // Pass the city and weather data to the view
         ViewData["City"] = city;
         return View(weather);
     }
@@ -110,7 +108,6 @@ public class HomeController : Controller
         [HttpPost]
         public IActionResult AcceptCookies()
         {
-            // Accept cookies and set the cookie consent status
             _articleService.AcceptCookies(_httpContextAccessor);
             TempData["Message"] = "You have accepted cookies.";
             return RedirectToAction("Index");
