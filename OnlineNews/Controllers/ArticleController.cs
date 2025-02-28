@@ -64,6 +64,8 @@ namespace OnlineNews.Controllers
             }
             return View(addArticle);
         }
+
+
         [HttpPost]
         [Authorize(Roles = "Editor,Admin,Writer")]
         public IActionResult AddArticle(Article newArticle)
