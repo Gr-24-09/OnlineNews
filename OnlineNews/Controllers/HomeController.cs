@@ -36,12 +36,6 @@ public class HomeController : Controller
         obj.OneLatestNews = _articleService.OneLatestNews();
         return View(obj);
     }
-
-    //public IActionResult Privacy()
-    //{
-    //    return View();
-    //}
-
     public IActionResult Privacy()
     {
         return View();
@@ -93,25 +87,11 @@ public class HomeController : Controller
         return View(weather);
 
     }
-        public IActionResult EditorsChoiced()
-        {
-            var articles1 = _articleService.EditorsChoice();
-            return View(articles1);
-        }
-        [HttpPost]
-        public IActionResult AcceptCookies()
-        {
-            _articleService.AcceptCookies(_httpContextAccessor);
-            TempData["Message"] = "You have accepted cookies.";
-            return RedirectToAction("Index");
-        }
-        [HttpPost]
-        public IActionResult DeclineCookies()
-        {
-            _articleService.DeclineCookies(_httpContextAccessor);
-            TempData["Message"] = "You have declined cookies.";
-            return RedirectToAction("Index");
+    public IActionResult EditorsChoiced()
+    {
+        var articles1 = _articleService.EditorsChoice();
+        return View(articles1);
+    }
 
-        }
 }
 
