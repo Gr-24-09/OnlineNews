@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<OnlineNews.Models.Database.Article>
 
-
 @{
     ViewData["Title"] = "Search Result";
     var searchResults = ViewBag.msg as string; 
@@ -9,11 +8,10 @@
 <br />
 <br />
 <br/>
-<h3 style="text-align:center">Your search results: @searchresults</h3>
+<h3 style="text-align:center">Your search results: @searchResults</h3>
 
 <br />
 <h3 class="text-center" style="color:blue;">Your search results:  <b style="color:green">  @searchResults</b></h3>
-
 
 <div class="row justify-content-center">
    <div class="col-md-10">
@@ -23,17 +21,16 @@
             <div class="col-12 col-md-3 m-3">
                 <partial name="_EditorsPartial" model="item" />
 
-            <div class="col-lg-3 col-md-4 col-sm-6 m-3" style="position:-webkit-sticky">
-                <partial name="_EditorsPartial" model="@item" />
-
-            </div>
-        }
+                <div class="col-lg-3 col-md-4 col-sm-6 m-3" style="position:-webkit-sticky">
+                    <partial name="_EditorsPartial" model="@item" />
+                </div>
+            </div> 
+        } 
       </div>
    </div>
 </div>
 
 <style>
-
     body {
         font-family: 'Arial', sans-serif;
         background-color: #f4f7fa;
@@ -71,17 +68,19 @@
         box-sizing: border-box;
     }
 
-    .col-md-3 m-3 {
+    .col-md-3.m-3 {
         background-color: #ffffff;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         transition: transform 0.3s ease-in-out;
     }
-    .col-md-3 m-3:hover {
+
+    .col-md-3.m-3:hover {
         transform: translateY(-5px);
     }
- {
+
+     (max-width: 768px) {
         .col-md-3 {
             flex: 0 0 100%;
             max-width: 100%;
