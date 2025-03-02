@@ -2,7 +2,6 @@
 using OnlineNews.Interfaces;
 using OnlineNews.Models.Database;
 using OnlineNews.Data;
-
 using Microsoft.AspNetCore.Mvc.Rendering;
 using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using OnlineNews.Models;
 using OnlineNews.Services;
+using System.Drawing.Printing;
 
 namespace OnlineNews.Controllers
 {
@@ -19,6 +19,7 @@ namespace OnlineNews.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _db;
         private readonly IRequestService _requestService;
+        private const int PageSize = 15; // Set the number of articles per page
         public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db, IHttpContextAccessor httpContextAccessor, IRequestService requestService)
         {
             _articleService = articleService;
@@ -28,19 +29,35 @@ namespace OnlineNews.Controllers
         }
 
         [Authorize(Roles = "Editor,Admin,Writer")]
-        public IActionResult Index(string name)
+        public IActionResult Index(int page = 1, string categoryName = "")
         {
-            CategoryViewModel obj = new CategoryViewModel();
-            obj.WorldArticles = _db.Articles.Where(a => a.Category.Name == "World").ToList();
-            obj.EconomyArticles = _db.Articles.Where(a => a.Category.Name == "Economy").ToList();
-            obj.TravelArticles = _db.Articles.Where(a => a.Category.Name == "Travel").ToList();
-            obj.SwedenArticles = _db.Articles.Where(a => a.Category.Name == "Sweden").ToList();
-            obj.ArtArticles = _db.Articles.Where(a => a.Category.Name == "Arts").ToList();
-            obj.SportArticles = _db.Articles.Where(a => a.Category.Name == "Sport").ToList();
-            obj.HealthArticles = _db.Articles.Where(a => a.Category.Name == "Health").ToList();
-            obj.WeatherArticles=_db.Articles.Where(a => a.Category.Name == "Weather").ToList();
-            return View(obj);
+            var totalArticles = _db.Articles.AsQueryable();
+
+            if (!string.IsNullOrEmpty(categoryName))
+            {
+                totalArticles = totalArticles.Where(a => a.Category.Name == categoryName);
+            }
+
+            var totalPages = (int)Math.Ceiling(totalArticles.Count() / (double)PageSize);
+
+            var articles = totalArticles
+                .OrderByDescending(a => a.PublishedDate)
+                .Skip((page - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            var viewModel = new CategoryViewModel
+            {
+                Articles = articles,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                CategoryFilter = categoryName
+            };
+
+            return View(viewModel);
         }
+
+
         public IActionResult ArchivedArticles()
         {
             var articles1 = _db.Articles.Where(x => x.IsArchieved).Take(10).ToList();
@@ -64,6 +81,8 @@ namespace OnlineNews.Controllers
             }
             return View(addArticle);
         }
+
+
         [HttpPost]
         [Authorize(Roles = "Editor,Admin,Writer")]
         public IActionResult AddArticle(Article newArticle)
