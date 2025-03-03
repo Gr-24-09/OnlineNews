@@ -56,6 +56,9 @@
                                     <li>
                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch" style="color:blue;">Weather Forecast</a>
                                     </li>
+                                    <li>
+                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="BusinessData">Business Data</a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -94,6 +97,9 @@
                         }
                         <li>
                              <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch" style="color:blue;">Weather Forecast</a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="BusinessData">Business Data</a>
                         </li>
                         @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
                         { 

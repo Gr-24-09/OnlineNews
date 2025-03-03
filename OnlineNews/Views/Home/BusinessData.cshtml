@@ -1,0 +1,61 @@
+﻿@model OnlineNews.Models.API.Businessprice
+    
+
+<h4 class="row justify-content-center" style="color:blue;margin-top:20px;margin-bottom:20px;"><b class="row">Business Prices</b></h4>
+
+    <br />
+    <div class="row justify-content-center" style="margin-left:5px">
+        <table id="prices">
+            <tr>
+                <th>Name</th>
+                <th>PrevClose</th>
+                <th>PercentageChange</th>
+                <th>Close</th>
+                <th>Symbol</th>
+            </tr>
+            @for (int i = 0; i < Model.top10.Length; i++)
+            {
+                <tr>
+                    <td>@Model.top10[i].name</td>
+                    <td>@Model.top10[i].prevClose</td>
+                    <td>@Model.top10[i].percentChange</td>
+                    <td>@Model.top10[i].close</td>
+                    <td>@Model.top10[i].symbol</td>
+                </tr>
+            }
+        </table>
+    </div>
+
+<style>
+    
+
+    #prices {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 180%;
+    }
+
+        #prices td, #prices th {
+            border: 2px solid #962;
+            text-align: center;
+        }
+
+        #prices tr:nth-child(even) {
+            background-color: #591;
+        }
+
+        #prices tr:hover {
+            background-color: #7e82aa;
+        }
+
+        #prices th {
+            padding-top: 20px;
+            padding-bottom: 20px;
+            text-align: center;
+            background-color: #143;
+            color: white;
+        }
+</style>
+
+
+

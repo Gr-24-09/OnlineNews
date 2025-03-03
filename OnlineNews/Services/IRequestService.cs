@@ -6,5 +6,6 @@ namespace OnlineNews.Services
     {
         Task<SpotPriceNow> GetData();
         Task<WeatherForecast> GetWeatherByCityNameAsync(string cityName);
+        Task<Businessprice> GetPrices();
     }
 }
