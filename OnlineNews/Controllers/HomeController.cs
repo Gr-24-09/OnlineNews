@@ -87,6 +87,11 @@ public class HomeController : Controller
         return View(weather);
 
     }
+    public async Task<IActionResult> BusinessData()
+    {
+        var data = await _requestService.GetPrices();
+        return View(data);
+    }
     public IActionResult EditorsChoiced()
     {
         var articles1 = _articleService.EditorsChoice();

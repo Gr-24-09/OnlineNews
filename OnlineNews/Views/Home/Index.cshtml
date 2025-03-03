@@ -68,6 +68,7 @@
         <div class="row electricity">
             @await Component.InvokeAsync("ElectricityPrices")
         </div>
+       
     </div>
 </div>
 <div class="row justify-content-center allfont mt-0">
@@ -161,30 +162,6 @@
 </div>
 
 <div class="row borderbar"></div>
-
-@* <div class="container">
-
-    @if (!ViewBag.HasConsented)
-    {
-        <div id="cookieConsentPopup" class="cookie-popup">
-            <div class="cookie-banner">
-                <p>We use cookies to improve your experience.</p>
-                <form method="post" asp-controller="Home" asp-action="AcceptCookies" style="display:inline;">
-                    <button type="submit" class="btn btn-primary">Accept</button>
-                </form>
-                <form method="post" asp-controller="Home" asp-action="DeclineCookies" style="display:inline;">
-                    <button type="submit" class="btn btn-danger">Decline</button>
-                </form>
-            </div>
-        </div>
-    }
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert alert-warning">@TempData["Message"]</div>
-    }
-</div> *@
-
-
 @* Cookie Consent Banner *@
 @if (Context.Request.Cookies["CookieConsent"] == null)  // Cookie is not set yet
 {

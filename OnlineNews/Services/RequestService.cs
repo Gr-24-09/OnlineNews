@@ -45,7 +45,27 @@ namespace OnlineNews.Services
                 return new SpotPriceNow(); 
             }
         }
+        public async Task<Businessprice> GetPrices()
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync("https://stockapinewsapp.azurewebsites.net/summary?region=stockholm");
 
+                if (response.IsSuccessStatusCode)
+                {
+                    var data = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<Businessprice>(data)!;
+                }
+                else
+                {
+                    return new Businessprice();
+                }
+            }
+            catch (Exception ex)
+            {
+                return new Businessprice();
+            }
+        }
 
     }
 }
