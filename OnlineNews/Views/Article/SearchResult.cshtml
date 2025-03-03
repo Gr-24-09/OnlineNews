@@ -1,4 +1,5 @@
-﻿@model IEnumerable<OnlineNews.Models.Database.Article>
+﻿
+@model IEnumerable<OnlineNews.Models.Database.Article>
 
 @{
     ViewData["Title"] = "Search Result";
@@ -8,11 +9,10 @@
 <br />
 <br />
 <br/>
-<h3 style="text-align:center">Your search results: @searchresults</h3>
+<h3 style="text-align:center">Your search results: @searchResults</h3>
 
 <br />
 <h3 class="text-center" style="color:blue;">Your search results:  <b style="color:green">  @searchResults</b></h3>
-
 
 <div class="row justify-content-center">
    <div class="col-md-10">
@@ -21,15 +21,12 @@
         {
             <div class="col-12 col-md-3 m-3">
                 <partial name="_EditorsPartial" model="item" />
-
-            <div class="col-lg-3 col-md-4 col-sm-6 m-3" style="position:-webkit-sticky">
-                <partial name="_EditorsPartial" model="@item" />
-
             </div>
         }
       </div>
    </div>
 </div>
+
 <style>
     body {
         font-family: 'Arial', sans-serif;
@@ -44,10 +41,10 @@
         margin-bottom: 15px;
         font-weight: 600;
     }
-    .row {
+   /*  .row {
         margin-top: 50px;
         padding: 20px;
-    }
+    } */
     .col-md-10 {
         padding: 0 15px;
     }
@@ -64,7 +61,7 @@
         box-sizing: border-box;
     }
 
-    .col-md-3 m-3 {
+    .col-md-3.m-3 {
         background-color: #ffffff;
         padding: 20px;
         border-radius: 10px;
@@ -75,11 +72,8 @@
     .col-md-3.m-3:hover {
         transform: translateY(-5px);
     }
- {
-        .col-md-3 {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
+
+
     a {
         color: #007bff;
         text-decoration: none;
