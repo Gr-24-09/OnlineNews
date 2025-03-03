@@ -2,29 +2,21 @@
 
 @{
     ViewData["Title"] = "Search Result";
-    var searchResults = ViewBag.msg as string; 
+   
 }
 
-<br />
-<br />
-<br/>
-<h3 style="text-align:center">Your search results: @searchresults</h3>
+@{
+    var searchResults = ViewBag.msg as string;
+}
 
-<br />
-<h3 class="text-center" style="color:blue;">Your search results:  <b style="color:green">  @searchResults</b></h3>
-
-
+<h3 class="row text-center" style="color:blue;margin-top:0px;margin-bottom:10px;">Your search results:  <b style="color:blue">  @searchResults</b></h3>
 <div class="row justify-content-center">
    <div class="col-md-10">
       <div class="row">
         @foreach (var item in Model)
         {
-            <div class="col-12 col-md-3 m-3">
-                <partial name="_EditorsPartial" model="item" />
-
-            <div class="col-lg-3 col-md-4 col-sm-6 m-3" style="position:-webkit-sticky">
+            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
                 <partial name="_EditorsPartial" model="@item" />
-
             </div>
         }
       </div>
@@ -43,10 +35,6 @@
         font-size: 1.8rem;
         margin-bottom: 15px;
         font-weight: 600;
-    }
-    .row {
-        margin-top: 50px;
-        padding: 20px;
     }
     .col-md-10 {
         padding: 0 15px;
@@ -75,7 +63,7 @@
     .col-md-3.m-3:hover {
         transform: translateY(-5px);
     }
- {
+ 
         .col-md-3 {
             flex: 0 0 100%;
             max-width: 100%;
