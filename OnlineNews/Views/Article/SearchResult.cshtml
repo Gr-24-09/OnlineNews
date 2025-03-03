@@ -3,97 +3,26 @@
 
 @{
     ViewData["Title"] = "Search Result";
-   
 }
-
-<br />
-<br />
-<br/>
-<h3 style="text-align:center">Your search results: @searchResults</h3>
-
-<br />
-<h3 class="text-center" style="color:blue;">Your search results:  <b style="color:green">  @searchResults</b></h3>
-
 @{
     var searchResults = ViewBag.msg as string;
 }
 
-<h3 class="row text-center" style="color:blue;margin-top:0px;margin-bottom:10px;">Your search results:  <b style="color:blue">  @searchResults</b></h3>
+<h3 class="row text-center" style="margin-top:0px;margin-bottom:10px;">Your search results:<b style="color:blue"> @searchResults</b></h3>
 <div class="row justify-content-center">
-   <div class="col-md-10">
-      <div class="row">
+    <div class="col-md-10  justify-content-center">
+        <div class="row  justify-content-center borderbarhere">
         @foreach (var item in Model)
         {
-            <div class="col-12 col-md-3 m-3">
-                <partial name="_EditorsPartial" model="item" />
-            <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+            <div class="col-12 col-md-6 col-lg-3 mb-3">
                 <partial name="_EditorsPartial" model="@item" />
             </div>
         }
       </div>
    </div>
 </div>
-
 <style>
-    body {
-        font-family: 'Arial', sans-serif;
-        background-color: #f4f7fa;
-        margin: 0;
-        padding: 0;
-    }
-    h3 {
-        text-align: center;
-        color: #333;
-        font-size: 1.8rem;
-        margin-bottom: 15px;
-        font-weight: 600;
-    }
-   /*  .row {
-        margin-top: 50px;
-        padding: 20px;
-    } */
-
-
-    .col-md-10 {
-        padding: 0 15px;
-    }
-    .col-12 {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-    }
-
-    .col-md-3 {
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-        box-sizing: border-box;
-    }
-
-    .col-md-3.m-3 {
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
-    }
-
-    .col-md-3.m-3:hover {
-        transform: translateY(-5px);
-    }
-
-
- 
-        .col-md-3 {
-            flex: 0 0 100%;
-            max-width: 100%;
-        }
-    a {
-        color: #007bff;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
+   .borderbarhere{
+       border-top:2px solid black
+   }
 </style>
