@@ -11,7 +11,6 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace OnlineNews.Services
 {
-    
     public class ArticleService : IArticleService
     {
         private readonly ApplicationDbContext _db;

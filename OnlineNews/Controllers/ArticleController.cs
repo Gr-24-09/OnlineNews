@@ -167,6 +167,16 @@ namespace OnlineNews.Controllers
         }
 
         [Authorize]
+        //public IActionResult Details(int id)
+        //{
+        //    var articleDetails = _articleService.GetDetails(id);
+        //    if (articleDetails == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    articleDetails.Views++;
+        //    return View(articleDetails);
+        //}
         public IActionResult Details(int id)
         {
             var articleDetails = _articleService.GetDetails(id);
@@ -174,9 +184,38 @@ namespace OnlineNews.Controllers
             {
                 return NotFound();
             }
+
+            // Increment view count
             articleDetails.Views++;
+
+            // Calculate the time difference
+            var timeSpan = DateTime.Now - articleDetails.PublishedDate;
+            string timeAgo;
+
+            if (timeSpan.TotalDays >= 1)
+            {
+                timeAgo = $"{(int)timeSpan.TotalDays} day{(timeSpan.TotalDays > 1 ? "s" : "")} ago";
+            }
+            else if (timeSpan.TotalHours >= 1)
+            {
+                timeAgo = $"{(int)timeSpan.TotalHours} hour{(timeSpan.TotalHours > 1 ? "s" : "")} ago";
+            }
+            else if (timeSpan.TotalMinutes >= 1)
+            {
+                timeAgo = $"{(int)timeSpan.TotalMinutes} minute{(timeSpan.TotalMinutes > 1 ? "s" : "")} ago";
+            }
+            else
+            {
+                timeAgo = "just now";
+            }
+
+            // Pass the timeAgo string to the view (using ViewData or a model property)
+            ViewData["TimeAgo"] = timeAgo;
+
+            // Return the view with the article details
             return View(articleDetails);
         }
+
         public IActionResult CategoryNews(int id)
         {
             var articles = _articleService.GetAllArticlesByItsCategory(id);
