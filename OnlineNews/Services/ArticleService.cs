@@ -86,7 +86,7 @@ namespace OnlineNews.Services
        public List<Article> SomeLatestNews()
        {
             var categories = new List<string> { "World", "Sweden" };  // List of categories 
-            var articles2 = _db.Articles.Where(x => categories.Contains(x.Category.Name)).OrderByDescending(x=>x.PublishedDate).Skip(2).Take(20) .ToList();
+            var articles2 = _db.Articles.Where(x => categories.Contains(x.Category.Name)).OrderByDescending(x=>x.PublishedDate).Skip(2).Take(15) .ToList();
             return articles2;
        }
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 

@@ -95,13 +95,13 @@
                                 <a class="nav-link" asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id" style="color:blue;">@item.Name</a>
                             </li>
                         }
-                        <li>
+                        <li class="nav-item">
                              <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch" style="color:blue;">Weather Forecast</a>
                         </li>
-                        <li>
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="BusinessData">Business Data</a>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="BusinessData" style="color:blue;">Business Data</a>
                         </li>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Editor"))
+                        @if (User.IsInRole("Admin"))
                         { 
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
@@ -110,7 +110,12 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                     <li><a class="dropdown-item" asp-controller="Admin" asp-action="ListUsers">Manage users</a></li>
-                                   
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="AddArticle" style="color:blue;">Add Article</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Create" style="color:blue;">Add Category</a>
+                                    </li>
                                 </ul>
                             </li>
                         }
@@ -137,9 +142,6 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li class="nav-item">
                                         <a class="dropdown-item" asp-area="" asp-controller="Article" asp-action="AddArticle" style="color:blue;">Add Article</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="" asp-controller="Category" asp-action="Create" style="color:blue;">Add Category</a>
                                     </li>
                                 </ul>
                             </li>
