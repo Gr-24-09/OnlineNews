@@ -82,7 +82,6 @@ namespace OnlineNews.Controllers
             return View(addArticle);
         }
 
-
         [HttpPost]
         [Authorize(Roles = "Editor,Admin,Writer")]
         public IActionResult AddArticle(Article newArticle)
@@ -228,15 +227,15 @@ namespace OnlineNews.Controllers
             }
 
             // Check if the user has already liked or disliked this article
-            var interaction = _articleService.GetUserArticleInteraction(userId, id);
+            var userlike = _articleService.GetUserArticleInteraction(userId, id);
 
-            if (interaction == null)
+            if (userlike == null)
             {
                 // If no interaction, create a new like entry
                 _articleService.AddArticleInteraction(userId, id, true, false);  // Add a like, not a dislike
                 articleDetails.Likes++;  // Increment the like count
             }
-            else if (!interaction.Liked)
+            else if (!userlike.Liked)
             {
                 // If the user previously disliked, remove the dislike and add a like
                 _articleService.UpdateArticleInteraction(userId, id, true, false);
@@ -260,15 +259,15 @@ namespace OnlineNews.Controllers
             }
 
             // Check if the user has already liked or disliked this article
-            var interaction = _articleService.GetUserArticleInteraction(userId, id);
+            var userlike = _articleService.GetUserArticleInteraction(userId, id);
 
-            if (interaction == null)
+            if (userlike == null)
             {
                 // If no interaction, create a new dislike entry
                 _articleService.AddArticleInteraction(userId, id, false, true);  // Add a dislike, not a like
                 articleDetails.Likes--;  // Decrease the like count
             }
-            else if (!interaction.Disliked)
+            else if (!userlike.Disliked)
             {
                 // If the user previously liked, remove the like and add a dislike
                 _articleService.UpdateArticleInteraction(userId, id, false, true);

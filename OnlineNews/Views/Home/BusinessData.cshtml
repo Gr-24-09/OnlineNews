@@ -2,14 +2,13 @@
     
 
 <h4 class="row justify-content-center" style="color:blue;margin-top:20px;margin-bottom:20px;"><b class="row">Business Prices</b></h4>
-
     <br />
     <div class="row justify-content-center" style="margin-left:5px">
         <table id="prices">
             <tr>
                 <th>Name</th>
                 <th>PrevClose</th>
-                <th>PercentageChange</th>
+                <th>%Change</th>
                 <th>Close</th>
                 <th>Symbol</th>
             </tr>
@@ -27,12 +26,11 @@
     </div>
 
 <style>
-    
-
+  
     #prices {
-        font-family: Arial, Helvetica, sans-serif;
+        font-family:'Times New Roman', Times, serif;
         border-collapse: collapse;
-        width: 180%;
+        width: 150%;
     }
 
         #prices td, #prices th {
@@ -41,7 +39,7 @@
         }
 
         #prices tr:nth-child(even) {
-            background-color: #591;
+            background-color:yellow;
         }
 
         #prices tr:hover {

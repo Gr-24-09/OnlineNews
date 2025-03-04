@@ -26,7 +26,6 @@ namespace OnlineNews.Service
         public List<Category> GetAllCategory()
         {
             var categories = _db.Categories.ToList();
-           
             return categories;
         }
 
