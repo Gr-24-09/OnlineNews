@@ -29,16 +29,6 @@
                 <textarea asp-for="ContentSummary" class="form-control"></textarea>
                 <span asp-validation-for="ContentSummary" class="text-danger"></span>
             </div>
-            
-          @*   <div class="form-group">
-                <label asp-for="Content"></label>
-                <input type="hidden" id="NewContent" asp-for="@Model.Content" class="form-control" />
-                <div id="editor">
-                    @Html.Raw(Model.Content)
-                </div>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
- *@
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
                 <input type="hidden" id="NewContent" asp-for="Content" class="form-control" />
@@ -51,20 +41,10 @@
                 <input asp-for="ImageLink" class="form-control" />
                 <span asp-validation-for="ImageLink" class="text-danger"></span>
             </div>
-    @*         <div class="form-group">
-                <label asp-for="Category.Name" class="control-label"></label>
-                <select name="ChosenCategory" class="form-control" style="width:auto;" size="5" asp-for="Category.Name" asp-items="Model.Categories"></select>
-            </div>
-            *@     <div class="form-group">
+            <div class="form-group">
                 <label asp-for="Category.Name" class="control-label"></label>
                 <select name="ChosenCategory" class="form-control" size="5" asp-for="Category.Name" asp-items="Model.Categories"></select>
             </div>
-            @* <div class="form-group">
-                <label asp-for="IsApproved"></label>
-                <input type="checkbox" asp-for="IsApproved" />
-                <span asp-validation-for="IsApproved" class="text-danger"></span>
-            </div>
- *@
             <div class="form-group m-3">
                 <input type="submit" value="Add Article" class="btn btn-primary" />
             </div>
