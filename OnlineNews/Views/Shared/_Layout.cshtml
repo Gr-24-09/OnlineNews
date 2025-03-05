@@ -53,11 +53,11 @@
                                     <li class="nav-item">
                                         <a class="nav-link" asp-area="" asp-controller="Article" asp-action="ArchivedArticles" style="color:blue;">Archived Articles</a>
                                     </li>
-                                    <li>
+                                    <li class="nav-item">
                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch" style="color:blue;">Weather Forecast</a>
                                     </li>
-                                    <li>
-                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="BusinessData">Business Data</a>
+                                    <li class="nav-item">
+                                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="BusinessData" style="color:blue;">Business Data</a>
                                     </li>
                                 </ul>
                             </li>
@@ -95,12 +95,6 @@
                                 <a class="nav-link" asp-area="" asp-controller="Article" asp-action="CategoryNews" asp-route-id="@item.Id" style="color:blue;">@item.Name</a>
                             </li>
                         }
-                        <li class="nav-item">
-                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="WeatherSearch" style="color:blue;">Weather Forecast</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="BusinessData" style="color:blue;">Business Data</a>
-                        </li>
                         @if (User.IsInRole("Admin"))
                         { 
                             <li class="nav-item dropdown">

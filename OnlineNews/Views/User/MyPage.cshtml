@@ -15,7 +15,7 @@
     <p>Remaining Days: @Model.RemainingDays() days</p>
     <h2>Edit Profile</h2>
     <form  method="get">
-        <button type="submit">Edit Profile</button>
+        <button type="submit" class="btn btn-outline-info">Edit Profile</button>
     </form>
 
     @if (Model.Subscription.PaymentComplete)
@@ -35,7 +35,7 @@ else
 <br />
 <form asp-controller="User" asp-action="ChangeSubscription" method="post" style="display: flex; align-items: center;gap:20px;">
     <h5 style="color:blue;">Change Subscription</h5>
-    <select id="subscriptionType" name="subscriptionType" style="width:100px;"> 
+    <select id="subscriptionType" name="subscriptionType" style="width:110px;"> 
         <option class="bg-warning" value="Basic">Basic</option>
         <option class="bg-success" value="Premium">Premium</option>
     </select>

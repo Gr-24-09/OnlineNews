@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineNews.Models;
 using OnlineNews.Services;
 using System.Drawing.Printing;
+using OnlineNews.Models.API;
 
 namespace OnlineNews.Controllers
 {
@@ -167,16 +168,6 @@ namespace OnlineNews.Controllers
         }
 
         [Authorize]
-        //public IActionResult Details(int id)
-        //{
-        //    var articleDetails = _articleService.GetDetails(id);
-        //    if (articleDetails == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    articleDetails.Views++;
-        //    return View(articleDetails);
-        //}
         public IActionResult Details(int id)
         {
             var articleDetails = _articleService.GetDetails(id);
@@ -215,14 +206,52 @@ namespace OnlineNews.Controllers
             // Return the view with the article details
             return View(articleDetails);
         }
-
-        public IActionResult CategoryNews(int id)
+        public async Task<IActionResult> CategoryNews(int id, string city)
         {
+            // Fetch articles based on category id
             var articles = _articleService.GetAllArticlesByItsCategory(id);
+
+            // Retrieve category details by id
             var category = _db.Categories.FirstOrDefault(c => c.Id == id);
+            if (category == null)
+            {
+                return NotFound(); // Handle case where category doesn't exist
+            }
+
+            // Pass category name to the view
             ViewData["CategoryName"] = category.Name;
+            ViewData["CategoryId"] = id; // Pass category ID to the view
+
+            // Weather Data Logic for "Weather" Category
+            bool isWeatherCategory = category.Name.Equals("Weather", StringComparison.OrdinalIgnoreCase);
+            WeatherForecast weather = null;
+
+            if (!string.IsNullOrEmpty(city) && isWeatherCategory)
+            {
+                weather = await _requestService.GetWeatherByCityNameAsync(city);
+            }
+
+            // Pass weather-related data to view
+            ViewBag.IsWeatherCategory = isWeatherCategory;
+            ViewBag.Weather = weather;
+
+            // Economy Data Logic for "Economy" Category
+            bool isEconomyCategory = category.Name.Equals("Economy", StringComparison.OrdinalIgnoreCase);
+            Businessprice data = null;
+
+            if (isEconomyCategory)
+            {
+                data = await _requestService.GetPrices();
+            }
+
+            // Pass economy-related data to view
+            ViewBag.IsEconomyCategory = isEconomyCategory;
+            ViewBag.Data = data;
+
+            // Return the view with the list of articles for the selected category
             return View(articles);
         }
+
         public async Task<IActionResult> SearchResult(string searchitem)
         {
             if (string.IsNullOrEmpty(searchitem))
