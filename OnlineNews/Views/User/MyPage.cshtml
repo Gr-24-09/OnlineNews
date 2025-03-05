@@ -1,10 +1,10 @@
 ﻿@using System.Security.Claims
 @model OnlineNews.Models.ViewModels.UserPageViewModel
 
-<h4 class="row  allfont" style="text-align:center;color:blue;"> Welcome @Model.User.FirstName @Model.User.LastName </h4>
-<p>Date of Birth: @Model.User.DateofBirth.ToString("d")<a asp-controller="Subscription" asp-action="EditProfile"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000F5"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" /></svg></a></p>
+<h4 class="row allfont" style="text-align:center;color:blue;text-align:center"> Welcome @Model.User.FirstName @Model.User.LastName </h4>
+<a asp-controller="Subscription" asp-action="EditProfile"> <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000F5"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z" /></svg>Edit Profile</a>
+<p>Date of Birth: @Model.User.DateofBirth.ToString("d")</p>
 <p>Email: @Model.User.Email</p>
-<h4>Your Subscription</h4>
 
 @if (Model?.Subscription != null)
 {
@@ -32,17 +32,15 @@ else
     <p>No subscription data available.</p>
     <a asp-controller="Subscription" asp-action="Subscribe" class="btn btn-info">Subscribe Now</a>
 }
-
-<h4 class="row">Change Subscription</h4>
-
-<form asp-controller="User" asp-action="ChangeSubscription" method="post">
-    <label for="subscriptionType">Select Subscription Type:</label>
-    <select id="subscriptionType" name="subscriptionType">
-        <option value="Basic">Basic</option>
-        <option value="Premium">Premium</option>
+<br />
+<form asp-controller="User" asp-action="ChangeSubscription" method="post" style="display: flex; align-items: center;gap:20px;">
+    <h5 style="color:blue;">Change Subscription</h5>
+    <select id="subscriptionType" name="subscriptionType" style="width:100px;"> 
+        <option class="bg-warning" value="Basic">Basic</option>
+        <option class="bg-success" value="Premium">Premium</option>
     </select>
-    <button type="submit">Change Subscription</button>
 </form>
+
 
 @if (TempData["Message"] != null)
 {
