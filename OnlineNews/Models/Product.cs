@@ -30,6 +30,7 @@ namespace OnlineNews.Models
 
         [DataType(DataType.Date)] 
         public DateTime DateAdded { get; set; } = DateTime.Now;
+        public virtual ICollection<OrderRow> OrderRows { get; set; } = new List<OrderRow>();
 
     }
 }
