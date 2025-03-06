@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OnlineNews.Models;
 using OnlineNews.Models.Database;
 
 namespace OnlineNews.Data
@@ -12,6 +13,7 @@ namespace OnlineNews.Data
         public virtual DbSet<SubscriptionType> SubscriptionTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserInteractionWithArticle> UserInteractionWithArticles { get; set; }
+        public virtual DbSet<Product> Products { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
