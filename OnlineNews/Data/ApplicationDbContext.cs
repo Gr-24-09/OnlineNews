@@ -14,6 +14,10 @@ namespace OnlineNews.Data
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<UserInteractionWithArticle> UserInteractionWithArticles { get; set; }
         public virtual DbSet<Product> Products { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderRow> OrderRows { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options): base(options)
         {
