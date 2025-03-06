@@ -59,11 +59,14 @@
                     }
                 </tbody>
             </table>
+            <div class="mb-4"></div>
         </div>
     }
     else
     {
         <div class="alert alert-warning">No business prices available at the moment.</div>
+        <div class="mb-4"></div>
+
     }
 }
 
@@ -82,14 +85,15 @@
     <!-- Display Weather Data if Available -->
     @if (ViewBag.Weather != null)
     {
-        <div class="row weatherbtn justify-content-center">
+        <div class="row weatherbtn justify-content-center mb-4">
             <div class="col-12 col-sm-8 col-md-6 col-lg-4">
                 <div class="weather-card bg-primary" style="text-align:center;color:white;">
+                    <br />
                     <h4><b>Weather in @ViewBag.Weather.city</b></h4>
                     <div>
                         @if (ViewBag.Weather.icon != null)
                         {
-                            <img src="@ViewBag.Weather.icon.url" alt="Weather icon" width="100" height="100" />
+                            <img src="@ViewBag.Weather.icon.url" alt="Weather icon" width="150" height="150" />
                         }
                         else
                         {
@@ -101,12 +105,13 @@
                     <h5><strong>Humidity:</strong> @ViewBag.Weather.humidity%</h5>
                     <h5><strong>Wind Speed:</strong> @ViewBag.Weather.windSpeed km/h</h5>
                     <h5><strong>Date:</strong> @ViewBag.Weather.date.ToString("MMMM dd, yyyy")</h5>
+                    <br />
                 </div>
             </div>
         </div>
     }
 }
-
+<div class="mb-4"></div>
 <div class="mb-4"></div>
 <div class="row justify-content-center allfont">
     <div class="row justify-content-center">
