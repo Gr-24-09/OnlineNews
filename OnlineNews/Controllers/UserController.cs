@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace OnlineNews.Controllers
 {
-    [Authorize] 
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -22,43 +22,74 @@ namespace OnlineNews.Controllers
         [HttpGet]
         public async Task<IActionResult> MyPage()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = await _userService.GetUserByIdAsync(userId);
-            var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
-
-            var model = new UserPageViewModel
+            try
             {
-                User = user,
-                Subscription = subscription
-            };
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await _userService.GetUserByIdAsync(userId);
+                var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
 
-            return View(model);
+                if (user == null)
+                {
+                    TempData["Error"] = "User not found.";
+                    return RedirectToAction("Index", "Home"); // Redirecting to Home or error page
+                }
+
+                var model = new UserPageViewModel
+                {
+                    User = user,
+                    Subscription = subscription
+                };
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "An error occurred while fetching user data.";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         [HttpPost]
         public async Task<IActionResult> ChangeSubscription(string subscriptionType)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var subscriptionTypeEntity = await _subscriptionService.GetSubscriptionTypeByNameAsync(subscriptionType);
-
-            if (subscriptionTypeEntity == null)
+            if (string.IsNullOrEmpty(subscriptionType))
             {
-                TempData["Error"] = "Invalid subscription type.";
+                TempData["Error"] = "Subscription type is required.";
                 return RedirectToAction("MyPage");
             }
 
-            var success = await _subscriptionService.ChangeSubscriptionTypeAsync(userId, subscriptionTypeEntity);
-
-            if (success)
+            try
             {
-                TempData["Message"] = "Subscription updated successfully!";
-            }
-            else
-            {
-                TempData["Error"] = "Failed to update subscription.";
-            }
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-            return RedirectToAction("MyPage");
+                // Fetch the subscription type by name
+                var subscriptionTypeEntity = await _subscriptionService.GetSubscriptionTypeByNameAsync(subscriptionType);
+
+                if (subscriptionTypeEntity == null)
+                {
+                    TempData["Error"] = "Invalid subscription type.";
+                    return RedirectToAction("MyPage");
+                }
+
+                // Attempt to change the subscription
+                var success = await _subscriptionService.ChangeSubscriptionTypeAsync(userId, subscriptionTypeEntity);
+
+                if (success)
+                {
+                    TempData["Message"] = "Subscription updated successfully!";
+                }
+                else
+                {
+                    TempData["Error"] = "Failed to update subscription.";
+                }
+
+                return RedirectToAction("MyPage");
+            }
+            catch (Exception ex)
+            {
+                TempData["Error"] = "An error occurred while changing the subscription.";
+                return RedirectToAction("MyPage");
+            }
         }
     }
 }
