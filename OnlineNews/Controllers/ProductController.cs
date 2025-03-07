@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MailKit.Search;
+using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Data;
 using OnlineNews.Models;
+using OnlineNews.Models.Database;
+using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace OnlineNews.Controllers
 {
@@ -16,10 +19,13 @@ namespace OnlineNews.Controllers
         // List of all the products
         public IActionResult Index()
         {
-            var products = _db.Products.Where(p => p.IsAvailable).ToList(); 
+            return RedirectToAction("AllProducts", "Product");
+        }
+        public IActionResult AllProducts()
+        {
+            var products = _db.Products.Where(p => p.IsAvailable).ToList();
             return View(products);
         }
-
         // View the product details
         public async Task<IActionResult> Details(int id)
         {
@@ -49,7 +55,6 @@ namespace OnlineNews.Controllers
             return View(product);
         }
 
-        // Edit an existing product (admin or seller view)
         public async Task<IActionResult> Edit(int id)
         {
             var product = await _db.Products.FindAsync(id);
@@ -61,7 +66,6 @@ namespace OnlineNews.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Product product)
         {
             if (id != product.Id)
@@ -91,9 +95,46 @@ namespace OnlineNews.Controllers
             }
             return View(product);
         }
+        public IActionResult Delete(int id)
+        {
+            var data = _db.Products.FirstOrDefault(x => x.Id == id);
+            _db.Products.Remove(data);
+            _db.SaveChanges();
+
+            return RedirectToAction("Index", "Product");
+        }
         private bool ProductExists(int id)
         {
             return _db.Products.Any(e => e.Id == id);
+        }
+        public IActionResult SearchResult(string searchitem)
+        {
+            if (string.IsNullOrEmpty(searchitem))
+            {
+                return View(new List<Product>());
+            }
+            var productList = _db.Products.AsQueryable();
+            productList = productList.Where(p =>
+                p.Name.Contains(searchitem) ||
+                p.Price.ToString().Contains(searchitem) ||
+                p.Category.Contains(searchitem) ||
+                p.Description.Contains(searchitem)
+
+            );
+            var products = productList.ToList();
+            if (!products.Any())
+            {
+                ViewBag.msg = $"No results found for '{searchitem}'.";
+            }
+            else
+            {
+                ViewBag.msg = searchitem;
+            }
+            return View(products);
+        }
+        public IActionResult Privacy()
+        {
+            return View();
         }
     }
 }
