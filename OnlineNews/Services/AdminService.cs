@@ -17,7 +17,6 @@ namespace OnlineNews.Service
             _userManager = userManager;
 
         }
-
         public async Task<string> AddAdminRoleToEmployee(string userId)
         {
             var user = _userManager.FindByIdAsync(userId).Result;
