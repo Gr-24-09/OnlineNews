@@ -48,11 +48,11 @@ namespace OnlineNews.Controllers
                 CreatedAt = DateTime.UtcNow,
                 ExpiredAt = DateTime.UtcNow.AddDays(30),
                 PaymentComplete = false, 
-                SubscriptionType = new SubscriptionType { TypeName = subscriptionType }
+                //SubscriptionType = new SubscriptionType { TypeName = subscriptionType }
             };
 
 
-            // await _subscriptionService.AddSubscriptionAsync(newSubscription);
+            await _subscriptionService.AddSubscriptionAsync(newSubscription, subscriptionType);
 
             TempData["Message"] = "Subscription created successfully! Please complete the payment.";
             return RedirectToAction("DummyPayment");
@@ -69,7 +69,7 @@ namespace OnlineNews.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
-            var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
+            var subscription = await _subscriptionService.PaymentConfirmation(userId);
 
             if (subscription != null)
             {
