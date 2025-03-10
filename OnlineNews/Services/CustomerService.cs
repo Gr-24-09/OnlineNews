@@ -91,15 +91,13 @@ namespace MovieShop.Services
                                       OrderId = o.Id,
                                       OrderDate = o.OrderDate,
                                       Totalcost = o.OrderRows.Sum(or => or.Quantity * or.Price),
-                                      Movies = o.OrderRows.Select(or=> new ProductItemViewModel
-                                      {
-                                          ImageUrl = or.product.ImageUrl,
-                                          ProductName = or.product.Name,
-                                          Quantity = or.Quantity,
-                                          Price = or.Price
-                                      })
-                                      .ToList()
-
+                                      Products = o.OrderRows.Select(or=> new ProductItemViewModel
+                                              {
+                                                  ImageUrl = or.product.ImageUrl,
+                                                  ProductName = or.product.Name,
+                                                  Quantity = or.Quantity,
+                                                  Price = or.Price
+                                              }).ToList()
                                   })
                                   .ToList();
             return orders;

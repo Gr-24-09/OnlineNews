@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Data;
 using OnlineNews.Models;
 using OnlineNews.Models.Database;
+using OnlineNews.Models.ViewModels;
 using static Org.BouncyCastle.Crypto.Engines.SM2Engine;
 
 namespace OnlineNews.Controllers
