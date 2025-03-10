@@ -26,7 +26,7 @@ namespace OnlineNews.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var user = await _userService.GetUserByIdAsync(userId);
-                var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
+                var subscription = await _subscriptionService.PaymentConfirmation(userId);
 
                 if (user == null)
                 {

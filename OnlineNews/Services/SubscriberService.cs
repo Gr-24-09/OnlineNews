@@ -16,6 +16,27 @@ namespace OnlineNews.Service
         }
 
         // Get the most recent subscription of the user
+        public async Task<Subscription> PaymentConfirmation(string userId)
+        {
+            var subscription = await _db.Subscriptions
+                .Include(s => s.SubscriptionType)
+                .Where(s => s.Subscriber.Id == userId)
+                .OrderByDescending(s => s.CreatedAt)
+                .FirstOrDefaultAsync();
+            // Optionally handle the case where no subscription is found
+            if (subscription == null)
+            {
+                // Handle logic if no subscription is found (could throw an exception, return null, etc.)
+                return null;
+            }
+
+            subscription.PaymentComplete = true;
+            _db.Update(subscription);
+            _db.SaveChanges();
+
+            return subscription;
+        }
+
         public async Task<Subscription> GetUserSubscriptionAsync(string userId)
         {
             var subscription = await _db.Subscriptions
@@ -33,6 +54,7 @@ namespace OnlineNews.Service
 
             return subscription;
         }
+
 
         // Change the subscription type of the user
         public async Task<bool> ChangeSubscriptionTypeAsync(string userId, string subscriptionType)
@@ -77,20 +99,22 @@ namespace OnlineNews.Service
         }
 
         // Add a new subscription for the user
-        public async Task AddSubscriptionAsync(Subscription subscription)
+        public async Task AddSubscriptionAsync(Subscription subscription,string subscriptionType)
         {
             // Check if subscription already exists to prevent duplicates
-            var existingSubscription = await _db.Subscriptions
-                .Where(s => s.Subscriber.Id == subscription.Subscriber.Id && s.SubscriptionType.Id == subscription.SubscriptionType.Id)
-                .FirstOrDefaultAsync();
+            //var existingSubscription = await _db.Subscriptions
+            //    .Where(s => s.Subscriber.Id == subscription.Subscriber.Id)
+            //    .FirstOrDefaultAsync();
 
-            if (existingSubscription != null)
-            {
-                // Handle case if subscription already exists (you can throw an exception or return a result indicating so)
-                return;
-            }
+            //if (existingSubscription != null)
+            //{
+            //    // Handle case if subscription already exists (you can throw an exception or return a result indicating so)
+            //    return;
+            //}
 
             // Add the new subscription
+            var subType = _db.SubscriptionTypes.FirstOrDefault(st => st.TypeName == subscriptionType);
+            subscription.SubscriptionType = subType;
             _db.Subscriptions.Add(subscription);
             await _db.SaveChangesAsync();
         }
