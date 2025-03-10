@@ -6,7 +6,6 @@
     Layout = "~/Views/Shared/_ProductLayout.cshtml";
 }
 
-<h3 style="text-align:center">AllProducts</h3>
 
 <div class="row justify-content-center allfont mt-0">
     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -24,10 +23,10 @@
                             <p>Only @item.StockQuantity left in stock</p>
                         </div>
                     </div>
+                    <a asp-action="AddProductToCart" asp-controller="Cart" asp-route-id="@item.Id">Add To Cart</a>
                     <a asp-action="Edit" asp-controller="Product" asp-route-id="@item.Id">Edit</a>
                     <a asp-action="Details" asp-controller="Product" asp-route-id="@item.Id">Details</a>
                     <a asp-action="Delete" asp-controller="Product" asp-route-id="@item.Id">Delete</a>
-
                 </div>
             }
         </div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - OnlineNews</title>
+    <title>@ViewData["Title"] - ASAM WebShop</title>
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/OnlineNews.styles.css" asp-append-version="true" />
@@ -11,45 +11,68 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-      <header>
-           <div class="row allfont" style="border:1px solid blue">
-            <nav class="navbar navbar-expand-sm  d-flex justify-content-center bg-primary navbar-primary">
-                <div class="container-fluid justify-content-center" style="font-size:20px">
-                    <ul class="navbar-nav">
+    <header class="bg-primary text-white">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="@Url.Action("Index", "Product")">
+                    <span class="ms-2">ASAM</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Index" style="color:white;">Home</a>
+                            <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Create" style="color:white;">Add product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Product" asp-action="AllProducts" style="color:white;">List of Products</a>
-                        </li>
-                        <li>
-                            <form asp-Controller="Product" asp-action="SearchResult" class="d-flex gap-3">
-                                <label for="searchitem" class="sr-only"></label>
-                                <input type="text" name="searchitem" id="searchitem" class="searchBar form-control" placeholder="Search by Product,Category..." />
-                                <button class="searchBtn btn btn-primary" type="submit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="#fff">
-                                        <path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z" />
-                                    </svg>
+                            <form asp-Controller="Product" asp-action="SearchResult" class="d-flex gap-2">
+                                <input type="text" name="searchitem" id="searchitem" class="form-control" placeholder="Search Products, Categories..." aria-label="Search">
+                                <button class="btn btn-light" type="submit">
+                                    <i class="fas fa-search"></i>
                                 </button>
                             </form>
                         </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Cart" asp-action="Index">
+                                    <i class="bi bi-cart-fill"></i>
+                                    <span class="badge bg-danger" id="cartItemCount">@ViewData["CartItemCount"]</span>
+                                </a>
+                            </li>
+                        <li class="navbar-collapse collapse justify-content-xl-end">
+                            <partial name="_LoginPartial" />
+                        </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color:black">
+                                    Admin page
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li class="nav-item">
+                                        <a class="nav-link" asp-area="" asp-controller="Product" asp-action="Create" style="color:blue;">Add Product</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
                     </ul>
                 </div>
-            </nav>
-        </div>
-      </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-    <footer class="bg-primary text-white pt-5 pb-2">
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container my-4">
+        @RenderBody()
+    </main>
+
+    <footer class="bg-primary text-white py-3">
         <div class="text-center">
-            © 2025 Copyright  <a asp-area="" asp-controller="Product" asp-action="Privacy">Privacy Policy</a>
+            <p class="mb-0">© 2025 OnlineNews. All rights reserved.</p>
+            <a href="@Url.Action("Privacy", "Product")" class="text-white">Privacy Policy</a>
         </div>
     </footer>
+
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

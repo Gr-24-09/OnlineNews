@@ -1,13 +1,11 @@
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
 using OnlineNews.Models.Database;
 using OnlineNews.Interfaces;
 using OnlineNews.Services;
 using OnlineNews.Service;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using OnlineNews.Models.Helper;
-using FluentAssertions.Common;
+using Microsoft.AspNetCore.Identity;
 
 namespace OnlineNews
 {
@@ -17,36 +15,46 @@ namespace OnlineNews
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            var connectionString = builder.Configuration.GetConnectionString("LexiconConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            // Configuration for connection string
+            var connectionString = builder.Configuration.GetConnectionString("LexiconConnection")
+                ?? throw new InvalidOperationException("Connection string 'LexiconConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-            builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+            // Add Identity Services for User and Role management
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddRoles<IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
+            // Add Session Services
+            builder.Services.AddDistributedMemoryCache();  // Required for sessions
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(30);  // Set the session timeout
+                options.Cookie.IsEssential = true; // Make the session cookie essential
+            });
+
+            // Register services
             builder.Services.AddScoped<IAdminService, AdminService>();
-            builder.Services.AddTransient<IEmailSender, EmailSender>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IRequestService, RequestService>();
-            builder.Services.AddHttpClient<RequestService>();
+            builder.Services.AddScoped<ICartService, CartService>();
+            builder.Services.AddScoped<IEditorService, EditorService>();
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
-            builder.Services.AddHttpClient();
+            builder.Services.AddHttpClient<RequestService>();  // Injecting HttpClient for services needing HTTP calls
+            builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();  // Allow access to HttpContext
 
-
+            // Add MVC (Controllers + Views)
             builder.Services.AddControllersWithViews();
+
+            // Build app and configure
             var app = builder.Build();
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                var context = services.GetRequiredService<ApplicationDbContext>();
+            // Session Middleware should come before routing
+            app.UseSession();  // This ensures the session is available throughout the request pipeline
 
-                SeedData.Initialize(services, context);
-            }
-          
-
+            // Application-specific middlewares
             if (app.Environment.IsDevelopment())
             {
                 app.UseMigrationsEndPoint();
@@ -61,14 +69,13 @@ namespace OnlineNews
             app.UseStaticFiles();
 
             app.UseRouting();
-
             app.UseAuthorization();
 
+            // Routing setup
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
             using (var scope = app.Services.CreateScope())
             {
                 var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -116,7 +123,6 @@ namespace OnlineNews
                     await userManager.AddToRoleAsync(user, "Writer");
                 }
             }
-
             using (var scope = app.Services.CreateScope())
             {
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
