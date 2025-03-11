@@ -16,30 +16,36 @@ namespace OnlineNews.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IArticleService _articleService;
         private readonly ApplicationDbContext _db;
+        private readonly ILogger<EditorController> _logger;
         
 
-        public EditorController(UserManager<User> userManager, IArticleService articleService, ApplicationDbContext db)
+        public EditorController(UserManager<User> userManager, IArticleService articleService, ApplicationDbContext db, ILogger<EditorController> logger)
         {
             _userManager = userManager;
             _articleService = articleService;
             _db = db;
+            _logger = logger;
             
         }
 
-
         [HttpGet]
-        public IActionResult GetAllArticles(string status = "Approved")
+        public async Task<IActionResult> GetAllArticles(string status = "Approved")
         {
-            var articles = _articleService.GetAllArticles();
-            if (status != "All")
-            {
-                articles = articles.Where(a => a.ApprovalStatus == status).ToList();
-            }
-          ViewData["status"] = status;
+            var user = await _userManager.GetUserAsync(User);
+            bool isEditor = await _userManager.IsInRoleAsync(user, "Editor");
 
-            if (!articles.Any())
+            ViewData["isEditor"] = isEditor; 
+
+            List<Article> articles;
+
+            // Filter articles based on the selected status
+            if (status == "All")
             {
-                ViewBag.Message = "No articles found.";
+                articles = _articleService.GetAllArticles(isEditor); 
+            }
+            else
+            {
+                articles = _articleService.GetAllArticles(isEditor).Where(a => a.ApprovalStatus == status).ToList();
             }
 
             return View(articles);
@@ -66,7 +72,7 @@ namespace OnlineNews.Controllers
                 return NotFound("Article not found");
             }
             _articleService.UpdateArticleApproval(id, "Rejected");
-            return RedirectToAction("GetAllArticles", new { showRejected = true });
+            return RedirectToAction("GetAllArticles");
         }
 
         public IActionResult UpdateArticleStatus(int id, string status)

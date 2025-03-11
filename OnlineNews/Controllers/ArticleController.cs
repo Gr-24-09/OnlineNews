@@ -210,6 +210,7 @@ namespace OnlineNews.Controllers
         {
             // Fetch articles based on category id
             var articles = _articleService.GetAllArticlesByItsCategory(id);
+            
 
             // Retrieve category details by id
             var category = _db.Categories.FirstOrDefault(c => c.Id == id);

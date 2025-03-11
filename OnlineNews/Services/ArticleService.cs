@@ -16,24 +16,44 @@ namespace OnlineNews.Services
         private readonly ApplicationDbContext _db;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private const string CookieConsentKey = "CookieConsent";
-        public ArticleService(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
+        private readonly ILogger<ArticleService> _logger;
+        public ArticleService(ApplicationDbContext db, IHttpContextAccessor httpContextAccessor, ILogger<ArticleService> logger)
         {
             _db = db;
             _httpContextAccessor = httpContextAccessor;
+            _logger = logger;
         }
+
+
         public void AddArticle(Article newarticle,string authorId)
         {
             newarticle.PublishedDate = DateTime.Now;
             newarticle.Author = _db.Users.Find(authorId);
             newarticle.Category = _db.Categories.Where(c => c.Name == newarticle.Category.Name).First();
+            newarticle.ApprovalStatus = "Pending";
             _db.Articles.Add(newarticle);
             _db.SaveChanges();
         }
-        public List<Article> GetAllArticles()
+
+        public List<Article> GetAllArticles(bool isEditor)
         {
-            var articles = _db.Articles.ToList();
-            return articles;
+            try
+            {
+
+                var articles = isEditor
+
+                ? _db.Articles.ToList()
+                : _db.Articles.Where(a => a.ApprovalStatus == "Approved").ToList();
+                return articles;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred");
+                throw;
+            }
         }
+
 
         public Article GetArticleById(int id)
         {
@@ -88,11 +108,13 @@ namespace OnlineNews.Services
             var articles2 = _db.Articles.Where(x => categories.Contains(x.Category.Name)).OrderByDescending(x=>x.PublishedDate).Skip(2).Take(15) .ToList();
             return articles2;
        }
+
         public List<Article> GetAllArticlesByItsCategory(int categoryId) 
         {
-            var articles = _db.Articles.Where(x => x.Category.Id == categoryId).ToList();
+            var articles = _db.Articles.Where(a => a.Category.Id == categoryId && a.ApprovalStatus == "Approved").ToList();
             return articles;
         }
+
         public bool HasConsented(IHttpContextAccessor httpContextAccessor)
         {
             var consent = _httpContextAccessor.HttpContext.Request.Cookies[CookieConsentKey];
@@ -167,6 +189,16 @@ namespace OnlineNews.Services
         public void UpdateArticleApproval(int id, bool isApproved)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Article> GetApprovedArticles()
+        {
+            return _db.Articles.Where(a => a.ApprovalStatus == "Approved").ToList();
+        }
+
+        public List<Article> GetAllArticles()
+        {
+            throw new NotImplementedException("Use GetAllArticles(bool isEditor) instead.");
         }
     }
 }

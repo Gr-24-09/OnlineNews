@@ -28,5 +28,7 @@ namespace OnlineNews.Interfaces
         public void AddArticleInteraction(string userId, int articleId, bool liked, bool disliked);
         public void UpdateArticleInteraction(string userId, int articleId, bool liked, bool disliked);
         void UpdateArticleApproval(int id, string status);
+        public List<Article> GetAllArticles(bool isEditor);
+        public List<Article> GetApprovedArticles();
     }
 }
