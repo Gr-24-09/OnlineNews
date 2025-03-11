@@ -3,7 +3,24 @@
 
 <div class="card border-white mb-0 mt-0">
     <div class="card-body">
+        @if (Model.EditorsChoice)
+        {
+            <span class="badge badge-success">Editor's Choice</span>
+        }
         <a asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id" style="color:black;text-decoration-line: none"><h5 class="card-title"><b>@Model.Headline</b></h5></a>
         <a  asp-action="Details" asp-controller="Article" asp-route-id="@Model.Id" style="color:black;text-decoration-line: none"><p>@Model.ContentSummary</p></a>
     </div>
 </div>
+<style>
+    .badge {
+        padding: 5px 10px;
+        background-color: #28a745; /* Green color */
+        color: white;
+        font-size: 14px;
+        border-radius: 5px;
+    }
+
+    .badge-success {
+        background-color: #28a745;
+    }
+</style>

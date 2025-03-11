@@ -34,6 +34,7 @@ public class HomeController : Controller
         obj.SomeLatestNews = _articleService.SomeLatestNews();
         obj.Mostpopular = _articleService.Mostpopular();
         obj.OneLatestNews = _articleService.OneLatestNews();
+        obj.EditorsChoiceArticles = _articleService.EditorsChoice();
         return View(obj);
     }
     public IActionResult Privacy()
