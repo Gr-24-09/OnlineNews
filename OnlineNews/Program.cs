@@ -6,6 +6,7 @@ using OnlineNews.Interfaces;
 using OnlineNews.Services;
 using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity;
+using OnlineNews.Middleware;
 
 namespace OnlineNews
 {
@@ -35,11 +36,11 @@ namespace OnlineNews
 
             // Register services
             builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<ICartService,CartService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddScoped<IRequestService, RequestService>();
-            builder.Services.AddScoped<ICartService, CartService>();
             builder.Services.AddScoped<IEditorService, EditorService>();
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
             builder.Services.AddHttpClient<RequestService>();  // Injecting HttpClient for services needing HTTP calls
@@ -67,7 +68,7 @@ namespace OnlineNews
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseMiddleware<SessionInitializationMiddleware>();
             app.UseRouting();
             app.UseAuthorization();
 

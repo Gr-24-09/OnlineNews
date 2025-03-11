@@ -7,7 +7,7 @@
 }
 
 
-<div class="row justify-content-center allfont mt-0">
+<div class="row justify-content-center mt-0">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="row justify-content-center">
             @foreach (var item in Model)
@@ -19,7 +19,7 @@
                         </a>
                         <div class="card-body">
                             <h6 class="card-title"><b>@item.Name</b></h6>
-                            <p><b>Price:</b> @item.Price kr</p>
+                            <p>Price: <b style="font-size:25px;">@item.Price kr</b></p>
                             <p>Only @item.StockQuantity left in stock</p>
                         </div>
                     </div>
