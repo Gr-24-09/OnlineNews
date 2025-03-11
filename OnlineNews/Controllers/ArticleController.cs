@@ -20,7 +20,7 @@ namespace OnlineNews.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _db;
         private readonly IRequestService _requestService;
-        private const int PageSize = 15; // Set the number of articles per page
+        private const int PageSize = 12; // Set the number of articles per page
         public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db, IHttpContextAccessor httpContextAccessor, IRequestService requestService)
         {
             _articleService = articleService;
