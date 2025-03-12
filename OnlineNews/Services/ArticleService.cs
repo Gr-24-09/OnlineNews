@@ -23,8 +23,6 @@ namespace OnlineNews.Services
             _httpContextAccessor = httpContextAccessor;
             _logger = logger;
         }
-
-
         public void AddArticle(Article newarticle,string authorId)
         {
             newarticle.PublishedDate = DateTime.Now;
@@ -53,8 +51,6 @@ namespace OnlineNews.Services
                 throw;
             }
         }
-
-
         public Article GetArticleById(int id)
         {
             var article = _db.Articles.FirstOrDefault(a => a.Id == id);
@@ -105,7 +101,7 @@ namespace OnlineNews.Services
        public List<Article> SomeLatestNews()
        {
             var categories = new List<string> { "World", "Sweden" };  // List of categories 
-            var articles2 = _db.Articles.Where(x => categories.Contains(x.Category.Name)).OrderByDescending(x=>x.PublishedDate).Skip(2).Take(15) .ToList();
+            var articles2 = _db.Articles.Where(x => categories.Contains(x.Category.Name)).OrderByDescending(x=>x.PublishedDate).Skip(2).Take(12) .ToList();
             return articles2;
        }
 
