@@ -1,14 +1,40 @@
-﻿<h2>Enter Credit Card Details</h2>
+﻿@{
+    ViewData["Title"] = "DummyPayment";
+}
 
-<form asp-controller="Subscription" asp-action="DummyPayment" method="post">
-    <label for="cardNumber">Card Number:</label><br />
-    <input type="text" id="cardNumber" name="cardNumber" /><br /><br />
+<h2>Payment</h2>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger mt-3">
+        @TempData["Error"]
+    </div>
+}
 
-    <label for="expiryDate">Expiry Date:</label><br />
-    <input type="text" id="expiryDate" name="expiryDate" /><br /><br />
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success mt-3">
+        @TempData["Message"]
+    </div>
+}
 
-    <label for="cvv">CVV:</label><br />
-    <input type="text" id="cvv" name="cvv" /><br /><br />
+<!-- Payment Form -->
+<form asp-action="DummyPayment" method="post">
+    <div class="form-group">
+        <label for="cardNumber">Card Number</label>
+        <input type="text" class="form-control" id="cardNumber" name="cardNumber" required placeholder="1234 5678 9101 1121" />
+    </div>
 
-    <button type="submit">Pay Now</button>
+    <div class="form-group">
+        <label for="expiryDate">Expiry Date</label>
+        <input type="text" class="form-control" id="expiryDate" name="expiryDate" required placeholder="MM/YY" />
+    </div>
+
+    <div class="form-group">
+        <label for="cvv">CVV</label>
+        <input type="text" class="form-control" id="cvv" name="cvv" required placeholder="123" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Pay Now</button>
 </form>
+
+

@@ -14,6 +14,12 @@
         </div>
     </div>
 </div>
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
 <div class="container allfont justify-content-center">
     <div class="row justify-content-center">
         <h1><b>@Model.Headline</b></h1>
@@ -47,28 +53,34 @@
                 </ul>
             </div>
         </div>
-        @* <!-- Save Button -->
-        <div class="col-auto">
-            <span class="a">Save <svg xmlns="http://www.w3.org/2000/svg" height="27px" viewBox="0 -960 960 960" width="27px" fill="#000000"><path d="M200-120v-640q0-33 23.5-56.5T280-840h400q33 0 56.5 23.5T760-760v640L480-240 200-120Zm80-122 200-86 200 86v-518H280v518Zm0-518h400-400Z" /></svg></span>
-        </div> *@
     </div>
 </div>
+<!-- Check if the user is a subscriber -->
+@if (ViewBag.Subscription == null)
+{
+    <!-- Show a message for non-subscribers -->
+    <div class="alert alert-warning">
+        You need a subscription to access this article. <a href="@Url.Action("Subscribe", "Subscription")">Subscribe now</a> to read this content.
+    </div>
+}
+else
+{
+    <!-- If the user is a subscriber, show the article content -->
+    <div class="mt-3"></div>
+    <div class="row justify-content-center">
+        <img src="@Model.ImageLink" alt="picture of Article" class="img" />
+    </div>
 
-<div class="mt-3"></div>
-<div class="row justify-content-center">
-    <img src="@Model.ImageLink" alt="picture of Article" class="img"/>
-</div>
+    <div class="container" style="margin-top:15px;">
+        @if (!string.IsNullOrEmpty(@Model.Content))
+        {
+            <div class="row allfont">
+                <p>@Html.Raw(@Model.Content)</p>
+            </div>
+        }
+    </div>
 
-<div class="container" style="margin-top:15px;">
-    @if (!string.IsNullOrEmpty(@Model.Content))
-    {
-        <div class="row allfont">
-            <p>@Html.Raw(@Model.Content)</p>
-        </div>
-    }
-</div>
-
-<div class="icons-container">
+    <div class="icons-container">
     <p class="icons"><b>Likes:</b> @Model.Likes</p>
     <p class="icons"><b>Views:</b> @Model.Views</p>
 
@@ -90,7 +102,12 @@
         </button>
     }
 </div>
+}
 <hr />
+
+
+
+
 <style>
     .dropdown-toggle {
         padding: 5px 15px;

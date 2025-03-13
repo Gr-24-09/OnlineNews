@@ -36,7 +36,7 @@
                 <p><strong>Price:</strong> $@Model.Subscription.SubscriptionType?.Price</p>
                 <p><strong>Created At:</strong> @Model.Subscription.CreatedAt.ToString("d")</p>
                 <p><strong>Expires At:</strong> @Model.Subscription.ExpiredAt.ToString("d")</p>
-                <p><strong>Remaining Days:</strong> @Model.RemainingDays() days</p>
+                <p><strong>Remaining Days:</strong> @Model.RemainingDays days</p>
             </div>
         </div>
 
@@ -48,11 +48,6 @@
                 </p>
             </div>
         </div>
-
-        @* Edit Profile Button (Inside Subscription Block) *@
-        <form method="get" asp-controller="User" asp-action="EditProfile">
-            <button type="submit" class="btn btn-outline-info btn-lg w-100">Edit Profile</button>
-        </form>
     </div>
 }
 else

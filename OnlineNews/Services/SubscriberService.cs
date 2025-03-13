@@ -118,5 +118,6 @@ namespace OnlineNews.Service
             _db.Subscriptions.Add(subscription);
             await _db.SaveChangesAsync();
         }
+
     }
 }

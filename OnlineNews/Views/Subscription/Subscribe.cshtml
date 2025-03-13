@@ -1,12 +1,31 @@
-﻿<h2>Subscribe Now</h2>
+﻿@{
+    ViewData["Title"] = "Subscribe";
+}
 
-<p>Select your subscription type:</p>
+<h2>Choose a Subscription</h2>
 
-<form asp-controller="Subscription" asp-action="Subscribe" method="post">
-    <label for="subscriptionType">Subscription Type:</label>
-    <select id="subscriptionType" name="subscriptionType">
-        <option value="Basic">Basic</option>
-        <option value="Premium">Premium</option>
-    </select>
-    <button type="submit">Subscribe</button>
+<!-- Display success or error messages -->
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Message"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+<form asp-action="Subscribe" method="post">
+    <div class="form-group">
+        <label for="subscriptionType">Select Subscription Type</label>
+        <select class="form-control" id="subscriptionType" name="subscriptionType" required>
+            <option value="Basic">Basic</option>
+            <option value="Premium">Premium</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Subscribe</button>
 </form>
