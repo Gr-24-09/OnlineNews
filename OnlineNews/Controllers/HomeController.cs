@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Interfaces;
 using OnlineNews.Models;
@@ -76,6 +77,41 @@ public class HomeController : Controller
             return RedirectToAction("Index", "Home");
         }
     }
+
+    [Authorize]
+    public async Task<IActionResult> BasicArticle()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
+
+        if (subscription != null && subscription.SubscriptionType?.TypeName == "Basic")
+        {
+            return View(); // Show Basic content
+        }
+        else
+        {
+            TempData["Error"] = "This article is only available for Basic subscribers.";
+            return RedirectToAction("Index", "Home");
+        }
+    }
+
+    [Authorize]
+    public async Task<IActionResult> NonSubscriberArticle()
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
+
+        if (subscription == null) // User is not subscribed
+        {
+            return View(); // Show non-subscriber content or a prompt to subscribe
+        }
+        else
+        {
+            TempData["Error"] = "You are already subscribed.";
+            return RedirectToAction("Index", "Home");
+        }
+    }
+
     public async Task<IActionResult> WeatherSearch(string city)
     {
         WeatherForecast weather = null;
@@ -93,11 +129,39 @@ public class HomeController : Controller
         var data = await _requestService.GetPrices();
         return View(data);
     }
-    public IActionResult EditorsChoiced()
+
+    [Authorize]
+    public async Task<IActionResult> EditorsChoiced()
     {
-        var articles1 = _articleService.EditorsChoice();
-        return View(articles1);
+        // Get the authenticated user's ID
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        // Retrieve the subscription for the authenticated user
+        var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
+
+        // Check if the user doesn't have a subscription
+        if (subscription == null)
+        {
+            TempData["Error"] = "You don't have a subscription. Please subscribe to access premium content.";
+            return RedirectToAction("Subscribe", "Subscription"); // Redirect to the Subscription page
+        }
+
+        // Check if the user is not a Premium subscriber
+        if (subscription.SubscriptionType?.TypeName != "Premium")
+        {
+            TempData["Error"] = "You need a Premium subscription to view Editors' Choice articles.";
+            return RedirectToAction("Index", "Home"); // Redirect to Home or another page
+        }
+
+        // Fetch the Editors' Choice articles (ensure that this method returns a list or collection of articles)
+        var articles = _articleService.EditorsChoice();
+
+        // Return the view with the articles
+        return View(articles);
     }
+
+    
+
 
 }
 

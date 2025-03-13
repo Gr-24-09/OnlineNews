@@ -6,13 +6,18 @@ namespace OnlineNews.Models.ViewModels
     {
         public User User { get; set; }
         public Subscription Subscription { get; set; }
-        public int RemainingDays()
+
+        // Read-only property for calculating remaining days
+        public int RemainingDays
         {
-            if (Subscription != null && Subscription.ExpiredAt > DateTime.UtcNow)
+            get
             {
-                return (Subscription.ExpiredAt - DateTime.UtcNow).Days;
+                if (Subscription != null && Subscription.ExpiredAt > DateTime.UtcNow)
+                {
+                    return (Subscription.ExpiredAt - DateTime.UtcNow).Days;
+                }
+                return 0; // If no subscription or expired
             }
-            return 0;
         }
     }
 }

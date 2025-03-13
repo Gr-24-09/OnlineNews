@@ -34,6 +34,12 @@ namespace OnlineNews.Controllers
                     return RedirectToAction("Index", "Home"); // Redirecting to Home or error page
                 }
 
+                if (subscription == null || !subscription.PaymentComplete)
+                {
+                    TempData["Error"] = "You don't have an active subscription.";
+                    return RedirectToAction("Subscribe", "Subscription"); // Redirect to subscription page for the user
+                }
+
                 var model = new UserPageViewModel
                 {
                     User = user,
@@ -80,7 +86,7 @@ namespace OnlineNews.Controllers
                 }
                 else
                 {
-                    TempData["Error"] = "Failed to update subscription.";
+                    TempData["Error"] = "Failed to update subscription. Please try again later.";
                 }
 
                 return RedirectToAction("MyPage");
@@ -91,5 +97,6 @@ namespace OnlineNews.Controllers
                 return RedirectToAction("MyPage");
             }
         }
+
     }
 }

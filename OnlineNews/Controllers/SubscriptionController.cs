@@ -42,21 +42,38 @@ namespace OnlineNews.Controllers
                 return NotFound("User not found");
             }
 
+            // Get the corresponding subscription type from the database using case-insensitive comparison.
+            var subscriptionTypeEntity = await _db.SubscriptionTypes
+                .FirstOrDefaultAsync(s => s.TypeName.ToLower() == subscriptionType.ToLower());
+
+            if (subscriptionTypeEntity == null)
+            {
+                TempData["Error"] = "Invalid subscription type selected.";
+                return RedirectToAction("Subscribe");
+            }
+
+            // Create the new subscription for the user
             Subscription newSubscription = new Subscription()
             {
                 Subscriber = user,
                 CreatedAt = DateTime.UtcNow,
-                ExpiredAt = DateTime.UtcNow.AddDays(30),
-                PaymentComplete = false, 
-                //SubscriptionType = new SubscriptionType { TypeName = subscriptionType }
+                ExpiredAt = DateTime.UtcNow.AddDays(30), // Adjust expiry based on your needs
+                PaymentComplete = false,
+                SubscriptionType = subscriptionTypeEntity
             };
 
+            // Add the subscription to the database
+            await _subscriptionService.AddSubscriptionAsync(newSubscription, subscriptionTypeEntity.TypeName);
 
-            await _subscriptionService.AddSubscriptionAsync(newSubscription, subscriptionType);
+            // Set the success message for the payment page
+            TempData["Message"] = "Please complete the payment.";
+            // Ensure other messages (like 'Error') are cleared
+            TempData.Remove("Error");
 
-            TempData["Message"] = "Subscription created successfully! Please complete the payment.";
+            // Redirect to the DummyPayment page for payment processing
             return RedirectToAction("DummyPayment");
         }
+
 
         [HttpGet]
         public IActionResult DummyPayment()
@@ -69,11 +86,19 @@ namespace OnlineNews.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                TempData["Error"] = "User not found.";
+                return RedirectToAction("MyPage", "User");
+            }
+
             var subscription = await _subscriptionService.PaymentConfirmation(userId);
 
             if (subscription != null)
             {
                 subscription.PaymentComplete = true;
+                await _db.SaveChangesAsync();  // Ensure changes are saved to the database
                 TempData["Message"] = "Payment Successful! You are now an active subscriber.";
             }
             else
@@ -81,9 +106,9 @@ namespace OnlineNews.Controllers
                 TempData["Error"] = "Failed to complete payment.";
             }
 
-
             return RedirectToAction("MyPage", "User");
         }
+
 
         [HttpGet]
         public async Task<IActionResult> EditProfile()
@@ -146,6 +171,31 @@ namespace OnlineNews.Controllers
             };
 
             return Json(subscriptionCounts);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SubscriptionDetails()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            // Get the subscription of the logged-in user
+            var subscription = await _db.Subscriptions
+                .Include(s => s.SubscriptionType) // Include the subscription type (Basic, Premium, etc.)
+                .FirstOrDefaultAsync(s => s.Subscriber.Id == userId);
+
+            if (subscription == null)
+            {
+                TempData["Error"] = "You have no active subscription.";
+                return RedirectToAction("Subscribe");
+            }
+
+            return View(subscription);
         }
 
     }
