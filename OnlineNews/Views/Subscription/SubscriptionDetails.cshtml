@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Your Subscription</h2>
+<h2 class=" allfont ">Your Subscription</h2>
 
 <table class="table">
     <tr>
@@ -28,5 +28,5 @@
 
 @if (!Model.PaymentComplete)
 {
-    <a class="btn btn-primary" href="@Url.Action("DummyPayment", "Subscription")">Complete Payment</a>
+    <a class="btn btn-primary allfont" href="@Url.Action("DummyPayment", "Subscription")">Complete Payment</a>
 }

@@ -32,7 +32,7 @@ namespace OnlineNews.Controllers
             _subscriptionService= subscriptionService;
         }
 
-        [Authorize(Roles = "Editor,Admin,Writer")]
+        [Authorize]
         public IActionResult Index(int page = 1, string categoryName = "")
         {
             var totalArticles = _db.Articles.AsQueryable();
@@ -178,23 +178,33 @@ namespace OnlineNews.Controllers
             // Retrieve user details (including subscription)
             var user = await _userManager.FindByIdAsync(userId);
             var subscription = await _subscriptionService.PaymentConfirmation(userId); // Get the user's subscription
-            var articleDetails =  _articleService.GetDetails(id); // Fetch article details
+
+            // Fetch article details
+            var articleDetails = _articleService.GetDetails(id); // Fetch article details
 
             if (articleDetails == null)
             {
                 return NotFound();
             }
-            // Pass subscription information and article details to the view
-            ViewBag.Subscription = subscription;  // <-- Make sure this is set
 
-            // Check if the user doesn't have a subscription
+            // Pass subscription information and article details to the view
+            ViewBag.Subscription = subscription;
+
+            // Check if the user is a non-subscriber (i.e., they don't have a subscription)
             if (subscription == null)
             {
                 TempData["Error"] = "You need to be a subscriber to access this article.";
-                return RedirectToAction("Subscribe", "Subscription"); // Redirect to the subscription page for non-subscribers
+                return RedirectToAction("Subscribe", "Subscription"); // Redirect to the subscription page
             }
 
-            // If the user has a subscription, show the article (increment view count and other logic)
+            // Check if the user is a Basic subscriber and trying to access Editors' Choice articles
+            if (subscription.SubscriptionType?.TypeName == "Basic" && articleDetails.EditorsChoice)
+            {
+                TempData["Error"] = "Basic subscribers cannot access Editors' Choice articles.";
+                return RedirectToAction("NoAccess", "Home"); // Redirect to Home or another page
+            }
+
+            // If the user has a valid subscription, increment view count and process other logic
             articleDetails.Views++;
 
             // Calculate the time difference for the article's publishing time
