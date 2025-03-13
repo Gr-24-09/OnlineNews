@@ -1,4 +1,5 @@
 ﻿using MailKit.Search;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OnlineNews.Data;
 using OnlineNews.Models;
@@ -38,6 +39,7 @@ namespace OnlineNews.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Admin, Editor,Writer")]
         // Add a new product 
         public IActionResult Create()
         {
@@ -56,6 +58,7 @@ namespace OnlineNews.Controllers
             return View(product);
         }
 
+        [Authorize(Roles = "Admin, Editor,Writer")]
         public async Task<IActionResult> Edit(int id)
         {
             var product = await _db.Products.FindAsync(id);
@@ -96,6 +99,8 @@ namespace OnlineNews.Controllers
             }
             return View(product);
         }
+
+        [Authorize(Roles = "Admin, Editor,Writer")]
         public IActionResult Delete(int id)
         {
             var data = _db.Products.FirstOrDefault(x => x.Id == id);

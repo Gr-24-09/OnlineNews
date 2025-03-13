@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2 text-end">
-                                    <p class="fw-bold">@(@item.product.Price * item.Quantity)</p>
+                                    <p class="fw-bold">@(@item.product.Price * item.Quantity) kr</p>
                                     <form asp-controller="Cart" asp-action="RemoveProductFromCart" method="post">
                                         <input type="hidden" name="Id" value="@item.product.Id" />
                                         <button class="btn btn-sm">
@@ -55,17 +55,17 @@
                     <div class="card-body">
                         <h5 class="card-title mb-4">Order Summary</h5>
                         <div class="d-flex justify-content-between mb-3">
-                            <span>Price(tax excl.)</span>
-                            <span>@Model.SubTotalPrice.ToString("0.00")</span>
+                            <span>Price(tax excl.) </span>
+                            <span>@Model.SubTotalPrice.ToString("0.00") kr</span>
                         </div>
                         <div class="d-flex justify-content-between mb-3">
                             <span>Tax</span>
-                            <span>@Model.Tax.ToString("0.00")</span>
+                            <span>@Model.Tax.ToString("0.00") kr</span>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mb-4">
                             <strong>Total</strong>
-                            <strong>@Model.TotalPrice.ToString("0.00")</strong>
+                            <strong>@Model.TotalPrice.ToString("0.00") kr</strong>
                         </div>
                     </div>
                 </div>
