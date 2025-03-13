@@ -3,7 +3,7 @@
 
 @* Page Header *@
 <div class="container mt-5 text-center">
-    <h3 class="text-primary">Welcome, @Model.User.FirstName @Model.User.LastName</h3>
+    <h3 class="text-primary allfont">Welcome, @Model.User.FirstName @Model.User.LastName</h3>
 </div>
 
 @* Edit Profile Button *@
@@ -53,7 +53,7 @@
 else
 {
     <div class="container">
-        <p class="lead text-danger"><b>It looks like you don't have an active subscription at the moment. Would you like to subscribe? </b></p>
+        <p class="lead text-danger allfont"><b>It looks like you don't have an active subscription at the moment. Would you like to subscribe? </b></p>
         <a asp-controller="Subscription" asp-action="Subscribe" class="btn btn-primary btn-lg">Subscribe Now</a>
     </div>
 }
@@ -67,7 +67,7 @@ else
             <option class="bg-warning" value="Basic">Basic</option>
             <option class="bg-success" value="Premium">Premium</option>
         </select>
-        <button type="submit" class="btn btn-success btn-lg">Change Subscription</button>
+        <button type="submit" class="btn btn-success btn-lg allfont">Change Subscription</button>
     </form>
 </div>
 
