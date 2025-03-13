@@ -7,6 +7,7 @@ using OnlineNews.Services;
 using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity;
 using OnlineNews.Middleware;
+using OnlineNews.Models.Helper;
 
 namespace OnlineNews
 {
@@ -45,6 +46,7 @@ namespace OnlineNews
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
             builder.Services.AddHttpClient<RequestService>();  // Injecting HttpClient for services needing HTTP calls
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();  // Allow access to HttpContext
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
 
             // Add MVC (Controllers + Views)
             builder.Services.AddControllersWithViews();
