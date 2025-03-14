@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineNews.Data;
+using OnlineNews.Models;
 using OnlineNews.Models.Database;
 using System.Linq;
 using System.Threading.Tasks;
@@ -99,7 +100,7 @@ namespace OnlineNews.Service
         }
 
         // Add a new subscription for the user
-        public async Task AddSubscriptionAsync(Subscription subscription,string subscriptionType)
+        public async Task AddSubscriptionAsync(Subscription subscription, string subscriptionType)
         {
             // Check if subscription already exists to prevent duplicates
             //var existingSubscription = await _db.Subscriptions
@@ -117,6 +118,22 @@ namespace OnlineNews.Service
             subscription.SubscriptionType = subType;
             _db.Subscriptions.Add(subscription);
             await _db.SaveChangesAsync();
+        }
+
+
+        public List<SubscriptionItem> GetSubCount()
+        {
+            //var subscriptionCount = new { BasicCount = _db.Subscriptions.Count(s => s.SubscriptionType == "Basic"), 
+            //    PremiumCount = _db.Subscriptions.Count(s => s.SubscriptionType == "Premium") };
+
+            var result = _db.Subscriptions
+            .GroupBy(s => s.SubscriptionType)
+            .Select(g => new SubscriptionItem()
+            {
+                SubscriptionsCount = g.Count(),
+                SubscriptionType = g.Key
+            }).ToList();
+            return result;
         }
 
     }

@@ -5,7 +5,9 @@
 
 @model IEnumerable<UserWithRolesVM>
 
-
+@{
+    var subData = ViewBag.SubCount;
+}
 
 
 
@@ -220,14 +222,15 @@
 
 </table>
 
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <body>
 
         <canvas id="myChart" style="width:100%;max-width:600px justify-content: center;"></canvas>
-
+        
         <script>
-        const xValues = ["None Subscribers", "Basic Subscribers", "Premium Subscribers"];
-              const yValues = [44, 24, 15];
+        const xValues = ["Basic", "Premium"];
+              const yValues = [@subData[0].SubscriptionsCount, @subData[1].SubscriptionsCount]; // Model Subscription type == No Count
               const barColors = [
                 "#b91d47",
                 "#00aba9",
@@ -248,52 +251,15 @@
                 options: {
                   title: {
                     display: true,
-                    text: "Subscribers and none subscribers"
+                    text: "Numbers of Basic and Premium Subscribers", 
+                    fontSize:30
                   }
                 }
               });
         </script>
     </body>
 
-    <body>
 
 
-    @* for the charts *@
 
-
-    <h2>Subscription Statistics</h2>
-
-    <canvas id="subscriptionChart" width="400" height="400" style="justify-content: center;"></canvas>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            fetch('@Url.Action("GetSubscriptionCounts", "Subscription")')
-                .then(response => response.json())
-                .then(data => {
-                    var ctx = document.getElementById('subscriptionChart').getContext('2d');
-                    var subscriptionChart = new Chart(ctx, {
-                        type: 'doughnut',
-                        data: {
-                            labels: ['No Subscription', 'Basic Subscription', 'Premium Subscription'],
-                            datasets: [{
-                                data: [data.NoSubscription, data.BasicSubscription, data.PremiumSubscription],
-                                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56']
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            legend: {
-                                position: 'top',
-                            },
-                            title: {
-                                display: true,
-                                text: 'User Subscriptions'
-                            }
-                        }
-                    });
-                });
-        });
-    </script>
-
-    </body>
+   

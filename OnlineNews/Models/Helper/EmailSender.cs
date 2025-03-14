@@ -3,6 +3,7 @@ using MimeKit;
 using MailKit.Net.Smtp;
 using MimeKit.Text;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using MailKit.Security;
 //using System.Net.Mail;
 namespace OnlineNews.Models.Helper
 {
@@ -31,7 +32,13 @@ namespace OnlineNews.Models.Helper
                 try
                 {
                     //The last parameter here is to use SSL (Which you should!)
+
+
+                  //  emailClient.Connect(_configuration["SmtpServer"], Convert.ToInt32(_configuration["SmtpPort"]), SecureSocketOptions.StartTls);
+
+
                     emailClient.Connect(_configuration["SmtpServer"], Convert.ToInt32(_configuration["SmtpPort"]), true);
+ 
                 }
                 catch (SmtpCommandException ex)
                 {

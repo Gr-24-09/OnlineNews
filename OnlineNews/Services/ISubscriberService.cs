@@ -1,4 +1,5 @@
-﻿using OnlineNews.Models.Database;
+﻿using OnlineNews.Models;
+using OnlineNews.Models.Database;
 
 namespace OnlineNews.Service
 {
@@ -10,5 +11,7 @@ namespace OnlineNews.Service
         Task<string> GetSubscriptionTypeByNameAsync(string subscriptionType);
         Task AddSubscriptionAsync(Subscription subscription, string subscriptionType);
         Task <bool> ChangeSubscriptionTypeAsync(string userId, string subscriptionType);
+
+        List<SubscriptionItem> GetSubCount();
     }
 }
