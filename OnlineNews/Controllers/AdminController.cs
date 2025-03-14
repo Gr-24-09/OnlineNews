@@ -20,19 +20,22 @@ namespace OnlineNews.Controllers
         private readonly IAdminService _adminService;
         private readonly IUserService _userService;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ISubscriptionService _subscriptionService;
 
         public AdminController(UserManager<User> userManager, IAdminService adminService, 
-            RoleManager<IdentityRole> roleManager, IUserService userService)
+            RoleManager<IdentityRole> roleManager, IUserService userService, ISubscriptionService subscriptionService)
         {
             _userManager = userManager;
             _adminService = adminService;
             _roleManager = roleManager;
             _userService = userService;
+            _subscriptionService = subscriptionService;
         }
         public async Task<IActionResult> ListUsers()
         { 
             var users = _userService.GetUsersWithRoles();
             ViewBag.Roles = _roleManager.Roles.ToList();
+            ViewBag.SubCount = _subscriptionService.GetSubCount();
             return View(users); 
         }
         public IActionResult Claims()
@@ -92,6 +95,7 @@ namespace OnlineNews.Controllers
             }
             return RedirectToAction(nameof(ListUsers)); // Redirect back to the user list
         }
+
 
 
         //[Authorize(Roles = "Admin")]

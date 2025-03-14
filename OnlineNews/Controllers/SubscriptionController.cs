@@ -131,22 +131,8 @@ namespace OnlineNews.Controllers
             return View(updatedUser);
         }
 
-        // for the charts
-        public async Task<IActionResult> GetSubscriptionCounts()
-        {
-            var noSubscriptionCount = await _db.Users.CountAsync(u => !u.Subscriptions.Any());
-            var basicSubscriptionCount = await _db.Subscriptions.CountAsync(s => s.SubscriptionType.TypeName == "Basic" && s.PaymentComplete);
-            var premiumSubscriptionCount = await _db.Subscriptions.CountAsync(s => s.SubscriptionType.TypeName == "Premium" && s.PaymentComplete);
 
-            var subscriptionCounts = new
-            {
-                NoSubscription = noSubscriptionCount,
-                BasicSubscription = basicSubscriptionCount,
-                PremiumSubscription = premiumSubscriptionCount
-            };
 
-            return Json(subscriptionCounts);
-        }
 
     }
 }

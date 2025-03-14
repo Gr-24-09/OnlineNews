@@ -6,6 +6,7 @@ using OnlineNews.Interfaces;
 using OnlineNews.Services;
 using OnlineNews.Service;
 using Microsoft.AspNetCore.Identity;
+using OnlineNews.Models.Helper;
 
 namespace OnlineNews
 {
@@ -21,7 +22,7 @@ namespace OnlineNews
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             // Add Identity Services for User and Role management
-            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -44,7 +45,7 @@ namespace OnlineNews
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
             builder.Services.AddHttpClient<RequestService>();  // Injecting HttpClient for services needing HTTP calls
             builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();  // Allow access to HttpContext
-
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
             // Add MVC (Controllers + Views)
             builder.Services.AddControllersWithViews();
 
