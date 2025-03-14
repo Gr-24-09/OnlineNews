@@ -88,14 +88,14 @@ public class HomeController : Controller
         var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
 
         // Check if the user doesn't have a subscription
-        if (subscription == null)
+        if (subscription == null && !(User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer")))
         {
             TempData["Error"] = "You don't have a subscription. Please subscribe to access premium content.";
             return RedirectToAction("Subscribe", "Subscription"); // Redirect to the Subscription page
         }
 
-        // Check if the user is not a Premium subscriber (restrict Basic and non-subscribers)
-        if (subscription.SubscriptionType?.TypeName != "Premium")
+        // Check if the user is not a Premium subscriber, restrict Basic and non-subscribers unless the user is an Admin, Editor, or Writer
+        if ((subscription?.SubscriptionType?.TypeName != "Premium") && !(User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer")))
         {
             TempData["Error"] = "You need a Premium subscription to view Editors' Choice articles.";
             return RedirectToAction("NoAccess", "Home"); // Redirect to Home or another page
@@ -107,6 +107,7 @@ public class HomeController : Controller
         // Return the view with the articles
         return View(articles);
     }
+
     public IActionResult NoAccess()
     {
         return View();

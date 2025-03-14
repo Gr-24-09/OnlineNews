@@ -179,6 +179,9 @@ namespace OnlineNews.Controllers
             var user = await _userManager.FindByIdAsync(userId);
             var subscription = await _subscriptionService.PaymentConfirmation(userId); // Get the user's subscription
 
+            // Check if the user has a special role (admin, editor, writer)
+            bool hasSpecialRole = User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer");
+
             // Fetch article details
             var articleDetails = _articleService.GetDetails(id); // Fetch article details
 
@@ -190,21 +193,21 @@ namespace OnlineNews.Controllers
             // Pass subscription information and article details to the view
             ViewBag.Subscription = subscription;
 
-            // Check if the user is a non-subscriber (i.e., they don't have a subscription)
-            if (subscription == null)
+            // Check if the user has no subscription and doesn't have special roles
+            if (subscription == null && !hasSpecialRole)
             {
                 TempData["Error"] = "You need to be a subscriber to access this article.";
                 return RedirectToAction("Subscribe", "Subscription"); // Redirect to the subscription page
             }
 
             // Check if the user is a Basic subscriber and trying to access Editors' Choice articles
-            if (subscription.SubscriptionType?.TypeName == "Basic" && articleDetails.EditorsChoice)
+            if (subscription?.SubscriptionType?.TypeName == "Basic" && articleDetails.EditorsChoice && !hasSpecialRole)
             {
                 TempData["Error"] = "Basic subscribers cannot access Editors' Choice articles.";
                 return RedirectToAction("NoAccess", "Home"); // Redirect to Home or another page
             }
 
-            // If the user has a valid subscription, increment view count and process other logic
+            // If the user has a valid subscription or special role, increment view count and process other logic
             articleDetails.Views++;
 
             // Calculate the time difference for the article's publishing time
