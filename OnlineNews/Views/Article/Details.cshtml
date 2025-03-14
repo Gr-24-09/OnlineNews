@@ -39,7 +39,9 @@
             <div class="dropdown">
                 <a class="dropdown-toggle" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     Share
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000F5"><path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z" /></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#0000F5">
+                        <path d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z" />
+                    </svg>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="shareDropdown">
                     <li>
@@ -59,15 +61,15 @@
     </div>
 </div>
 
-<!-- Check if the user is a subscriber -->
-@if (ViewBag.Subscription == null)
+<!-- Check if the user is a subscriber, unless the user is an admin/editor/writer -->
+@if (ViewBag.Subscription == null && !(User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer")))
 {
     <!-- Show a message for non-subscribers -->
     <div class="alert alert-warning">
         You need a subscription to access this article. <a href="@Url.Action("Subscribe", "Subscription")">Subscribe now</a> to read this content.
     </div>
 }
-else if (ViewBag.Subscription?.SubscriptionType?.TypeName == "Basic" && Model.EditorsChoice)
+else if (ViewBag.Subscription?.SubscriptionType?.TypeName == "Basic" && Model.EditorsChoice && !(User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer")))
 {
     <!-- Show a message for Basic subscribers trying to view an Editors' Choice article -->
     <div class="alert alert-warning">
@@ -76,7 +78,7 @@ else if (ViewBag.Subscription?.SubscriptionType?.TypeName == "Basic" && Model.Ed
 }
 else
 {
-    <!-- If the user is a subscriber, show the article content -->
+    <!-- If the user is a subscriber, admin, editor, or writer, show the article content -->
     <div class="mt-3"></div>
     <div class="row justify-content-center">
         <img src="@Model.ImageLink" alt="picture of Article" class="img" />
@@ -140,3 +142,4 @@ else
         display: inline-flex;
     }
 </style>
+
