@@ -1,7 +1,8 @@
-﻿using OnlineNews.Models;
+﻿using Microsoft.Build.Tasks.Deployment.Bootstrapper;
+using OnlineNews.Models;
 using Newtonsoft.Json; 
 
-namespace OnlineNews.Models.Helper
+namespace OnlineNews.Middleware
 {
     // Middleware for initializing an empty shopping cart in the session.
     public class SessionInitializationMiddleware
@@ -14,9 +15,9 @@ namespace OnlineNews.Models.Helper
         public async Task InvokeAsync(HttpContext context)
         {
             // Check if the session contains "CartItems"; initialize if missing.
-            if (context.Session.GetObject<List<Product>>("CartItems") == null)
+            if (context.Session.GetObject<List<Models.Product>>("CartItems") == null)
             {
-                context.Session.SetObject("CartItems", new List<Product>());           // Create empty cart.
+                context.Session.SetObject("CartItems", new List<Models.Product>());           // Create empty cart.
             }
             await _next(context);                                                    // Pass control to the next session object.
         }

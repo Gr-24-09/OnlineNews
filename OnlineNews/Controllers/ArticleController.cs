@@ -11,6 +11,7 @@ using OnlineNews.Models;
 using OnlineNews.Services;
 using System.Drawing.Printing;
 using OnlineNews.Models.API;
+using System.Security.Claims;
 
 namespace OnlineNews.Controllers
 {
@@ -20,16 +21,18 @@ namespace OnlineNews.Controllers
         private readonly UserManager<User> _userManager;
         private readonly ApplicationDbContext _db;
         private readonly IRequestService _requestService;
-        private const int PageSize = 15; // Set the number of articles per page
-        public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db, IHttpContextAccessor httpContextAccessor, IRequestService requestService)
+        private readonly ISubscriptionService _subscriptionService;
+        private const int PageSize = 12; // Set the number of articles per page
+        public ArticleController(IArticleService articleService, UserManager<User> userManager, ApplicationDbContext  db, IHttpContextAccessor httpContextAccessor, IRequestService requestService, ISubscriptionService subscriptionService)
         {
             _articleService = articleService;
             _userManager = userManager;
             _db = db;
             _requestService= requestService;
+            _subscriptionService= subscriptionService;
         }
 
-        [Authorize(Roles = "Editor,Admin,Writer")]
+        [Authorize]
         public IActionResult Index(int page = 1, string categoryName = "")
         {
             var totalArticles = _db.Articles.AsQueryable();
@@ -57,7 +60,6 @@ namespace OnlineNews.Controllers
 
             return View(viewModel);
         }
-
 
         public IActionResult ArchivedArticles()
         {
@@ -168,18 +170,47 @@ namespace OnlineNews.Controllers
         }
 
         [Authorize]
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var articleDetails = _articleService.GetDetails(id);
+            // Get the current user ID
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            // Retrieve user details (including subscription)
+            var user = await _userManager.FindByIdAsync(userId);
+            var subscription = await _subscriptionService.PaymentConfirmation(userId); // Get the user's subscription
+
+            // Check if the user has a special role (admin, editor, writer)
+            bool hasSpecialRole = User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer");
+
+            // Fetch article details
+            var articleDetails = _articleService.GetDetails(id); // Fetch article details
+
             if (articleDetails == null)
             {
                 return NotFound();
             }
 
-            // Increment view count
+            // Pass subscription information and article details to the view
+            ViewBag.Subscription = subscription;
+
+            // Check if the user has no subscription and doesn't have special roles
+            if (subscription == null && !hasSpecialRole)
+            {
+                TempData["Error"] = "You need to be a subscriber to access this article.";
+                return RedirectToAction("Subscribe", "Subscription"); // Redirect to the subscription page
+            }
+
+            // Check if the user is a Basic subscriber and trying to access Editors' Choice articles
+            if (subscription?.SubscriptionType?.TypeName == "Basic" && articleDetails.EditorsChoice && !hasSpecialRole)
+            {
+                TempData["Error"] = "Basic subscribers cannot access Editors' Choice articles.";
+                return RedirectToAction("NoAccess", "Home"); // Redirect to Home or another page
+            }
+
+            // If the user has a valid subscription or special role, increment view count and process other logic
             articleDetails.Views++;
 
-            // Calculate the time difference
+            // Calculate the time difference for the article's publishing time
             var timeSpan = DateTime.Now - articleDetails.PublishedDate;
             string timeAgo;
 
@@ -206,10 +237,12 @@ namespace OnlineNews.Controllers
             // Return the view with the article details
             return View(articleDetails);
         }
+
         public async Task<IActionResult> CategoryNews(int id, string city)
         {
             // Fetch articles based on category id
             var articles = _articleService.GetAllArticlesByItsCategory(id);
+            
 
             // Retrieve category details by id
             var category = _db.Categories.FirstOrDefault(c => c.Id == id);

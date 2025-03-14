@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OnlineNews.Services;
+﻿using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Tasks.Deployment.Bootstrapper;
 using OnlineNews.Data;
-using OnlineNews.Models.ViewModels;
+using OnlineNews.Middleware;
 using OnlineNews.Models;
-using OnlineNews.Models.Helper;
+using OnlineNews.Models.ViewModels;
+using OnlineNews.Services;
+using Product = OnlineNews.Models.Product;
+
 namespace OnlineNews.Controllers
 {
     public class CartController : Controller
@@ -18,6 +22,7 @@ namespace OnlineNews.Controllers
             _db = db;
             _logger = logger;
         }
+
         public IActionResult Index()
         {
             var cartItems = HttpContext.Session.GetObject<List<CartItem>>("CartItems");
@@ -26,10 +31,11 @@ namespace OnlineNews.Controllers
                 _logger.LogInformation("Loading Cart/Index view.");
                 return View();
             }
-            CartViewModel cart = _cartService.GetCartMovies(cartItems);
+            CartViewModel cart = _cartService.GetCartProducts(cartItems);
 
             return View(cart);
         }
+
         public IActionResult AddProductToCart(int id)
         {
             var product = _db.Products.FirstOrDefault(m => m.Id == id);
@@ -94,40 +100,45 @@ namespace OnlineNews.Controllers
             {
                 return RedirectToAction(nameof(Index));
             }
+
             var customer = cartViewModel.Customer;
+
             var order = new Order
             {
                 Customer = customer,
                 OrderDate = DateTime.Now
             };
+
             foreach (var cartItem in cartItems)
             {
                 var orderRow = new OrderRow
                 {
-                    ProductId = cartItem.Product.Id,
+                    ProductId = cartItem.product.Id,
                     Quantity = cartItem.Quantity,
-                    Price = cartItem.Product.Price
+                    Price = cartItem.product.Price
                 };
                 order.OrderRows.Add(orderRow);
             }
+
             _db.Orders.Add(order);
             _db.SaveChanges();
             HttpContext.Session.Remove("CartItems");
             return RedirectToAction("Checkout", new { orderId = order.Id });
         }
+
         [HttpGet]
         public JsonResult GetCustomerByEmail(string email)
         {
             var customer = _db.Customers
-      .Where(c => c.EmailAddress == email)  
+      .Where(c => c.EmailAddress == email)
       .FirstOrDefault();
 
             if (customer != null)
             {
                 var customerData = new
                 {
-                    firstName = customer.FirstNameBillingAddress, 
-                    lastName = customer.LastNameBillingAddress,  
+                    firstName = customer.FirstNameBillingAddress,
+                    lastName = customer.LastNameBillingAddress,
                     billingAddress = customer.BillingAddress,
                     billingZip = customer.BillingZip,
                     billingCity = customer.BillingCity
@@ -135,12 +146,13 @@ namespace OnlineNews.Controllers
                 return Json(customerData);
             }
 
-            return Json(null);  
+            return Json(null);
         }
+
         public IActionResult Checkout()
         {
 
-            return View(); 
+            return View();
         }
     }
 }

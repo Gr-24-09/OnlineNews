@@ -1,24 +1,22 @@
 ﻿using OnlineNews.Models;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace OnlineNews.Models.ViewModels
 {
     public class CartViewModel
     {
         public List<CartItem> CartItem { get; set; } = new List<CartItem>();
-        public decimal SubTotalPrice { get; set; }
+        public decimal SubTotalPrice  { get; set; }
         public decimal ShippingCost { get; set; } = 0; // Shipping Cost - constant value
         public decimal Tax => SubTotalPrice * 0.25m; // Tax rate 25%
         public decimal TotalPrice => SubTotalPrice + ShippingCost; // Combined
         public Customer Customer { get; set; } = new Customer();
-        public Product MostPopularProduct { get; set; } = new Product();
         public int OrderId { get; set; }
         public string Email { get; set; }
     }
     public class CartItem
     {
-        public Product Product{ get; set; }
+        public Product product { get; set; }
         public int Quantity { get; set; }
     }
     public class OrderSummaryViewModel

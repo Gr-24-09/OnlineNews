@@ -1,9 +1,10 @@
-﻿@using System.Security.Claims
+﻿@using Microsoft.AspNetCore.Identity
+@using OnlineNews.Models.Database
 @model OnlineNews.Models.ViewModels.UserPageViewModel
 
 @* Page Header *@
 <div class="container mt-5 text-center">
-    <h3 class="text-primary">Welcome, @Model.User.FirstName @Model.User.LastName</h3>
+    <h3 class="text-primary allfont">Welcome, @Model.User.FirstName @Model.User.LastName</h3>
 </div>
 
 @* Edit Profile Button *@
@@ -25,8 +26,8 @@
     </div>
 </div>
 
-@* Subscription Details (if available) *@
-@if (Model?.Subscription != null)
+@* Conditionally Display Subscription Information *@
+@if (Model.Subscription != null && !User.IsInRole("Admin") && !User.IsInRole("Writer") && !User.IsInRole("Editor"))
 {
     <div class="container mb-4">
         <h3 class="text-success">Subscription Information</h3>
@@ -36,7 +37,7 @@
                 <p><strong>Price:</strong> $@Model.Subscription.SubscriptionType?.Price</p>
                 <p><strong>Created At:</strong> @Model.Subscription.CreatedAt.ToString("d")</p>
                 <p><strong>Expires At:</strong> @Model.Subscription.ExpiredAt.ToString("d")</p>
-                <p><strong>Remaining Days:</strong> @Model.RemainingDays() days</p>
+                <p><strong>Remaining Days:</strong> @Model.RemainingDays days</p>
             </div>
         </div>
 
@@ -48,34 +49,33 @@
                 </p>
             </div>
         </div>
-
-        @* Edit Profile Button (Inside Subscription Block) *@
-        <form method="get" asp-controller="User" asp-action="EditProfile">
-            <button type="submit" class="btn btn-outline-info btn-lg w-100">Edit Profile</button>
-        </form>
     </div>
 }
-else
+
+@* Display Message for Users with No Subscription or Restricted Roles *@
+@if (Model.Subscription == null && !User.IsInRole("Admin") && !User.IsInRole("Writer") && !User.IsInRole("Editor"))
 {
     <div class="container">
-        <p class="lead text-danger"><b>It looks like you don't have an active subscription at the moment. Would you like to subscribe? </b></p>
+        <p class="lead text-danger allfont"><b>It looks like you don't have an active subscription at the moment. Would you like to subscribe? </b></p>
         <a asp-controller="Subscription" asp-action="Subscribe" class="btn btn-primary btn-lg">Subscribe Now</a>
     </div>
 }
 
 <br />
 
-@* Change Subscription Section *@
-<div class="container">
-    <form asp-controller="User" asp-action="ChangeSubscription" method="post" class="d-flex align-items-center gap-3">
-        <select id="subscriptionType" name="subscriptionType" class="form-control w-50">
-            <option class="bg-warning" value="Basic">Basic</option>
-            <option class="bg-success" value="Premium">Premium</option>
-        </select>
-        <button type="submit" class="btn btn-success btn-lg">Change Subscription</button>
-    </form>
-</div>
-
+@* Change Subscription Section (only for eligible users) *@
+@if (Model.Subscription != null && !User.IsInRole("Admin") && !User.IsInRole("Writer") && !User.IsInRole("Editor"))
+{
+    <div class="container">
+        <form asp-controller="User" asp-action="ChangeSubscription" method="post" class="d-flex align-items-center gap-3">
+            <select id="subscriptionType" name="subscriptionType" class="form-control w-50">
+                <option class="bg-warning" value="Basic">Basic</option>
+                <option class="bg-success" value="Premium">Premium</option>
+            </select>
+            <button type="submit" class="btn btn-success btn-lg allfont">Change Subscription</button>
+        </form>
+    </div>
+}
 
 @* TempData Messages *@
 @if (TempData["Message"] != null)
@@ -92,7 +92,6 @@ else
     </div>
 }
 
-@* Styling Improvements *@
 <style>
     .payment-status.not-paid {
         color: #f44336;

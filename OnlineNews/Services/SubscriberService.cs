@@ -120,6 +120,7 @@ namespace OnlineNews.Service
             await _db.SaveChangesAsync();
         }
 
+
         public List<SubscriptionItem> GetSubCount()
         {
             //var subscriptionCount = new { BasicCount = _db.Subscriptions.Count(s => s.SubscriptionType == "Basic"), 
