@@ -4,6 +4,7 @@ using OnlineNews.Models.ViewModels;
 using OnlineNews.Service;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;  // Add this for Role-based checks
 
 namespace OnlineNews.Controllers
 {
@@ -12,11 +13,13 @@ namespace OnlineNews.Controllers
     {
         private readonly IUserService _userService;
         private readonly ISubscriptionService _subscriptionService;
+        private readonly UserManager<User> _userManager;  // Inject UserManager to access user roles
 
-        public UserController(IUserService userService, ISubscriptionService subscriptionService)
+        public UserController(IUserService userService, ISubscriptionService subscriptionService, UserManager<User> userManager)
         {
             _userService = userService;
             _subscriptionService = subscriptionService;
+            _userManager = userManager;  // Initialize the UserManager
         }
 
         [HttpGet]
@@ -26,27 +29,45 @@ namespace OnlineNews.Controllers
             {
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var user = await _userService.GetUserByIdAsync(userId);
-                var subscription = await _subscriptionService.PaymentConfirmation(userId);
 
                 if (user == null)
                 {
                     TempData["Error"] = "User not found.";
-                    return RedirectToAction("Index", "Home"); // Redirecting to Home or error page
+                    return RedirectToAction("Index", "Home");
                 }
 
-                if (subscription == null || !subscription.PaymentComplete)
+                // Check if the user has roles like "Admin" or "Subscriber"
+                var roles = await _userManager.GetRolesAsync(user);
+                bool isRoleRestricted = roles.Contains("Admin") || roles.Contains("Subscriber") || roles.Contains("Editor") || roles.Contains("Writer");
+
+                // If the user is not in a restricted role, fetch subscription data
+                if (!isRoleRestricted)
                 {
-                    TempData["Error"] = "You don't have an active subscription.";
-                    return RedirectToAction("Subscribe", "Subscription"); // Redirect to subscription page for the user
+                    var subscription = await _subscriptionService.PaymentConfirmation(userId);
+
+                    if (subscription == null || !subscription.PaymentComplete)
+                    {
+                        TempData["Error"] = "You don't have an active subscription.";
+                        return RedirectToAction("Subscribe", "Subscription");
+                    }
+
+                    // If the user is allowed to see subscription info, set the model
+                    var model = new UserPageViewModel
+                    {
+                        User = user,
+                        Subscription = subscription
+                    };
+
+                    return View(model);
                 }
 
-                var model = new UserPageViewModel
+                // If the user has restricted roles, display only the user info
+                var modelRestricted = new UserPageViewModel
                 {
-                    User = user,
-                    Subscription = subscription
+                    User = user
                 };
 
-                return View(model);
+                return View(modelRestricted);
             }
             catch (Exception ex)
             {
@@ -97,6 +118,5 @@ namespace OnlineNews.Controllers
                 return RedirectToAction("MyPage");
             }
         }
-
     }
 }
