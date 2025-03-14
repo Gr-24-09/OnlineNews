@@ -100,7 +100,7 @@ namespace OnlineNews.Controllers
             return View(product);
         }
 
-        [Authorize(Roles = "Admin, Editor,Writer")]
+        [Authorize(Roles = "Admin,Editor,Writer")]
         public IActionResult Delete(int id)
         {
             var data = _db.Products.FirstOrDefault(x => x.Id == id);
