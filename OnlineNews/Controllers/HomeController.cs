@@ -86,27 +86,29 @@ public class HomeController : Controller
 
         // Retrieve the subscription for the authenticated user
         var subscription = await _subscriptionService.GetUserSubscriptionAsync(userId);
-        ViewBag.msg = subscription;
-        // Check if the user doesn't have a subscription and is not in an allowed role (Admin, Editor, Writer)
+
+        // Check if the subscription exists and its SubscriptionType is not null
         if (subscription == null && !(User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer")))
         {
             TempData["Error"] = "You don't have a subscription. Please subscribe to access premium content.";
             return RedirectToAction("Subscribe", "Subscription"); // Redirect to the Subscription page
         }
-
-        // Check if the user is not a Premium subscriber, Editor, Writer, or Admin
-        if (subscription?.SubscriptionType?.TypeName != "Premium" && !(User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer")))
+        // Ensure that SubscriptionType is loaded and not null
+        if (subscription?.SubscriptionType == null)
         {
-            TempData["Error"] = "You need a Premium subscription to view Editors' Choice articles.";
-            return RedirectToAction("NoAccess", "Home"); // Redirect to Home or another page
+            TempData["Error"] = "Your subscription type is not valid. Please contact support.";
+            return RedirectToAction("NoAccess", "Home"); // Redirect to No Access page or similar
         }
+        // Pass the subscription type to the view
+        ViewBag.SubscriptionType = subscription.SubscriptionType.TypeName;
 
-        // Fetch the Editors' Choice articles (ensure that this method returns a list or collection of articles)
+        // Fetch the Editors' Choice articles
         var articles = _articleService.EditorsChoice();
 
         // Return the view with the articles
         return View(articles);
     }
+
 
 
     public IActionResult NoAccess()

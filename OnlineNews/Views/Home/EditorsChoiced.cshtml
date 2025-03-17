@@ -16,7 +16,7 @@
     </div>
 }
 
-@if (User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer"))
+@if (User.IsInRole("Admin") || User.IsInRole("Editor") || User.IsInRole("Writer") || ViewBag.SubscriptionType == "Premium")
 {
     <div class="row">
         @if (Model != null && Model.Any())
